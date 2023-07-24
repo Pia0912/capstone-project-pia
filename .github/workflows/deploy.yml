@@ -69,7 +69,7 @@ jobs:
         with:
           #Set dockerhub username
           username: pia0912
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
