@@ -94,11 +94,11 @@ jobs:
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
           #Set IP (replace "10.0.1.99" with your ip address)
           script: |
-            sudo docker stop cgn-java-23-2-pia
-            sudo docker rm cgn-java-23-2-pia
-            sudo docker run --pull=always --name example --network capstones --ip 10.0.5.16 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} pia0912/capstone-project-pia:latest
+            docker stop cgn-java-23-2-pia
+            docker rm cgn-java-23-2-pia
+            docker run --pull=always --name cgn-java-23-2-pia --network capstones --ip 10.0.5.16 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} pia0912/capstone-project-pia:latest
             sleep 15s
-            sudo docker logs cgn-java-23-2-pia
+            docker logs cgn-java-23-2-pia
 
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
