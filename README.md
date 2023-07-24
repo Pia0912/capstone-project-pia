@@ -1,0 +1,4 @@
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=pia0912_capstone-project-pia-frontend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=pia0912_capstone-project-pia-frontend)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=pia0912_capstone-project-pia-frontend&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=pia0912_capstone-project-pia-frontend)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pia0912_capstone-project-pia-frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=pia0912_capstone-project-pia-frontend)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=pia0912_capstone-project-pia-frontend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=pia0912_capstone-project-pia-frontend)
