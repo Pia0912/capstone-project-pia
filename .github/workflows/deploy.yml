@@ -76,7 +76,7 @@ jobs:
         with:
           push: true
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
-          tags: pia0912/capstone-project-pia
+          tags: pia0912/capstone-project-pia:latest
           context: .
 
   deploy:
