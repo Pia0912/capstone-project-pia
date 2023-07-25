@@ -23,7 +23,7 @@ class IntegrationTest {
     @Test
     @DirtiesContext
     void expectHobbyList_whenGettingAllHobbies() throws Exception {
-        // Given
+        // GIVEN
         Hobby newHobby = new Hobby(null, "Gardening");
         hobbyRepo.save(newHobby);
 
@@ -36,7 +36,7 @@ class IntegrationTest {
                 ]
                 """.formatted(newHobby.getId());
 
-        // When & Then
+        // WHEN & THEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
