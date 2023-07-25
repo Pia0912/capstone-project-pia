@@ -20,15 +20,15 @@ export default function HobbyItem(props: Props) {
         setSelectedColor(event.target.value);
     };
 
-    const colors = ["", "lightblue", "lightgreen", "pink", "violet", "orange", "turquoise"];
+    const colors = [" ", "lightblue", "lightgreen", "pink", "violet", "orange", "turquoise"];
 
     return (
-        <div className="hobby-item" style={{ backgroundColor: selectedColor }}>
+        <div className="hobby-item" style={{backgroundColor: selectedColor}}>
             <h3>{props.hobby.name}</h3>
             <select value={selectedColor} onChange={handleColorChange}>
                 {colors.map((color) => (
                     <option key={color} value={color}>
-                        {color ? color : "Choose a color"}
+                        {color}
                     </option>
                 ))}
             </select>
