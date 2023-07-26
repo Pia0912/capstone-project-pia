@@ -2,6 +2,7 @@ import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 import {Hobby} from "../models";
 import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
 
@@ -9,6 +10,7 @@ type Props = {
     hobby: Hobby;
     colors: string[];
     onEditHobby: (hobbyId: string, newName: string) => void;
+    onDeleteHobby: (hobbyId: string) => void;
 };
 
 export default function HobbyItem(props: Props) {
@@ -39,8 +41,12 @@ export default function HobbyItem(props: Props) {
         setSelectedColor(event.target.value);
     };
 
+    const handleDeleteClick = () => {
+        props.onDeleteHobby(props.hobby.id);
+    };
+
     return (
-        <div className="div-item" style={{ backgroundColor: selectedColor}}>
+        <div className="div-item" style={{ backgroundColor: selectedColor }}>
             {isEditing ? (
                 <>
                     <input
@@ -48,7 +54,7 @@ export default function HobbyItem(props: Props) {
                         value={editedName}
                         onChange={handleInputChange}
                     />
-                    <StyledButton variant="outlined" onClick={handleSaveClick} >
+                    <StyledButton variant="outlined" onClick={handleSaveClick}>
                         Save
                     </StyledButton>
                 </>
@@ -56,13 +62,18 @@ export default function HobbyItem(props: Props) {
                 <>
                     <div className="div-edit">
                         <h3>{props.hobby.name}</h3>
-                        <StyledIconButton aria-label="edit hobby" onClick={handleEditClick} >
-                            <EditIcon fontSize="small" />
-                        </StyledIconButton>
+                        <div className="div-icons">
+                            <StyledIconButton aria-label="edit hobby" onClick={handleEditClick}>
+                                <EditIcon fontSize="small" />
+                            </StyledIconButton>
+                            <StyledIconButton aria-label="delete hobby" onClick={handleDeleteClick}>
+                                <DeleteIcon fontSize="small" />
+                            </StyledIconButton>
+                        </div>
                     </div>
                     <select value={selectedColor} onChange={handleColorChange}>
                         {props.colors.map((colors) => (
-                            <option key={colors} value={colors} >
+                            <option key={colors} value={colors}>
                                 {colors}
                             </option>
                         ))}
@@ -73,7 +84,6 @@ export default function HobbyItem(props: Props) {
     );
 }
 
-
 const StyledButton = styled(Button)`
   border-color: black;
   color: black;
@@ -83,5 +93,6 @@ const StyledIconButton = styled(IconButton)`
   padding: 0;
   width: 32px;
   height: 32px;
-  transform: translateY(-4px);
+  transform: translateY(-3rem);
+  margin-left: 4px;
 `;

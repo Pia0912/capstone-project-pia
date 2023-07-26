@@ -28,6 +28,7 @@ div {
     padding-bottom: 1rem;
     padding-top: 1rem;
 }
+
 .div-item {
     display: flex;
     align-items: center;
@@ -48,7 +49,7 @@ select {
 
 /* Form fieldset styles */
 fieldset {
-   border: 0;
+    border: 0;
 
 }
 
@@ -80,13 +81,21 @@ input {
 }
 
 .input-add {
-margin-top: 1rem;
+    margin-top: 1rem;
     width: 90%;
 }
 
 /* Edit button container styles */
 .div-edit {
     display: flex;
+    align-items: center;
+}
+
+.div-icons {
+    display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 15rem;
 }
