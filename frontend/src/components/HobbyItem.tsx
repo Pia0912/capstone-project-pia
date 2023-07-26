@@ -6,7 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
 
-
 type Props = {
     hobby: Hobby;
     colors: string[];
@@ -56,6 +55,7 @@ export default function HobbyItem(props: Props) {
     }
 
     return (
+        <>
             <div className="div-item" style={{ backgroundColor: selectedColor }}>
                 {isEditing ? (
                     <>
@@ -79,24 +79,6 @@ export default function HobbyItem(props: Props) {
                                 <StyledIconButton aria-label="delete hobby" onClick={handleClickOpen}>
                                     <DeleteIcon fontSize="small" />
                                 </StyledIconButton>
-                                <Dialog
-                                    open={open}
-                                    keepMounted
-                                    onClose={handleClose}
-                                    aria-describedby="alert-dialog-description"
-                                >
-                                    <DialogContent>
-                                        <DialogContentText id="alert-dialog-description">
-                                            Are you sure you want to delete your party?
-                                        </DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose}>No</Button>
-                                        <Button onClick={handleDeleteClick} color="error" variant="outlined">
-                                            Delete hobby
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
                             </div>
                         </div>
                         <select value={selectedColor} onChange={handleColorChange}>
@@ -109,6 +91,25 @@ export default function HobbyItem(props: Props) {
                     </>
                 )}
             </div>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-describedby="alert-dialog-description"
+                style={{ width: '70%', marginLeft: '40px'}}
+            >
+                <DialogContent >
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete your hobby?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>No</Button>
+                    <Button onClick={handleDeleteClick} color="error" variant="outlined">
+                        Delete hobby
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 }
 
