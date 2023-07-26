@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -41,4 +42,34 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }
+
+
+    @Test
+    void expectNewHobby_whenPostingHobby() throws Exception {
+        // Given
+        String newHobby = """
+            {
+                "name": "Gardening"
+            }
+        """;
+
+        String expected = """
+            [
+                {
+                    "name": "Gardening"
+                }
+            ]
+        """;
+
+        // When
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies")
+                        .content(newHobby)
+                        .contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expected));
+    }
+
+
+
 }

@@ -1,10 +1,9 @@
 package de.neuefische.capstone.pia.backend.controller;
 
 import de.neuefische.capstone.pia.backend.model.Hobby;
+import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +21,10 @@ public class HobbyController {
         return this.hobbyService.list();
     }
 
+    @PostMapping
+    public List<Hobby> addParty(@RequestBody HobbyWithoutID newHobby){
+        this.hobbyService.add(newHobby);
+        return this.hobbyService.list();
+    }
 }
 
