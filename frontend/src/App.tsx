@@ -12,8 +12,7 @@ export default function App() {
     const navigate = useNavigate();
     const colors = [' ', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
-    const {hobbies, handleAddHobby} = useHobbies()
-
+    const {hobbies, handleAddHobby, handleEditHobby} = useHobbies()
 
     return (
         <main>
@@ -30,7 +29,7 @@ export default function App() {
                             <Button variant="contained" disableElevation onClick={() => navigate('/add')} sx={{ ml: '75%', mr: '20%', mb: '2rem', fontSize: '25px' }}>
                                 +
                             </Button>
-                            <HobbyList hobbies={hobbies} colors={colors} />
+                            <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} />
                         </>
                     )}
                 />

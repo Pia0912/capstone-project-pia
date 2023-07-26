@@ -1,7 +1,9 @@
 package de.neuefische.capstone.pia.backend.controller;
 
 import de.neuefische.capstone.pia.backend.model.Hobby;
+import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import de.neuefische.capstone.pia.backend.service.HobbyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +25,9 @@ class IntegrationTest {
 
     @Autowired
     private HobbyRepo hobbyRepo;
+
+    @Autowired
+    private HobbyService hobbyService;
 
     @Test
     @DirtiesContext
@@ -66,4 +71,37 @@ class IntegrationTest {
                 .andExpect(jsonPath("$[0].id").isNotEmpty())
                 .andExpect(jsonPath("$[0].name").value("Gardening"));
     }
+
+    @Test
+    @DirtiesContext
+    void expectUpdatedParty_whenPuttingParty() throws Exception {
+        //Given
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        this.hobbyService.add(newHobby);
+        String id = hobbyService.list().get(0).getId();
+        String actual = """
+                   
+                        {
+                            "id": "%s",
+                            "name": "Cooking"
+                         }
+                    
+                """.formatted(id);
+        String expected = """
+                   
+                        {
+                            "id": "%s",
+                            "name": "Cooking"
+                         }
+                    
+                """.formatted(id);
+
+
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/" + id).content(actual).contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
+
