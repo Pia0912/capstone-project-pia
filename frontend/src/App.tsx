@@ -11,7 +11,7 @@ import styled from "@emotion/styled";
 export default function App() {
 
     const navigate = useNavigate();
-    const colors = [' ', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
+    const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
     const {hobbies, handleAddHobby, handleEditHobby} = useHobbies()
 

@@ -74,7 +74,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    void expectUpdatedParty_whenPuttingParty() throws Exception {
+    void expectUpdatedHobby_whenPuttingHobby() throws Exception {
         //Given
         HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
         this.hobbyService.add(newHobby);
