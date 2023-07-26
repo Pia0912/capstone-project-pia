@@ -37,7 +37,8 @@ export default function App() {
     }
 
     return (
-        <>
+        <main>
+            <Header />
             <Routes>
                 <Route
                     path="/add"
@@ -46,16 +47,15 @@ export default function App() {
                 <Route
                     path="/"
                     element={(
-                        <main>
-                            <Header />
+                        <>
                             <Button variant="contained" disableElevation onClick={() => navigate('/add')} sx={{ ml: '75%', mr: '20%', mb: '2rem', fontSize: '25px' }}>
                                 +
                             </Button>
                             <HobbyList hobbies={hobbies} colors={colors} />
-                        </main>
+                        </>
                     )}
                 />
             </Routes>
-        </>
+        </main>
     );
 }

@@ -1,5 +1,5 @@
-import {ChangeEvent, ChangeEventHandler, useEffect, useState} from 'react';
-import {Hobby} from '../models';
+import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
+import {Hobby} from "../models";
 
 type Props = {
     hobby: Hobby;
@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function HobbyItem(props: Props) {
-    const [selectedColor, setSelectedColor] = useState<string>(() => (localStorage.getItem(props.hobby.id) as string) || '');
+    const [selectedColor, setSelectedColor] = useState<string>(() => (localStorage.getItem(props.hobby.id) as string) || "");
 
     useEffect(() => {
         if (selectedColor !== null) {
