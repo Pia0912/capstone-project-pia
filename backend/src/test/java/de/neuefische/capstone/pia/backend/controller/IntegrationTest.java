@@ -12,6 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class IntegrationTest {
@@ -46,30 +49,21 @@ class IntegrationTest {
 
     @Test
     void expectNewHobby_whenPostingHobby() throws Exception {
-        // Given
-        String newHobby = """
-            {
-                "name": "Gardening"
-            }
-        """;
+        //WHEN
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/api/hobbies")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        {
+                                            "name": "Gardening"
+                                        }
+                                        """
+                                )
+                )
 
-        String expected = """
-            [
-                {
-                    "name": "Gardening"
-                }
-            ]
-        """;
-
-        // When
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies")
-                        .content(newHobby)
-                        .contentType(MediaType.APPLICATION_JSON))
-                // Then
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expected));
+                //THEN
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").isNotEmpty())
+                .andExpect(jsonPath("$[0].name").value("Gardening"));
     }
-
-
-
 }
