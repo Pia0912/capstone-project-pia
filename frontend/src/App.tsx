@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import AddForm from './components/AddForm';
 import useHobbies from "./hooks/useHobbies.ts";
+import styled from "@emotion/styled";
 
 
 export default function App() {
@@ -26,9 +27,9 @@ export default function App() {
                     path="/"
                     element={(
                         <>
-                            <Button variant="contained" disableElevation onClick={() => navigate('/add')} sx={{ ml: '75%', mr: '20%', mb: '2rem', fontSize: '25px', bgcolor: 'black'}}>
+                            <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')} >
                                 +
-                            </Button>
+                            </StyledButtonAdd>
                             <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} />
                         </>
                     )}
@@ -37,3 +38,9 @@ export default function App() {
         </main>
     );
 }
+
+const StyledButtonAdd = styled(Button)`
+  margin: 0 20% 2rem 75%;
+  background-color: black;
+  font-size: 25px;
+`;

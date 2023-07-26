@@ -3,6 +3,7 @@ import {Hobby} from "../models";
 import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
+import styled from "@emotion/styled";
 
 type Props = {
     hobby: Hobby;
@@ -39,7 +40,7 @@ export default function HobbyItem(props: Props) {
     };
 
     return (
-        <div style={{ backgroundColor: selectedColor, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="div-item" style={{ backgroundColor: selectedColor}}>
             {isEditing ? (
                 <>
                     <input
@@ -47,17 +48,17 @@ export default function HobbyItem(props: Props) {
                         value={editedName}
                         onChange={handleInputChange}
                     />
-                    <Button variant="outlined" onClick={handleSaveClick} sx={{borderColor: 'black', color: 'black'}}>
+                    <StyledButton variant="outlined" onClick={handleSaveClick} >
                         Save
-                    </Button>
+                    </StyledButton>
                 </>
             ) : (
                 <>
-                    <div className="edit">
+                    <div className="div-edit">
                         <h3>{props.hobby.name}</h3>
-                        <IconButton aria-label="edit hobby" onClick={handleEditClick} sx={{ p: 0, width: '32px', height: '32px', transform: 'translateY(-4px)' }}>
+                        <StyledIconButton aria-label="edit hobby" onClick={handleEditClick} >
                             <EditIcon fontSize="small" />
-                        </IconButton>
+                        </StyledIconButton>
                     </div>
                     <select value={selectedColor} onChange={handleColorChange}>
                         {props.colors.map((colors) => (
@@ -71,3 +72,16 @@ export default function HobbyItem(props: Props) {
         </div>
     );
 }
+
+
+const StyledButton = styled(Button)`
+  border-color: black;
+  color: black;
+`;
+
+const StyledIconButton = styled(IconButton)`
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  transform: translateY(-4px);
+`;

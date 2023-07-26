@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import Button from '@mui/material/Button';
 import {HobbyWithoutID} from '../models';
 import {Container} from '@mui/material';
+import styled from "@emotion/styled";
 
 type Props = {
     onAddHobby: (data: HobbyWithoutID) => void;
@@ -24,7 +25,7 @@ export default function AddForm(props: Props) {
     }
 
     return (
-        <Container>
+        <StyledContainer>
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Add new Hobby</legend>
@@ -36,15 +37,35 @@ export default function AddForm(props: Props) {
                         id="name"
                         type="text"
                         required
+                        className="input-add"
                     />
                 </fieldset>
-                <Button type="submit" variant="outlined" sx={{ mr: '1rem', width: '9rem', borderColor: 'black', color: 'black'}}>
+                <StyledButton type="submit" variant="outlined">
                     Submit
-                </Button>
+                </StyledButton>
             </form>
-            <Button variant="contained" disableElevation onClick={() => navigate('/')} sx={{ mr: '1rem', mt: '1rem', width: '9rem', bgcolor: 'black'}}>
+            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate('/')} >
                 Back to List
-            </Button>
-        </Container>
+            </StyledButtonBack>
+        </StyledContainer>
     );
 }
+
+const StyledContainer = styled(Container)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledButton = styled(Button)`
+  width: 9rem;
+  border-color: black;
+  color: black;
+`;
+
+const StyledButtonBack = styled(Button)`
+  margin-top: 1rem;
+  width: 9rem;
+  background-color: black;
+`;
+
