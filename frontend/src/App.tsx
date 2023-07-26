@@ -26,7 +26,7 @@ export default function App() {
                     path="/"
                     element={(
                         <>
-                            <Button variant="contained" disableElevation onClick={() => navigate('/add')} sx={{ ml: '75%', mr: '20%', mb: '2rem', fontSize: '25px' }}>
+                            <Button variant="contained" disableElevation onClick={() => navigate('/add')} sx={{ ml: '75%', mr: '20%', mb: '2rem', fontSize: '25px', bgcolor: 'black'}}>
                                 +
                             </Button>
                             <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} />

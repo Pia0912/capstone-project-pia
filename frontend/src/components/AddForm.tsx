@@ -27,7 +27,7 @@ export default function AddForm(props: Props) {
         <Container>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '28px' }}>Add new Hobby</legend>
+                    <legend>Add new Hobby</legend>
                     <label htmlFor="name">Name: </label>
                     <input
                         onChange={(event) => setName(event.target.value)}
@@ -36,14 +36,13 @@ export default function AddForm(props: Props) {
                         id="name"
                         type="text"
                         required
-                        style={{ marginLeft: '20px', marginRight: '20px' }}
                     />
                 </fieldset>
-                <Button type="submit" variant="outlined" sx={{ mr: '1rem', width: '9rem'}}>
+                <Button type="submit" variant="outlined" sx={{ mr: '1rem', width: '9rem', borderColor: 'black', color: 'black'}}>
                     Submit
                 </Button>
             </form>
-            <Button variant="contained" disableElevation onClick={() => navigate('/')} sx={{ mr: '1rem', mt: '1rem', width: '9rem'}}>
+            <Button variant="contained" disableElevation onClick={() => navigate('/')} sx={{ mr: '1rem', mt: '1rem', width: '9rem', bgcolor: 'black'}}>
                 Back to List
             </Button>
         </Container>

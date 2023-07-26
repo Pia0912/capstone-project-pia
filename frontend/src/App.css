@@ -1,18 +1,22 @@
-*{
+/* Global styles */
+* {
     font-family: "KG Blank Space Solid", sans-serif;
     overflow-wrap: break-word;
     margin: 0;
 }
 
+/* Main container styles */
 main {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-content: center;
+    align-items: center;
     margin: 0;
     gap: 0;
 }
 
+/* Individual hobby item container styles */
 div {
     font-size: 20px;
     text-align: center;
@@ -25,35 +29,55 @@ div {
     padding-top: 1rem;
 }
 
+/* Select dropdown styles */
 select {
     background: transparent;
     border: 1px solid;
     border-radius: 12px;
-    padding: 3px;
+    padding: 6px;
     margin-right: 7rem;
     margin-top: 1rem;
     width: auto;
     align-self: flex-end;
 }
 
+/* Form fieldset styles */
 fieldset {
     padding: 0;
     font-family: sans-serif;
     border: 0;
     margin-top: 5rem;
     margin-bottom: 5rem;
-    width: 100%;
+    width: 60%;
 }
 
-input{
-    background-color: transparent;
+/* Form fieldset legend styles */
+legend {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 28px;
+    width: 100%;
+    text-align: center;
+}
+
+label {
+    text-align: center;
+    align-self: center;
+}
+
+/* Form input styles */
+input {
+    background-color: black;
+    color: white;
     padding: 1rem;
     margin-bottom: 2rem;
-    border: 0;
+    border: 1px;
+    border-radius: 18px;
     text-align: center;
     font-size: 24px;
 }
 
+/* Edit button container styles */
 .edit {
     display: flex;
     flex-direction: row;

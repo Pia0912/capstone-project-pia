@@ -47,7 +47,7 @@ export default function HobbyItem(props: Props) {
                         value={editedName}
                         onChange={handleInputChange}
                     />
-                    <Button variant="outlined" onClick={handleSaveClick}>
+                    <Button variant="outlined" onClick={handleSaveClick} sx={{borderColor: 'black', color: 'black'}}>
                         Save
                     </Button>
                 </>
