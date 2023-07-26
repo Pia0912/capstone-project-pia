@@ -22,7 +22,7 @@ public class HobbyController {
     }
 
     @PostMapping
-    public List<Hobby> addParty(@RequestBody HobbyWithoutID newHobby){
+    public List<Hobby> addHobbby(@RequestBody HobbyWithoutID newHobby){
         this.hobbyService.add(newHobby);
         return this.hobbyService.list();
     }
