@@ -22,9 +22,13 @@ public class HobbyController {
     }
 
     @PostMapping
-    public List<Hobby> addHobbby(@RequestBody HobbyWithoutID newHobby){
+    public List<Hobby> addHobby(@RequestBody HobbyWithoutID newHobby){
         this.hobbyService.add(newHobby);
         return this.hobbyService.list();
     }
-}
 
+    @PutMapping("/{id}")
+    public Hobby update(@PathVariable String id,@RequestBody HobbyWithoutID updatedHobby) {
+        return hobbyService.edit(id, updatedHobby);
+    }
+}

@@ -28,4 +28,9 @@ public class HobbyService {
         Hobby party = new Hobby(id, newHobby.getName());
         return this.hobbyRepo.insert(party);
     }
+    public Hobby edit(String id, HobbyWithoutID hobby) {
+        Hobby editedHobby = new Hobby(id, hobby.getName());
+        return this.hobbyRepo.save(editedHobby);
+    }
+
 }

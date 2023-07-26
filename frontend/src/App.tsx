@@ -1,40 +1,19 @@
 import './App.css';
-import {useEffect, useState} from 'react';
-import axios from 'axios';
 import HobbyList from './components/HobbyList';
-import {Hobby, HobbyWithoutID} from './models';
 import Header from './components/Header';
 import Button from '@mui/material/Button';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import AddForm from './components/AddForm';
+import useHobbies from "./hooks/useHobbies.ts";
+import styled from "@emotion/styled";
 
 
 export default function App() {
-    const [hobbies, setHobbies] = useState<Hobby[]>([]);
-    const colors = [' ', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
     const navigate = useNavigate();
+    const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
-    useEffect(() => {
-        axios
-            .get('api/hobbies')
-            .then((response) => response.data)
-            .catch(console.error)
-            .then((data) => setHobbies(data));
-    }, []);
-
-    function handleAddHobby(data: HobbyWithoutID) {
-        axios
-            .post('api/hobbies', data)
-            .then((response) => response.data)
-            .catch((error) => {
-                console.error(error);
-            })
-            .then((data) => {
-                setHobbies(data);
-            });
-        navigate('/');
-    }
+    const {hobbies, handleAddHobby, handleEditHobby} = useHobbies()
 
     return (
         <main>
@@ -48,10 +27,10 @@ export default function App() {
                     path="/"
                     element={(
                         <>
-                            <Button variant="contained" disableElevation onClick={() => navigate('/add')} sx={{ ml: '75%', mr: '20%', mb: '2rem', fontSize: '25px' }}>
+                            <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')} >
                                 +
-                            </Button>
-                            <HobbyList hobbies={hobbies} colors={colors} />
+                            </StyledButtonAdd>
+                            <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} />
                         </>
                     )}
                 />
@@ -59,3 +38,9 @@ export default function App() {
         </main>
     );
 }
+
+const StyledButtonAdd = styled(Button)`
+  margin: 0 20% 2rem 75%;
+  background-color: black;
+  font-size: 25px;
+`;
