@@ -3,12 +3,13 @@ import HobbyItem from "./HobbyItem.tsx";
 
 
 type Props= {
-    hobbies: Hobby[]
+    hobbies: Hobby[];
+    colors: string[];
 }
 export default function HobbyList(props: Props) {
     return (
-        <ul>
-            {props.hobbies.map(hobby => <HobbyItem hobby={hobby} key={hobby.id}/>)}
-        </ul>
+        <main>
+            {props.hobbies.map(hobby => <HobbyItem hobby={hobby} key={hobby.id} colors={props.colors}/>)}
+        </main>
     );
 }

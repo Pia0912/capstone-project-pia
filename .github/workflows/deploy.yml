@@ -103,7 +103,7 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
-          #Set App Name (replace "example" with your ssh user name)
+          #Set App Name (replace "example" with your ssh username)
           url: http://cgn-java-23-2-pia.capstone-project.de
           max-attempts: 3
           retry-delay: 5s

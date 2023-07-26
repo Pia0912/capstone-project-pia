@@ -1,8 +1,9 @@
 import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
-import {Hobby} from "../models.ts";
+import {Hobby} from "../models";
 
 type Props = {
     hobby: Hobby;
+    colors: string[];
 };
 
 export default function HobbyItem(props: Props) {
@@ -14,21 +15,17 @@ export default function HobbyItem(props: Props) {
         }
     }, [props.hobby.id, selectedColor]);
 
-    const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (
-        event: ChangeEvent<HTMLSelectElement>
-    ) => {
+    const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (event: ChangeEvent<HTMLSelectElement>) => {
         setSelectedColor(event.target.value);
     };
 
-    const colors = [" ", "lightblue", "lightgreen", "pink", "violet", "orange", "turquoise"];
-
     return (
-        <div className="hobby-item" style={{backgroundColor: selectedColor}}>
+        <div style={{ backgroundColor: selectedColor }}>
             <h3>{props.hobby.name}</h3>
             <select value={selectedColor} onChange={handleColorChange}>
-                {colors.map((color) => (
-                    <option key={color} value={color}>
-                        {color}
+                {props.colors.map((colors) => (
+                    <option key={colors} value={colors} >
+                        {colors}
                     </option>
                 ))}
             </select>

@@ -1,6 +1,8 @@
 package de.neuefische.capstone.pia.backend.service;
 
 import de.neuefische.capstone.pia.backend.model.Hobby;
+import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
+import de.neuefische.capstone.pia.backend.model.UUIDService;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +12,20 @@ import java.util.List;
 public class HobbyService {
     private final HobbyRepo hobbyRepo;
 
-    public HobbyService(HobbyRepo hobbyRepo) {
+    private final UUIDService uuidService;
+
+    public HobbyService(HobbyRepo hobbyRepo, UUIDService uuidService) {
         this.hobbyRepo = hobbyRepo;
+        this.uuidService = uuidService;
     }
 
     public List<Hobby> list() {
         return this.hobbyRepo.findAll();
+    }
+
+    public Hobby add(HobbyWithoutID newHobby) {
+        String id = uuidService.getRandomId();
+        Hobby party = new Hobby(id, newHobby.getName());
+        return this.hobbyRepo.insert(party);
     }
 }
