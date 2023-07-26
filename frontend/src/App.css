@@ -33,6 +33,7 @@ div {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 150px;
 }
 
 /* Select dropdown styles */
@@ -98,4 +99,6 @@ input {
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 15rem;
+    padding: 0;
+    gap: 0;
 }

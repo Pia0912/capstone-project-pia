@@ -1,10 +1,11 @@
 import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 import {Hobby} from "../models";
-import Button from "@mui/material/Button";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
+
 
 type Props = {
     hobby: Hobby;
@@ -17,6 +18,7 @@ export default function HobbyItem(props: Props) {
     const [selectedColor, setSelectedColor] = useState<string>(() => (localStorage.getItem(props.hobby.id) as string) || "");
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(props.hobby.name);
+    const [open, setOpen] = useState(false);
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -45,42 +47,68 @@ export default function HobbyItem(props: Props) {
         props.onDeleteHobby(props.hobby.id);
     };
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     return (
-        <div className="div-item" style={{ backgroundColor: selectedColor }}>
-            {isEditing ? (
-                <>
-                    <input
-                        type="text"
-                        value={editedName}
-                        onChange={handleInputChange}
-                    />
-                    <StyledButton variant="outlined" onClick={handleSaveClick}>
-                        Save
-                    </StyledButton>
-                </>
-            ) : (
-                <>
-                    <div className="div-edit">
-                        <h3>{props.hobby.name}</h3>
-                        <div className="div-icons">
-                            <StyledIconButton aria-label="edit hobby" onClick={handleEditClick}>
-                                <EditIcon fontSize="small" />
-                            </StyledIconButton>
-                            <StyledIconButton aria-label="delete hobby" onClick={handleDeleteClick}>
-                                <DeleteIcon fontSize="small" />
-                            </StyledIconButton>
+            <div className="div-item" style={{ backgroundColor: selectedColor }}>
+                {isEditing ? (
+                    <>
+                        <input
+                            type="text"
+                            value={editedName}
+                            onChange={handleInputChange}
+                        />
+                        <StyledButton variant="outlined" onClick={handleSaveClick}>
+                            Save
+                        </StyledButton>
+                    </>
+                ) : (
+                    <>
+                        <div className="div-edit">
+                            <h3>{props.hobby.name}</h3>
+                            <div className="div-icons">
+                                <StyledIconButton aria-label="edit hobby" onClick={handleEditClick}>
+                                    <EditIcon fontSize="small" />
+                                </StyledIconButton>
+                                <StyledIconButton aria-label="delete hobby" onClick={handleClickOpen}>
+                                    <DeleteIcon fontSize="small" />
+                                </StyledIconButton>
+                                <Dialog
+                                    open={open}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-description">
+                                            Are you sure you want to delete your party?
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose}>No</Button>
+                                        <Button onClick={handleDeleteClick} color="error" variant="outlined">
+                                            Delete hobby
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </div>
                         </div>
-                    </div>
-                    <select value={selectedColor} onChange={handleColorChange}>
-                        {props.colors.map((colors) => (
-                            <option key={colors} value={colors}>
-                                {colors}
-                            </option>
-                        ))}
-                    </select>
-                </>
-            )}
-        </div>
+                        <select value={selectedColor} onChange={handleColorChange}>
+                            {props.colors.map((colors) => (
+                                <option key={colors} value={colors}>
+                                    {colors}
+                                </option>
+                            ))}
+                        </select>
+                    </>
+                )}
+            </div>
     );
 }
 

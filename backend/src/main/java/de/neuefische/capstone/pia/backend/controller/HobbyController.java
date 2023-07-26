@@ -31,4 +31,9 @@ public class HobbyController {
     public Hobby update(@PathVariable String id,@RequestBody HobbyWithoutID updatedHobby) {
         return hobbyService.edit(id, updatedHobby);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        hobbyService.delete(id);
+    }
 }

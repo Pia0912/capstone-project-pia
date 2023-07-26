@@ -48,5 +48,12 @@ export default function useHobbies(){
         navigate(`/`);
     }
 
-    return { hobbies, handleAddHobby, handleEditHobby };
+    function handleDeleteHobby(id: string) {
+        axios.delete(`/api/hobbies/${id}`)
+            .catch(console.error);
+        setHobbies(hobbies.filter(hobby => hobby.id !== id))
+        navigate("/")
+    }
+
+    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby };
 }
