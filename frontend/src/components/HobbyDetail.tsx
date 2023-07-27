@@ -1,4 +1,3 @@
-// HobbyDetail.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -7,17 +6,18 @@ import { Activity, Hobby } from "../models.ts";
 
 export default function HobbyDetail() {
     const [hobby, setHobby] = useState<Hobby | null>(null);
-    const [activities, setActivities] = useState<Activity[]>([]);
-
+    const [activities, setActivities] = useState<Activity[] | null>(null);
     const params = useParams();
 
     useEffect(() => {
-        axios.get(`/api/hobbies/${params.id}`)
-            .then(response => {
+        axios
+            .get(`/api/hobbies/${params.id}`)
+            .then((response) => {
                 const hobbyData = response.data;
                 setHobby(hobbyData);
-                axios.get(`/api/hobbies/${hobbyData.id}/activities`)
-                    .then(activitiesResponse => setActivities(activitiesResponse.data))
+                axios
+                    .get(`/api/hobbies/${hobbyData.id}/activities`)
+                    .then((activitiesResponse) => setActivities(activitiesResponse.data))
                     .catch(console.error);
             })
             .catch(console.error);
@@ -27,12 +27,22 @@ export default function HobbyDetail() {
         return <>No Hobby</>;
     }
 
+    const loadActivities = () => {
+        if (activities === null) {
+            return <>Loading...</>;
+        } else if (activities.length === 0) {
+            return <>No Activities found for this Hobby</>;
+        } else {
+            return activities.map((activity) => (
+                <ActivityItem activity={activity} key={activity.id} />
+            ));
+        }
+    };
+
     return (
         <>
             <div>{hobby.name}</div>
-            <main>
-                {activities.map(activity => <ActivityItem activity={activity} key={activity.id} />)}
-            </main>
+            <main>{loadActivities()}</main>
         </>
     );
 }

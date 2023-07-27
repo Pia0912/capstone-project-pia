@@ -1,5 +1,6 @@
 package de.neuefische.capstone.pia.backend.service;
 
+import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.model.UUIDService;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class HobbyService {
@@ -39,7 +39,7 @@ public class HobbyService {
     }
 
     public Hobby getDetails(String id) {
-        return this.hobbyRepo.findById(id).orElseThrow(() -> new NoSuchElementException(id));
+        return this.hobbyRepo.findById(id).orElseThrow(() -> new NoSuchActivityException(id));
     }
 
 }
