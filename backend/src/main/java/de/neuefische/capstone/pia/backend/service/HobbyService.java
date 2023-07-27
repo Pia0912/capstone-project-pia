@@ -32,5 +32,8 @@ public class HobbyService {
         Hobby editedHobby = new Hobby(id, hobby.getName());
         return this.hobbyRepo.save(editedHobby);
     }
+    public void delete(String id) {
+        this.hobbyRepo.deleteById(id);
+    }
 
 }

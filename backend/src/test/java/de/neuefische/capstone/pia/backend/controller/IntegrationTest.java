@@ -46,36 +46,28 @@ class IntegrationTest {
                 """.formatted(newHobby.getId());
 
         // WHEN & THEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expected));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().json(expected));
     }
 
 
     @Test
+    @DirtiesContext
     void expectNewHobby_whenPostingHobby() throws Exception {
         //WHEN
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/hobbies")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                        {
-                                            "name": "Gardening"
-                                        }
-                                        """
-                                )
-                )
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies").contentType(MediaType.APPLICATION_JSON).content("""
+                        {
+                            "name": "Gardening"
+                        }
+                        """))
 
                 //THEN
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").isNotEmpty())
-                .andExpect(jsonPath("$[0].name").value("Gardening"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].id").isNotEmpty()).andExpect(jsonPath("$[0].name").value("Gardening"));
     }
 
     @Test
     @DirtiesContext
     void expectUpdatedHobby_whenPuttingHobby() throws Exception {
-        //Given
+        //GIVEN
         HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
         this.hobbyService.add(newHobby);
         String id = hobbyService.list().get(0).getId();
@@ -99,6 +91,25 @@ class IntegrationTest {
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/" + id).content(actual).contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    void expectNoHobby_whenDeletingHobby() throws Exception {
+        //GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("DIY");
+        this.hobbyService.add(newHobby);
+        String id = hobbyService.list().get(0).getId();
+        String expected = """
+                  []
+                """;
+
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/" + id)).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
 
                 //THEN
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());

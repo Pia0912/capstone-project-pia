@@ -51,6 +51,16 @@ class HobbyServiceTest {
         verify(uuidService).getRandomId();
         verify(hobbyRepo).insert(any(Hobby.class));
     }
+
+    @Test
+    void expectDeleteMethodToBeCalled_whenDeletingHobby() {
+        //GIVEN
+        String id = "abc";
+        //WHEN
+        hobbyService.delete(id);
+        //THEN
+        verify(hobbyRepo).deleteById(id);
+    }
 }
 
 

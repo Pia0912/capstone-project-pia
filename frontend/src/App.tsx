@@ -1,9 +1,9 @@
-import './App.css';
-import HobbyList from './components/HobbyList';
-import Header from './components/Header';
-import Button from '@mui/material/Button';
-import {Route, Routes, useNavigate} from 'react-router-dom';
-import AddForm from './components/AddForm';
+import "./App.css";
+import HobbyList from "./components/HobbyList";
+import Header from "./components/Header";
+import Button from "@mui/material/Button";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import AddForm from "./components/AddForm";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
 
@@ -13,7 +13,7 @@ export default function App() {
     const navigate = useNavigate();
     const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
-    const {hobbies, handleAddHobby, handleEditHobby} = useHobbies()
+    const {hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby } = useHobbies()
 
     return (
         <main>
@@ -30,7 +30,7 @@ export default function App() {
                             <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')} >
                                 +
                             </StyledButtonAdd>
-                            <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} />
+                            <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} onDeleteHobby={handleDeleteHobby}/>
                         </>
                     )}
                 />
