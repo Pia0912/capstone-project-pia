@@ -116,5 +116,56 @@ class IntegrationTest {
                 //THEN
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    @Test
+    @DirtiesContext
+    void expectHobbyById_whenGetHobbyById() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = this.hobbyService.add(newHobby);
+        String id = addedHobby.getId();
+
+        String expectedResponse = """
+                    {
+                        "id": "%s",
+                        "name": "Gardening",
+                        "activities": []
+                    }
+                """.formatted(id);
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{id}", id))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().json(expectedResponse));
+    }
+
+    @Test
+    @DirtiesContext
+    void expectEmptyActivitiesList_whenListActivitiesWithNoActivities() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = this.hobbyService.add(newHobby);
+        String hobbyId = addedHobby.getId();
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+    }
+
+    @Test
+    @DirtiesContext
+    void expect404_whenGettingNonExistentActivity() throws Exception {
+        // GIVEN
+        String nonExistentActivityId = "abc";
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/activities/" + nonExistentActivityId))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 }
 

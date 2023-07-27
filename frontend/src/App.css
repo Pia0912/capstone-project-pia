@@ -35,6 +35,14 @@ div {
 
 }
 
+.div-header {
+    display: flex;
+    align-items: center;
+    height: auto;
+    width: 100%;
+
+}
+
 select {
     background: transparent;
     border: 1px solid;
@@ -96,3 +104,46 @@ input {
     padding: 0;
     gap: 0;
 }
+
+.pokemon-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.activity-card-container {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: calc(45% - 12px);
+}
+
+.activity-header {
+    display: flex;
+    padding: 10px;
+    width: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.activity-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.activity-date {
+    font-size: 15px;
+    color: #666;
+    margin: 0;
+}
+
+.activity-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+

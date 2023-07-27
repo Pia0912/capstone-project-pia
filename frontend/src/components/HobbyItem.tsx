@@ -92,7 +92,9 @@ export default function HobbyItem(props: Props) {
                                 </StyledIconButton>
                                 <StyledIconButton
                                     aria-label="show activities"
-                                    onClick={() => navigate(`/${props.hobby.id}/activities`)}
+                                    onClick={() =>
+                                        navigate(`/${props.hobby.id}/activities`, { state: { selectedColor } })
+                                    }
                                 >
                                     <InfoIcon fontSize="small" />
                                 </StyledIconButton>
