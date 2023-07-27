@@ -53,6 +53,7 @@ class IntegrationTest {
 
 
     @Test
+    @DirtiesContext
     void expectNewHobby_whenPostingHobby() throws Exception {
         //WHEN
         mockMvc.perform(

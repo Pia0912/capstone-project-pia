@@ -1,10 +1,11 @@
 import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 import {Hobby} from "../models";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
+
 
 type Props = {
     hobby: Hobby;
@@ -73,10 +74,16 @@ export default function HobbyItem(props: Props) {
                         <div className="div-edit">
                             <h3>{props.hobby.name}</h3>
                             <div className="div-icons">
-                                <StyledIconButton aria-label="edit hobby" onClick={handleEditClick}>
+                                <StyledIconButton
+                                    aria-label="edit hobby"
+                                    onClick={handleEditClick}
+                                >
                                     <EditIcon fontSize="small" />
                                 </StyledIconButton>
-                                <StyledIconButton aria-label="delete hobby" onClick={handleClickOpen}>
+                                <StyledIconButton
+                                    aria-label="delete hobby"
+                                    onClick={handleClickOpen}
+                                >
                                     <DeleteIcon fontSize="small" />
                                 </StyledIconButton>
                             </div>
@@ -93,21 +100,26 @@ export default function HobbyItem(props: Props) {
             </div>
             <Dialog
                 open={open}
+                keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-description"
-                style={{ width: '70%', marginLeft: '40px'}}
             >
-                <DialogContent >
+                <DialogTitle>{"You want to delete your Hobby?"}</DialogTitle>
+                <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete your hobby?
+                        ... are you sure?
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>No</Button>
-                    <Button onClick={handleDeleteClick} color="error" variant="outlined">
-                        Delete hobby
-                    </Button>
-                </DialogActions>
+                    <DialogActions>
+                        <Button onClick={handleClose}>No</Button>
+                        <Button
+                            onClick={handleDeleteClick}
+                            color="error"
+                            variant="outlined"
+                        >
+                            Delete hobby
+                        </Button>
+                    </DialogActions>
             </Dialog>
         </>
     );
