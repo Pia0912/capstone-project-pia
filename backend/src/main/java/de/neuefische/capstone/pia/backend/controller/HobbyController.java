@@ -36,4 +36,9 @@ public class HobbyController {
     public void delete(@PathVariable String id) {
         hobbyService.delete(id);
     }
+
+    @GetMapping("/{id}")
+    public Hobby getHobbyById(@PathVariable String id) {
+        return this.hobbyService.getDetails(id);
+    }
 }

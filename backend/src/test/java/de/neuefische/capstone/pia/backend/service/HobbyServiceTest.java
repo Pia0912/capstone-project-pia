@@ -21,7 +21,7 @@ class HobbyServiceTest {
     @Test
     void expectListOfAllParties_whenGettingTheList() {
         //GIVEN
-        Hobby newHobby = new Hobby(null, "Gardening");
+        Hobby newHobby = new Hobby(null, "Gardening", new ArrayList<>());
         List<Hobby> expected = new ArrayList<>(List.of(newHobby));
 
         //WHEN
@@ -38,7 +38,7 @@ class HobbyServiceTest {
     void expectId_whenAddedHobby() {
         // GIVEN
         HobbyWithoutID newHobby = new HobbyWithoutID("gardening");
-        Hobby expected = new Hobby("abc", "gardening");
+        Hobby expected = new Hobby("abc", "gardening", new ArrayList<>());
 
         // WHEN
         when(uuidService.getRandomId()).thenReturn("abc");

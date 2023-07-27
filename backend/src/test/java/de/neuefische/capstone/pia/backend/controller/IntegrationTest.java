@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -33,7 +35,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectHobbyList_whenGettingAllHobbies() throws Exception {
         // GIVEN
-        Hobby newHobby = new Hobby(null, "Gardening");
+        Hobby newHobby = new Hobby(null, "Gardening", new ArrayList<>());
         hobbyRepo.save(newHobby);
 
         String expected = """
