@@ -6,6 +6,7 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import AddForm from "./components/AddForm";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
+import HobbyDetail from "./components/HobbyDetail.tsx";
 
 
 export default function App() {
@@ -19,10 +20,8 @@ export default function App() {
         <main>
             <Header />
             <Routes>
-                <Route
-                    path="/add"
-                    element={<AddForm onAddHobby={handleAddHobby} />}
-                />
+            <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} />} />
+                <Route path="/:id/activities" element={<HobbyDetail/>}/>
                 <Route
                     path="/"
                     element={(

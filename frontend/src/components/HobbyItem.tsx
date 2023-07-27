@@ -5,6 +5,9 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
+import InfoIcon from '@mui/icons-material/Info';
+import {useNavigate} from "react-router-dom";
+
 
 
 type Props = {
@@ -20,6 +23,7 @@ export default function HobbyItem(props: Props) {
     const [editedName, setEditedName] = useState(props.hobby.name);
     const [open, setOpen] = useState(false);
 
+    const navigate = useNavigate();
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -85,6 +89,12 @@ export default function HobbyItem(props: Props) {
                                     onClick={handleClickOpen}
                                 >
                                     <DeleteIcon fontSize="small" />
+                                </StyledIconButton>
+                                <StyledIconButton
+                                    aria-label="show activities"
+                                    onClick={() => navigate(`/${props.hobby.id}/activities`)}
+                                >
+                                    <InfoIcon fontSize="small" />
                                 </StyledIconButton>
                             </div>
                         </div>
