@@ -1,6 +1,5 @@
 package de.neuefische.capstone.pia.backend.service;
 
-import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.model.UUIDService;
@@ -9,10 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class HobbyServiceTest {
@@ -24,7 +21,7 @@ class HobbyServiceTest {
     @Test
     void expectListOfAllParties_whenGettingTheList() {
         //GIVEN
-        Hobby newHobby = new Hobby(null, "Gardening", new ArrayList<>());
+        Hobby newHobby = new Hobby(null, "Gardening");
         List<Hobby> expected = new ArrayList<>(List.of(newHobby));
 
         //WHEN
@@ -40,14 +37,14 @@ class HobbyServiceTest {
     @Test
     void expectId_whenAddedHobby() {
         // GIVEN
-        HobbyWithoutID newHobbyNoId = new HobbyWithoutID("gardening");
-        Hobby expected = new Hobby("abc", "gardening", new ArrayList<>());
+        HobbyWithoutID newHobby = new HobbyWithoutID("gardening");
+        Hobby expected = new Hobby("abc", "gardening");
 
         // WHEN
         when(uuidService.getRandomId()).thenReturn("abc");
         when(hobbyRepo.insert(any(Hobby.class))).thenReturn(expected);
 
-        Hobby actual = hobbyService.add(newHobbyNoId);
+        Hobby actual = hobbyService.add(newHobby);
 
         // THEN
         assertEquals(expected, actual);
@@ -64,32 +61,6 @@ class HobbyServiceTest {
         //THEN
         verify(hobbyRepo).deleteById(id);
     }
-
-    @Test
-    void getDetails_ExistingHobby_ShouldReturnHobby() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", null);
-
-        HobbyRepo hobbyRepo = mock(HobbyRepo.class);
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-
-        HobbyService hobbyService = new HobbyService(hobbyRepo, null);
-
-        // WHEN
-        Hobby result = hobbyService.getDetails(hobbyId);
-
-        // THEN
-        assertEquals(existingHobby, result);
-    }
-    @Test
-    void expectNoSuchActivityException_whenActivityNotFound() {
-        // GIVEN
-        String nonExistentActivityId = "abc";
-        when(hobbyRepo.findById(nonExistentActivityId)).thenReturn(Optional.empty());
-
-        // WHEN & THEN
-        assertThrows(NoSuchActivityException.class, () -> hobbyService.getDetails(nonExistentActivityId));
-    }
-
 }
+
+

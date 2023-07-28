@@ -1,13 +1,10 @@
 import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 import {Hobby} from "../models";
-import {Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
-import InfoIcon from '@mui/icons-material/Info';
-import {useNavigate} from "react-router-dom";
-
 
 
 type Props = {
@@ -23,17 +20,12 @@ export default function HobbyItem(props: Props) {
     const [editedName, setEditedName] = useState(props.hobby.name);
     const [open, setOpen] = useState(false);
 
-    const navigate = useNavigate();
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
     const handleSaveClick = () => {
         props.onEditHobby(props.hobby.id, editedName);
-        setIsEditing(false);
-    };
-
-    const handleEditBack = () => {
         setIsEditing(false);
     };
 
@@ -73,14 +65,9 @@ export default function HobbyItem(props: Props) {
                             value={editedName}
                             onChange={handleInputChange}
                         />
-                        <DivContainer>
-                        <StyledButtonBack variant="outlined" onClick={handleEditBack}>
-                            Back
-                        </StyledButtonBack>
                         <StyledButton variant="outlined" onClick={handleSaveClick}>
                             Save
                         </StyledButton>
-                        </DivContainer>
                     </>
                 ) : (
                     <>
@@ -98,14 +85,6 @@ export default function HobbyItem(props: Props) {
                                     onClick={handleClickOpen}
                                 >
                                     <DeleteIcon fontSize="small" />
-                                </StyledIconButton>
-                                <StyledIconButton
-                                    aria-label="show activities"
-                                    onClick={() =>
-                                        navigate(`/${props.hobby.id}/activities`, { state: { selectedColor } })
-                                    }
-                                >
-                                    <InfoIcon fontSize="small" />
                                 </StyledIconButton>
                             </div>
                         </div>
@@ -146,24 +125,9 @@ export default function HobbyItem(props: Props) {
     );
 }
 
-const DivContainer = styled(Container)`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
 const StyledButton = styled(Button)`
   border-color: black;
   color: black;
-  margin: 3px;
-  width: 5rem;
-`;
-
-const StyledButtonBack = styled(Button)`
-  margin: 3px;
-  width: 5rem;
-  background-color: black;
-  color: white;
 `;
 
 const StyledIconButton = styled(IconButton)`

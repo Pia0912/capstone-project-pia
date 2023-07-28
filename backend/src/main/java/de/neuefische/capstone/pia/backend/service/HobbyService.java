@@ -1,13 +1,11 @@
 package de.neuefische.capstone.pia.backend.service;
 
-import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.model.UUIDService;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,20 +25,15 @@ public class HobbyService {
 
     public Hobby add(HobbyWithoutID newHobby) {
         String id = uuidService.getRandomId();
-        Hobby party = new Hobby(id, newHobby.getName(), new ArrayList<>());
+        Hobby party = new Hobby(id, newHobby.getName());
         return this.hobbyRepo.insert(party);
     }
-    public Hobby edit(String id, HobbyWithoutID hobbyNoID) {
-        Hobby hobby = this.hobbyRepo.findById(id)
-                .orElseThrow(() -> new NoSuchActivityException(id));
-        Hobby editedHobby = new Hobby(hobby.getId(), hobbyNoID.getName(), new ArrayList<>());
+    public Hobby edit(String id, HobbyWithoutID hobby) {
+        Hobby editedHobby = new Hobby(id, hobby.getName());
         return this.hobbyRepo.save(editedHobby);
     }
     public void delete(String id) {
         this.hobbyRepo.deleteById(id);
     }
 
-    public Hobby getDetails(String id) {
-        return this.hobbyRepo.findById(id).orElseThrow(() -> new NoSuchActivityException(id));
-    }
 }
