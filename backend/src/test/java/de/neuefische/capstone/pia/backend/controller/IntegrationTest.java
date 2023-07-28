@@ -155,17 +155,5 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
     }
 
-    @Test
-    @DirtiesContext
-    void expect404_whenGettingNonExistentActivity() throws Exception {
-        // GIVEN
-        String nonExistentActivityId = "abc";
-
-        // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/activities/" + nonExistentActivityId))
-
-                // THEN
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
 }
 

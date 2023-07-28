@@ -1,6 +1,6 @@
 import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 import {Hobby} from "../models";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -30,6 +30,10 @@ export default function HobbyItem(props: Props) {
 
     const handleSaveClick = () => {
         props.onEditHobby(props.hobby.id, editedName);
+        setIsEditing(false);
+    };
+
+    const handleEditBack = () => {
         setIsEditing(false);
     };
 
@@ -69,9 +73,14 @@ export default function HobbyItem(props: Props) {
                             value={editedName}
                             onChange={handleInputChange}
                         />
+                        <DivContainer>
+                        <StyledButtonBack variant="outlined" onClick={handleEditBack}>
+                            Back
+                        </StyledButtonBack>
                         <StyledButton variant="outlined" onClick={handleSaveClick}>
                             Save
                         </StyledButton>
+                        </DivContainer>
                     </>
                 ) : (
                     <>
@@ -137,9 +146,24 @@ export default function HobbyItem(props: Props) {
     );
 }
 
+const DivContainer = styled(Container)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 const StyledButton = styled(Button)`
   border-color: black;
   color: black;
+  margin: 3px;
+  width: 5rem;
+`;
+
+const StyledButtonBack = styled(Button)`
+  margin: 3px;
+  width: 5rem;
+  background-color: black;
+  color: white;
 `;
 
 const StyledIconButton = styled(IconButton)`

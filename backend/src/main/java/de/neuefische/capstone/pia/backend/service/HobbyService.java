@@ -30,8 +30,10 @@ public class HobbyService {
         Hobby party = new Hobby(id, newHobby.getName(), new ArrayList<>());
         return this.hobbyRepo.insert(party);
     }
-    public Hobby edit(String id, HobbyWithoutID hobby) {
-        Hobby editedHobby = new Hobby(id, hobby.getName(), new ArrayList<>());
+    public Hobby edit(String id, HobbyWithoutID hobbyNoID) {
+        Hobby hobby = this.hobbyRepo.findById(id)
+                .orElseThrow(() -> new NoSuchActivityException(id));
+        Hobby editedHobby = new Hobby(hobby.getId(), hobbyNoID.getName(), new ArrayList<>());
         return this.hobbyRepo.save(editedHobby);
     }
     public void delete(String id) {

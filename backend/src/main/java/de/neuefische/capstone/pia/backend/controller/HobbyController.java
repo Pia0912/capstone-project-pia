@@ -1,11 +1,9 @@
 package de.neuefische.capstone.pia.backend.controller;
 
-import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.model.Activity;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,14 +39,10 @@ public class HobbyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hobby> getHobbyById(@PathVariable String id) {
-        try {
-            Hobby hobby = this.hobbyService.getDetails(id);
-            return ResponseEntity.ok(hobby);
-        } catch (NoSuchActivityException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public Hobby getHobbyById(@PathVariable String id) {
+        return this.hobbyService.getDetails(id);
     }
+
 
     @GetMapping("/{hobbyId}/activities")
     public List<Activity> listActivities(@PathVariable String hobbyId) {
