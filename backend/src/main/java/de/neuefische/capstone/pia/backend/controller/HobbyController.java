@@ -1,6 +1,5 @@
 package de.neuefische.capstone.pia.backend.controller;
 
-import de.neuefische.capstone.pia.backend.model.Activity;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
@@ -37,17 +36,4 @@ public class HobbyController {
     public void delete(@PathVariable String id) {
         hobbyService.delete(id);
     }
-
-    @GetMapping("/{id}")
-    public Hobby getHobbyById(@PathVariable String id) {
-        return this.hobbyService.getDetails(id);
-    }
-
-
-    @GetMapping("/{hobbyId}/activities")
-    public List<Activity> listActivities(@PathVariable String hobbyId) {
-        Hobby hobby = hobbyService.getDetails(hobbyId);
-        return hobby.getActivities();
-    }
-
 }
