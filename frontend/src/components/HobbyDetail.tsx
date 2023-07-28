@@ -1,56 +1,43 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ActivityItem from "./ActivityItem";
-import {Activity, Hobby} from "../models.ts";
-import {Button, Grid} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import styled from "@emotion/styled";
+import useActivities from "../hooks/useActivities.ts";
+import { Activity } from "../models.ts";
 
 export default function HobbyDetail() {
-    const [hobby, setHobby] = useState<Hobby | null>(null);
-    const [activities, setActivities] = useState<Activity[] | null>(null);
-    const params = useParams();
     const navigate = useNavigate();
-
     const location = useLocation();
     const selectedColor = location.state?.selectedColor || "#f2f2f2";
 
-    useEffect(() => {
-        axios
-            .get(`/api/hobbies/${params.id}`)
-            .then((response) => {
-                const hobbyData = response.data;
-                setHobby(hobbyData);
-                axios
-                    .get(`/api/hobbies/${hobbyData.id}/activities`)
-                    .then((activitiesResponse) => setActivities(activitiesResponse.data))
-                    .catch(console.error);
-            })
-            .catch(console.error);
-    }, [params.id]);
+    const activitiesResult = useActivities();
 
-    if (!hobby) {
-        return <>No Hobby</>;
+    if (activitiesResult === "loading") {
+        return <>Loading...</>;
+    } else if (activitiesResult === "no hobby") {
+        return <div>No Hobby</div>;
     }
 
+    const { hobby, activities } = activitiesResult;
+
+    if (activities === undefined) {
+        return <>Activities data is undefined</>;
+    }
     const loadActivities = () => {
         if (activities === null) {
             return <>Loading...</>;
         } else if (activities.length === 0) {
             return <div className="div-header">Please add some activities</div>;
         } else {
-            return activities.map((activity) => (
-
-                    <ActivityItem key={activity.id} activity={activity}/>
-
+            return activities.map((activity: Activity) => (
+                <ActivityItem key={activity.id} activity={activity} />
             ));
         }
     };
 
-
     return (
         <>
-            <div className="div-header" style={{backgroundColor: selectedColor}}>
+            <div className="div-header" style={{ backgroundColor: selectedColor }}>
                 {hobby.name}
             </div>
             <Grid container spacing={2}>
