@@ -41,5 +41,4 @@ public class HobbyService {
     public Hobby getDetails(String id) {
         return this.hobbyRepo.findById(id).orElseThrow(() -> new NoSuchActivityException(id));
     }
-
 }
