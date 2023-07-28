@@ -31,3 +31,4 @@ export default function useActivities() {
 
     return { hobby, activities };
 }
+

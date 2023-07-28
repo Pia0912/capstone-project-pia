@@ -8,7 +8,7 @@ import { Activity } from "../models.ts";
 export default function HobbyDetail() {
     const navigate = useNavigate();
     const location = useLocation();
-    const selectedColor = location.state?.selectedColor || "#f2f2f2";
+    const selectedColor = location.state?.selectedColor || "#f2f2f1";
 
     const activitiesResult = useActivities();
 
