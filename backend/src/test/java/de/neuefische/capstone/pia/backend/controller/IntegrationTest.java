@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -33,7 +35,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectHobbyList_whenGettingAllHobbies() throws Exception {
         // GIVEN
-        Hobby newHobby = new Hobby(null, "Gardening");
+        Hobby newHobby = new Hobby(null, "Gardening", new ArrayList<>());
         hobbyRepo.save(newHobby);
 
         String expected = """
@@ -114,5 +116,44 @@ class IntegrationTest {
                 //THEN
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    @Test
+    @DirtiesContext
+    void expectHobbyById_whenGetHobbyById() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = this.hobbyService.add(newHobby);
+        String id = addedHobby.getId();
+
+        String expectedResponse = """
+                    {
+                        "id": "%s",
+                        "name": "Gardening",
+                        "activities": []
+                    }
+                """.formatted(id);
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{id}", id))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().json(expectedResponse));
+    }
+
+    @Test
+    @DirtiesContext
+    void expectEmptyActivitiesList_whenListActivitiesWithNoActivities() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = this.hobbyService.add(newHobby);
+        String hobbyId = addedHobby.getId();
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+    }
+
 }
 
