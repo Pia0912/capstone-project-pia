@@ -22,6 +22,7 @@ export default function App() {
             <Routes>
             <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} />} />
                 <Route path="/:id/activities" element={<HobbyDetail/>}/>
+                <Route path="/:id" element={<HobbyDetail/>} />
                 <Route
                     path="/"
                     element={(
