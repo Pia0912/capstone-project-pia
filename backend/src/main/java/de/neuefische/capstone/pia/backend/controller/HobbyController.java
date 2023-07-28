@@ -49,5 +49,4 @@ public class HobbyController {
         Hobby hobby = hobbyService.getHobbyById(hobbyId);
         return hobby.getActivities();
     }
-
 }
