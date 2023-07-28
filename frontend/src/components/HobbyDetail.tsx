@@ -37,7 +37,7 @@ export default function HobbyDetail() {
         if (activities === null) {
             return <>Loading...</>;
         } else if (activities.length === 0) {
-            return <>No Activities found for this Hobby</>;
+            return <div className="div-header">Please add some activities</div>;
         } else {
             return activities.map((activity) => (
 
