@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,19 @@ class HobbyServiceTest {
     HobbyRepo hobbyRepo = mock(HobbyRepo.class);
     UUIDService uuidService = mock(UUIDService.class);
     HobbyService hobbyService = new HobbyService(hobbyRepo, uuidService);
+
+    @Test
+    void expectEmptyList_whenNoHobbiesExist() {
+        // GIVEN
+        when(hobbyRepo.findAll()).thenReturn(Collections.emptyList());
+
+        // WHEN
+        List<Hobby> actual = hobbyService.getHobbies();
+
+        // THEN
+        assertEquals(Collections.emptyList(), actual);
+        verify(hobbyRepo).findAll();
+    }
 
     @Test
     void expectListOfAllParties_whenGettingTheList() {
@@ -112,7 +126,7 @@ class HobbyServiceTest {
         verify(hobbyRepo).findById(hobbyId);
         verify(hobbyRepo).save(existingHobby);
 
-        // Check if the activity was added to the hobby
+        // ALSO
         List<Activity> expectedActivities = new ArrayList<>();
         expectedActivities.add(newActivity);
         assertEquals(expectedActivities, existingHobby.getActivities());
