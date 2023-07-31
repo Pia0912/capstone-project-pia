@@ -1,6 +1,6 @@
 package de.neuefische.capstone.pia.backend.service;
 
-import de.neuefische.capstone.pia.backend.model.Activity;
+import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.ActivityRepo;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +18,5 @@ public class ActivityService {
     public List<Activity> getActivities() {
         return activityRepo.findAll();
     }
+
 }

@@ -44,9 +44,15 @@ public class HobbyController {
     }
 
 
-    @GetMapping("/{hobbyId}/activities")
-    public List<Activity> getHobbyByIdListActivities(@PathVariable String hobbyId) {
-        Hobby hobby = hobbyService.getHobbyById(hobbyId);
+    @GetMapping("/{id}/activities")
+    public List<Activity> getHobbyByIdListActivities(@PathVariable String id) {
+        Hobby hobby = hobbyService.getHobbyById(id);
         return hobby.getActivities();
     }
+
+    @PostMapping("/{hobbyId}/activities")
+    public void addActivityToHobby(@PathVariable String hobbyId, @RequestBody Activity activity) {
+        hobbyService.addActivityToHobby(hobbyId, activity);
+    }
+
 }

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import ActivityItem from "./ActivityItem";
 import { Button, Grid } from "@mui/material";
 import styled from "@emotion/styled";
@@ -10,27 +10,22 @@ export default function HobbyDetail() {
     const location = useLocation();
     const selectedColor = location.state?.selectedColor || "#f2f2f1";
 
-    const activitiesResult = useActivities();
+    const data = useActivities();
 
-    if (activitiesResult === "loading") {
-        return <>Loading...</>;
-    } else if (activitiesResult === "no hobby") {
-        return <div>No Hobby</div>;
+    if (!data || !data.hobby) {
+        return <div>Loading...</div>;
     }
 
-    const { hobby, activities } = activitiesResult;
+    const { hobby, activities } = data;
 
-    if (activities === undefined) {
-        return <>Activities data is undefined</>;
-    }
     const loadActivities = () => {
-        if (activities === null) {
+        if (activities === undefined) {
             return <>Loading...</>;
         } else if (activities.length === 0) {
             return <div className="div-header">Please add some activities</div>;
         } else {
-            return activities.map((activity: Activity) => (
-                <ActivityItem key={activity.id} activity={activity} />
+            return activities.map((activity: Activity, index: number) => (
+                <ActivityItem key={activity.id || index} activity={activity} />
             ));
         }
     };
@@ -40,6 +35,13 @@ export default function HobbyDetail() {
             <div className="div-header" style={{ backgroundColor: selectedColor }}>
                 {hobby.name}
             </div>
+            <StyledButtonAdd
+                variant="contained"
+                disableElevation
+                onClick={() => navigate(`/${hobby.id}/activities/add`)}
+            >
+                +
+            </StyledButtonAdd>
             <Grid container spacing={2}>
                 {loadActivities()}
             </Grid>
@@ -58,4 +60,10 @@ const StyledButtonBack = styled(Button)`
   margin-top: 1rem;
   width: 9rem;
   background-color: black;
+`;
+
+const StyledButtonAdd = styled(Button)`
+  margin: 0 20% 2rem 75%;
+  background-color: black;
+  font-size: 25px;
 `;

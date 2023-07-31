@@ -1,6 +1,7 @@
 package de.neuefische.capstone.pia.backend.service;
 
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
+import de.neuefische.capstone.pia.backend.model.Activity;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.model.UUIDService;
@@ -33,7 +34,8 @@ public class HobbyService {
     public Hobby updateHobby(String id, HobbyWithoutID hobbyNoID) {
         Hobby hobby = this.hobbyRepo.findById(id)
                 .orElseThrow(() -> new NoSuchHobbyException(id));
-        Hobby editedHobby = new Hobby(hobby.getId(), hobbyNoID.getName(), new ArrayList<>());
+        List<Activity> existingActivities = hobby.getActivities();
+        Hobby editedHobby = new Hobby(hobby.getId(), hobbyNoID.getName(), existingActivities);
         return this.hobbyRepo.save(editedHobby);
     }
     public void deleteHobby(String id) {
@@ -42,5 +44,12 @@ public class HobbyService {
 
     public Hobby getHobbyById(String id) {
         return this.hobbyRepo.findById(id).orElseThrow(() -> new NoSuchHobbyException(id));
+    }
+
+    public void addActivityToHobby(String hobbyId, Activity activity) {
+        Hobby hobby = getHobbyById(hobbyId);
+        activity.setHobbyId(hobbyId);
+        hobby.addActivity(activity);
+        this.hobbyRepo.save(hobby);
     }
 }
