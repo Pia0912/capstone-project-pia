@@ -6,6 +6,7 @@ import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.model.UUIDService;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -20,10 +21,15 @@ import static org.mockito.Mockito.*;
 
 class HobbyServiceTest {
 
-    HobbyRepo hobbyRepo = mock(HobbyRepo.class);
-    UUIDService uuidService = mock(UUIDService.class);
-    HobbyService hobbyService = new HobbyService(hobbyRepo, uuidService);
-
+    HobbyRepo hobbyRepo;
+    UUIDService uuidService;
+    HobbyService hobbyService;
+    @BeforeEach
+    public void setup() {
+        hobbyRepo = mock(HobbyRepo.class);
+        uuidService = mock(UUIDService.class);
+        hobbyService = new HobbyService(hobbyRepo, uuidService);
+    }
     @Test
     void expectEmptyList_whenNoHobbiesExist() {
         // GIVEN
