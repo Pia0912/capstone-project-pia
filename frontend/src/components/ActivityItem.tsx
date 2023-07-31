@@ -26,7 +26,7 @@ export default function ActivityItem(props: Props) {
                     <div className="flip-card-inner">
                         <div className="flip-card-front" style={{ backgroundColor: selectedColor }}>
                             <h3>{props.activity.name}</h3>
-                            <p>{props.activity.date}</p>
+                            {props.activity.date ? <p>{new Date(props.activity.date).toLocaleDateString()}</p> : null}
                         </div>
                         <div className="flip-card-back">
                             <p>RATING: </p>
