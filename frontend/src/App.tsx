@@ -7,22 +7,22 @@ import AddForm from "./components/AddForm";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
 import HobbyDetail from "./components/HobbyDetail.tsx";
-
+import ActivityAddForm from "./components/ActivityAddForm.tsx";
 
 export default function App() {
-
     const navigate = useNavigate();
     const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
-    const {hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby } = useHobbies()
+    const { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity } = useHobbies();
 
     return (
         <main>
             <Header />
             <Routes>
                 <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} />} />
-                <Route path="/:id/activities" element={<HobbyDetail/>}/>
-                <Route path="/:id" element={<HobbyDetail/>} />
+                <Route path="/:id/activities" element={<HobbyDetail />} />
+                <Route path="/:hobbyId/activities/add" element={<ActivityAddForm onAddActivity={handleAddActivity} />} />
+                <Route path="/:id" element={<HobbyDetail />} />
                 <Route
                     path="/"
                     element={(
@@ -30,7 +30,7 @@ export default function App() {
                             <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')} >
                                 +
                             </StyledButtonAdd>
-                            <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} onDeleteHobby={handleDeleteHobby}/>
+                            <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby} onDeleteHobby={handleDeleteHobby} />
                         </>
                     )}
                 />

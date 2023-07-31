@@ -49,4 +49,10 @@ public class HobbyController {
         Hobby hobby = hobbyService.getHobbyById(hobbyId);
         return hobby.getActivities();
     }
+
+    @PostMapping("/{hobbyId}/activities")
+    public void addActivityToHobby(@PathVariable String hobbyId, @RequestBody Activity activity) {
+        hobbyService.addActivityToHobby(hobbyId, activity);
+    }
+
 }

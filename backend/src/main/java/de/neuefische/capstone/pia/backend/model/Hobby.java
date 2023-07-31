@@ -17,4 +17,12 @@ public class Hobby {
     private String id;
     private String name;
     private List<Activity> activities;
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+    }
 }

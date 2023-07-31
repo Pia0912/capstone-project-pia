@@ -1,13 +1,17 @@
 package de.neuefische.capstone.pia.backend.service;
 
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
+import de.neuefische.capstone.pia.backend.model.Activity;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.model.UUIDService;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +21,27 @@ import static org.mockito.Mockito.*;
 
 class HobbyServiceTest {
 
-    HobbyRepo hobbyRepo = mock(HobbyRepo.class);
-    UUIDService uuidService = mock(UUIDService.class);
-    HobbyService hobbyService = new HobbyService(hobbyRepo, uuidService);
+    HobbyRepo hobbyRepo;
+    UUIDService uuidService;
+    HobbyService hobbyService;
+    @BeforeEach
+    public void setup() {
+        hobbyRepo = mock(HobbyRepo.class);
+        uuidService = mock(UUIDService.class);
+        hobbyService = new HobbyService(hobbyRepo, uuidService);
+    }
+    @Test
+    void expectEmptyList_whenNoHobbiesExist() {
+        // GIVEN
+        when(hobbyRepo.findAll()).thenReturn(Collections.emptyList());
+
+        // WHEN
+        List<Hobby> actual = hobbyService.getHobbies();
+
+        // THEN
+        assertEquals(Collections.emptyList(), actual);
+        verify(hobbyRepo).findAll();
+    }
 
     @Test
     void expectListOfAllParties_whenGettingTheList() {
@@ -92,4 +114,27 @@ class HobbyServiceTest {
         assertThrows(NoSuchHobbyException.class, () -> hobbyService.getHobbyById(nonExistentActivityId));
     }
 
+    @Test
+    void expectActivitiesToBeAddedToHobby_whenAddingActivityToHobby() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        LocalDate activityDate = LocalDate.parse("2023-07-31");
+        Activity newActivity = new Activity("activityId", "New Activity", activityDate, hobbyId);
+
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>());
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // WHEN
+        hobbyService.addActivityToHobby(hobbyId, newActivity);
+
+        // THEN
+        verify(hobbyRepo).findById(hobbyId);
+        verify(hobbyRepo).save(existingHobby);
+
+        // ALSO
+        List<Activity> expectedActivities = new ArrayList<>();
+        expectedActivities.add(newActivity);
+        assertEquals(expectedActivities, existingHobby.getActivities());
+    }
 }

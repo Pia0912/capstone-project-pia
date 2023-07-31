@@ -1,11 +1,10 @@
-import {useEffect, useState} from "react";
-import {Hobby, HobbyWithoutID} from "../models.ts";
+import { useEffect, useState } from "react";
+import {Activity, ActivityWithoutID, Hobby, HobbyWithoutID} from "../models.ts";
 import axios from "axios";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function useHobbies(){
+export default function useHobbies() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,6 +27,7 @@ export default function useHobbies(){
             });
         navigate('/');
     }
+
     function handleEditHobby(id: string, newName: string) {
         const updatedHobby: HobbyWithoutID = {
             name: newName,
@@ -55,5 +55,28 @@ export default function useHobbies(){
         navigate("/")
     }
 
-    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby };
+    function handleAddActivity(hobbyId: string, activity: ActivityWithoutID) {
+        axios
+            .post(`/api/hobbies/${hobbyId}/activities`, activity)
+            .then((response) => response.data)
+            .catch((error) => {
+                console.error(error);
+            })
+            .then((data) => {
+                const newActivity: Activity = { ...data, hobbyId };
+
+                setHobbies((prevHobbies) =>
+                    prevHobbies.map((hobby) => {
+                        if (hobby.id === hobbyId) {
+                            return { ...hobby, activities: [...hobby.activities, newActivity] };
+                        }
+                        return hobby;
+                    })
+                );
+            });
+    }
+
+
+
+    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity };
 }
