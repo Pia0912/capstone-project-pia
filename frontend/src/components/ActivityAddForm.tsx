@@ -65,8 +65,8 @@ export default function ActivityAddForm(props: Props) {
                     Submit
                 </StyledButton>
             </form>
-            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate('/')} >
-                Back to List
+            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate(`/${hobbyId}/activities`)} >
+                Back to Activities
             </StyledButtonBack>
         </StyledContainer>
     );
