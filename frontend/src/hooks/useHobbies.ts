@@ -75,8 +75,26 @@ export default function useHobbies() {
                 );
             });
     }
+    function handleEditActivity(hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) {
+        axios.put(`/api/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
+            .then(response => response.data)
+            .catch(error => console.error(error))
+            .then(data => {
+                setHobbies((prevHobbies) =>
+                    prevHobbies.map((hobby) => {
+                        if (hobby.id === hobbyId) {
+                            return {
+                                ...hobby,
+                                activities: hobby.activities.map((activity) =>
+                                    activity.id === activityId ? { ...data, hobbyId: hobbyId } : activity
+                                ),
+                            };
+                        }
+                        return hobby;
+                    })
+                );
+            });
+    }
 
-
-
-    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity };
+    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity };
 }
