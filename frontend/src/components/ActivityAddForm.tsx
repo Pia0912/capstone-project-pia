@@ -32,7 +32,7 @@ export default function ActivityAddForm(props: Props) {
         props.onAddActivity(hobbyId, newActivity);
         setName("");
         setDate("");
-        navigate("/");
+        navigate(`/${hobbyId}/activities`);
     }
 
     return (

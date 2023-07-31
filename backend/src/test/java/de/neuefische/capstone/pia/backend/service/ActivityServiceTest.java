@@ -38,6 +38,4 @@ class ActivityServiceTest {
         assertEquals(expected, actual);
         verify(activityRepo).findAll();
     }
-
-
 }

@@ -137,32 +137,4 @@ class HobbyServiceTest {
         expectedActivities.add(newActivity);
         assertEquals(expectedActivities, existingHobby.getActivities());
     }
-
-    @Test
-    void expectActivityToBeAddedToHobby_whenAddingActivityToHobby() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        LocalDate activityDate = LocalDate.parse("2023-07-31");
-        Activity newActivity = new Activity("activityId", "New Activity", activityDate, hobbyId);
-
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>());
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // WHEN
-        hobbyService.addActivityToHobby(hobbyId, newActivity);
-
-        // THEN
-        verify(hobbyRepo).findById(hobbyId);
-        verify(hobbyRepo).save(existingHobby);
-
-        // Check if the activity was added to the hobby
-        List<Activity> expectedActivities = new ArrayList<>();
-        expectedActivities.add(newActivity);
-        assertEquals(expectedActivities, existingHobby.getActivities());
-    }
 }
-
-
-
-
