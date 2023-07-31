@@ -1,5 +1,6 @@
 package de.neuefische.capstone.pia.backend.controller;
 
+import de.neuefische.capstone.pia.backend.model.Activity;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
@@ -17,23 +18,35 @@ public class HobbyController {
     }
 
     @GetMapping
-    public List<Hobby> listHobbies() {
-        return this.hobbyService.list();
+    public List<Hobby> getHobbies() {
+        return this.hobbyService.getHobbies();
     }
 
     @PostMapping
     public List<Hobby> addHobby(@RequestBody HobbyWithoutID newHobby){
-        this.hobbyService.add(newHobby);
-        return this.hobbyService.list();
+        this.hobbyService.addHobby(newHobby);
+        return this.hobbyService.getHobbies();
     }
 
     @PutMapping("/{id}")
-    public Hobby update(@PathVariable String id,@RequestBody HobbyWithoutID updatedHobby) {
-        return hobbyService.edit(id, updatedHobby);
+    public Hobby updateHobby(@PathVariable String id, @RequestBody HobbyWithoutID updatedHobby) {
+        return hobbyService.updateHobby(id, updatedHobby);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        hobbyService.delete(id);
+    public void deleteHobby(@PathVariable String id) {
+        hobbyService.deleteHobby(id);
+    }
+
+    @GetMapping("/{id}")
+    public Hobby getHobbyById(@PathVariable String id) {
+        return this.hobbyService.getHobbyById(id);
+    }
+
+
+    @GetMapping("/{hobbyId}/activities")
+    public List<Activity> getHobbyByIdListActivities(@PathVariable String hobbyId) {
+        Hobby hobby = hobbyService.getHobbyById(hobbyId);
+        return hobby.getActivities();
     }
 }

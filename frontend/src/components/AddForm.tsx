@@ -68,4 +68,3 @@ const StyledButtonBack = styled(Button)`
   width: 9rem;
   background-color: black;
 `;
-
