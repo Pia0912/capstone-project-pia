@@ -8,7 +8,7 @@ import StarRating, { LOCAL_STORAGE_KEY } from "./StarRating";
 import useColors from "../hooks/useColors.ts";
 
 type Props = {
-    activity?: Activity;
+    activity?: Activity | undefined;
     hobby: Hobby;
     onEditActivity: (hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) => void;
     colors: string[];
@@ -85,24 +85,16 @@ export default function ActivityItem(props: Props) {
 
 
     return (
-        <Grid
-            item
-            xs={6}
-            sm={6}
-            md={6}
-            lg={6}
-            container
-            justifyContent="center"
-            alignItems="flex-start"
-        >
+        <Grid item xs={6} sm={6} md={6} lg={6} container justifyContent="center" alignItems="flex-start">
             <div
                 className={`flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`}
                 style={{ backgroundColor: color }}
             >
                 <div className={`${isEditing ? "card-inner" : "flip-card-inner"}`}>
-                    <div className={`flip-card-front card-front ${
-                        isEditing ? "hidden" : ""
-                    }`} style={{ backgroundColor: color }} onClick={handleCardClick}>
+                    <div className={`flip-card-front card-front ${isEditing ? "hidden" : ""}`}
+                         style={{ backgroundColor: color }}
+                         onClick={handleCardClick}
+                    >
                         {!isEditing ? (
                             <>
                                 <h3>{props.activity?.name}</h3>

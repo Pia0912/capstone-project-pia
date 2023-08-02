@@ -22,8 +22,7 @@ export default function App() {
     }
 
     const selectedHobby = hobbies.find((hobby) => hobby.id === hobbyId);
-
-    const selectedActivity = selectedHobby?.activities.find((activity) => activity.activityId === activityId);
+    const selectedActivity = selectedHobby ? selectedHobby.activities.find((activity) => activity.activityId === activityId) : undefined;
 
     return (
         <main>
@@ -40,8 +39,18 @@ export default function App() {
                 />
                 <Route
                     path="/:hobbyId/activities/:activityId"
-                    element={<ActivityItem activity={selectedActivity} hobby={selectedHobby} onEditActivity={handleEditActivity} colors={colors} />}
-                />
+                    element={
+                        selectedHobby && selectedActivity ? (
+                            <ActivityItem
+                                activity={selectedActivity}
+                                hobby={selectedHobby}
+                                onEditActivity={handleEditActivity}
+                                colors={colors}
+                            />
+                        ) : (
+                            <div>Invalid hobby or activity ID.</div>
+                        )
+                    }/>
                 <Route
                     path="/"
                     element={(

@@ -47,7 +47,11 @@ export default function HobbyDetail(props: Props) {
                     onEditActivity={handleEditActivity}
                 />
             </Grid>
-            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate("/")}>
+            <StyledButtonBack
+                variant="contained"
+                disableElevation
+                onClick={() => navigate("/")}
+            >
                 Back to List
             </StyledButtonBack>
         </>

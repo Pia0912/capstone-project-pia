@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
+
 
 type StarRatingProps = {
     activityId: string;
@@ -6,7 +8,7 @@ type StarRatingProps = {
     onChange?: (newRating: number) => void;
 };
 
-export const LOCAL_STORAGE_KEY = "starRating";
+
 
 export default function StarRating(props: StarRatingProps) {
     const [rating, setRating] = useState<number>(() => {
@@ -26,13 +28,14 @@ export default function StarRating(props: StarRatingProps) {
     };
 
     return (
-        <div className="ratingControl">
+        <div
+            className="ratingControl">
             {[1, 2, 3, 4, 5].map((index) => (
                 <label
                     key={index}
                     style={{
-                        cursor: "pointer",
-                        color: index <= rating ? "#ffbf00" : "#ccc",
+                        cursor: 'pointer',
+                        color: index <= rating ? '#ffbf00' : '#ccc',
                     }}
                     onClick={() => handleClick(index)}
                 >

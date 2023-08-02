@@ -118,12 +118,12 @@ class HobbyServiceTest {
         // GIVEN
         String hobbyId = "existingHobbyId";
         LocalDate activityDate = LocalDate.parse("2023-07-31");
-        String generatedActivityId = "someActivityId"; // Use the same activityId you plan to use when adding the activity
+        String generatedActivityId = "someActivityId";
         ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5);
 
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>());
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-        when(uuidService.getRandomId()).thenReturn(generatedActivityId); // Mock the uuidService to return the correct activityId
+        when(uuidService.getRandomId()).thenReturn(generatedActivityId);
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN

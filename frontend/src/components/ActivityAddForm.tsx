@@ -1,8 +1,8 @@
-import { FormEvent, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {FormEvent, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { ActivityWithoutID } from '../models';
-import { Container } from '@mui/material';
+import {ActivityWithoutID} from '../models';
+import {Container} from '@mui/material';
 import styled from "@emotion/styled";
 import StarRating from "./StarRating";
 
