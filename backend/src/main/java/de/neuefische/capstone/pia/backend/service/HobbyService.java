@@ -43,34 +43,30 @@ public class HobbyService {
         return hobbyRepo.findById(id).orElseThrow(() -> new NoSuchHobbyException(id));
     }
 
-    public void addActivityToHobby(String hobbyId, ActivityWithoutID activityWithoutID) {
+    public Activity addActivityToHobby(String hobbyId, ActivityWithoutID activityWithoutID) {
         Hobby hobby = getHobbyById(hobbyId);
         String activityId = uuidService.getRandomId();
         activityWithoutID.setHobbyId(hobbyId);
         Activity newActivity = new Activity(activityId, activityWithoutID.getName(), activityWithoutID.getDate(), hobbyId, activityWithoutID.getRating());
         hobby.addActivity(newActivity);
         hobbyRepo.save(hobby);
+        return newActivity;
     }
 
     public Activity updateActivity(String hobbyId, String activityId, ActivityWithoutID activityNoID) {
-        Hobby hobby = hobbyRepo.findById(hobbyId)
-                .orElseThrow(() -> new NoSuchHobbyException(hobbyId));
-        Map<String, Activity> activityMap = new HashMap<>();
-        for (Activity existingActivity : hobby.getActivities()) {
-            activityMap.put(existingActivity.getActivityId(), existingActivity);
-        }
+        Hobby hobby = hobbyRepo.findById(hobbyId).orElseThrow(() -> new NoSuchHobbyException(hobbyId));
+        Activity editedActivity = hobby.getActivities().stream()
+                .filter(activity -> activity.getActivityId().equals(activityId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchActivityException(activityId));
 
-        if (activityMap.containsKey(activityId)) {
-            Activity editedActivity = activityMap.get(activityId);
-            editedActivity.setName(activityNoID.getName());
-            editedActivity.setDate(activityNoID.getDate());
-            editedActivity.setRating(activityNoID.getRating());
-            return hobbyRepo.save(hobby).getActivities().stream()
-                    .filter(activity -> activity.getActivityId().equals(activityId))
-                    .findFirst()
-                    .orElseThrow(() -> new NoSuchActivityException(activityId));
-        } else {
-            throw new NoSuchActivityException(activityId);
-        }
+        editedActivity.setName(activityNoID.getName());
+        editedActivity.setDate(activityNoID.getDate());
+        editedActivity.setRating(activityNoID.getRating());
+
+        hobbyRepo.save(hobby);
+
+        return editedActivity;
     }
+
 }

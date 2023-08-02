@@ -60,7 +60,7 @@ export default function ActivityItem(props: Props) {
     const handleSaveClick = () => {
         const updatedActivity: ActivityWithoutID = {
             name: editedActivity.name,
-            date: editedActivity.date instanceof Date ? editedActivity.date : undefined,
+            date: editedActivity.date,
             rating: lastSelectedRating,
             hobbyId: props.hobby?.id || "",
         };
@@ -101,7 +101,9 @@ export default function ActivityItem(props: Props) {
 
             >
                 <div className={`${isEditing ? "card-inner" : "flip-card-inner"}`}>
-                    <div className="flip-card-front card-front" style={{ backgroundColor: color }} onClick={handleCardClick}>
+                    <div className={`flip-card-front card-front ${
+                        isEditing ? "hidden" : ""
+                    }`} style={{ backgroundColor: color }} onClick={handleCardClick}>
                         {!isEditing ? (
                             <>
                                 <h3>{props.activity?.name}</h3>

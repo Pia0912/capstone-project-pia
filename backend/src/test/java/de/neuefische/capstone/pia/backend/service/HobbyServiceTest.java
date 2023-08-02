@@ -1,5 +1,6 @@
 package de.neuefische.capstone.pia.backend.service;
 
+import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
 import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
@@ -102,7 +103,7 @@ class HobbyServiceTest {
         assertEquals(existingHobby, result);
     }
     @Test
-    void expectNoSuchActivityException_whenActivityNotFound() {
+    void expectNoSuchHobbyException_whenHobbyIdNotFound() {
         // GIVEN
         String nonExistentActivityId = "abc";
         when(hobbyRepo.findById(nonExistentActivityId)).thenReturn(Optional.empty());
@@ -117,23 +118,41 @@ class HobbyServiceTest {
         // GIVEN
         String hobbyId = "existingHobbyId";
         LocalDate activityDate = LocalDate.parse("2023-07-31");
-        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId,5);
+        String generatedActivityId = "someActivityId"; // Use the same activityId you plan to use when adding the activity
+        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5);
 
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>());
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(uuidService.getRandomId()).thenReturn(generatedActivityId); // Mock the uuidService to return the correct activityId
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN
-        hobbyService.addActivityToHobby(hobbyId, newActivity);
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity);
 
         // THEN
         verify(hobbyRepo).findById(hobbyId);
         verify(hobbyRepo).save(existingHobby);
 
         // ALSO
-        List<Activity> expectedActivities = new ArrayList<>();
-        expectedActivities.add(new Activity("someActivityId", "New Activity", activityDate, hobbyId, 5));
-        assertEquals(expectedActivities, existingHobby.getActivities());
+        assertEquals(new Activity(generatedActivityId, "New Activity", activityDate, hobbyId, 5), addedActivity);
     }
+
+    @Test
+    void expectNoSuchActivityException_whenActivityIdNotFound() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String nonExistentActivityId = "abc";
+        LocalDate activityDate = LocalDate.parse("2023-07-31");
+        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5);
+
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>());
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // WHEN & THEN
+        NoSuchActivityException exception = assertThrows(NoSuchActivityException.class, () -> hobbyService.updateActivity(hobbyId, nonExistentActivityId, newActivity));
+        assertEquals("Activity not found for ID: " + nonExistentActivityId, exception.getMessage());
+    }
+
 
 }

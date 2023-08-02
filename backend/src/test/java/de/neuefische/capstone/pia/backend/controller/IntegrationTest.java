@@ -1,5 +1,7 @@
 package de.neuefische.capstone.pia.backend.controller;
 
+import de.neuefische.capstone.pia.backend.model.Activity;
+import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
@@ -14,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -56,15 +58,19 @@ class IntegrationTest {
     @DirtiesContext
     void expectNewHobby_whenPostingHobby() throws Exception {
         //WHEN
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
                         {
                             "name": "Gardening"
                         }
                         """))
-
                 //THEN
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].id").isNotEmpty()).andExpect(jsonPath("$[0].name").value("Gardening"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.name").value("Gardening"));
     }
+
 
     @Test
     @DirtiesContext
@@ -155,4 +161,43 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
     }
 
+
+
+    @Test
+    @DirtiesContext
+    void expectUpdatedActivity_whenPuttingActivity() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = hobbyService.addHobby(newHobby);
+        String hobbyId = addedHobby.getId();
+        LocalDate activityDate = LocalDate.parse("2023-07-31");
+
+        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4);
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity);
+        String activityId = addedActivity.getActivityId();
+
+        String actual = """
+                {
+                    "name": "Watering Flowers",
+                    "date": "2023-08-02",
+                    "rating": 5
+                 }
+            """;
+        String expected = """
+                {
+                    "activityId": "%s",
+                    "name": "Watering Flowers",
+                    "date": "2023-08-02",
+                    "rating": 5
+                 }
+            """.formatted(activityId);
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{hobbyId}/activities/{activityId}", hobbyId, activityId)
+                        .contentType(MediaType.APPLICATION_JSON).content(actual))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.content().json(expected))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }

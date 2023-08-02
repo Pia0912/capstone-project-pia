@@ -27,8 +27,8 @@ class ActivityServiceTest {
     void getActivities_ShouldReturnListOfActivities() {
         // GIVEN
         List<Activity> expected = new ArrayList<>();
-        expected.add(new Activity("1", "Reading", LocalDate.now(), "hobbyId"));
-        expected.add(new Activity("2", "Cooking", LocalDate.now(), "hobbyId"));
+        expected.add(new Activity("1", "Reading", LocalDate.now(), "hobbyId", 5));
+        expected.add(new Activity("2", "Cooking", LocalDate.now(), "hobbyId", 5));
 
         // WHEN
         when(activityRepo.findAll()).thenReturn(expected);
