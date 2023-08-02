@@ -2,27 +2,55 @@ import "./App.css";
 import HobbyList from "./components/HobbyList";
 import Header from "./components/Header";
 import Button from "@mui/material/Button";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import AddForm from "./components/AddForm";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
 import HobbyDetail from "./components/HobbyDetail.tsx";
 import ActivityAddForm from "./components/ActivityAddForm.tsx";
+import ActivityItem from "./components/ActivityItem.tsx";
 
 export default function App() {
     const navigate = useNavigate();
     const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
-    const { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity } = useHobbies();
+    const { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity } = useHobbies();
+    const { hobbyId, activityId } = useParams();
+
+    if (!Array.isArray(hobbies)) {
+        return <div>Loading hobbies...</div>;
+    }
+
+    const selectedHobby = hobbies.find((hobby) => hobby.id === hobbyId);
+    const selectedActivity = selectedHobby ? selectedHobby.activities.find((activity) => activity.activityId === activityId) : undefined;
 
     return (
         <main>
             <Header />
             <Routes>
                 <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} />} />
-                <Route path="/:id/activities" element={<HobbyDetail />} />
-                <Route path="/:hobbyId/activities/add" element={<ActivityAddForm onAddActivity={handleAddActivity} />} />
-                <Route path="/:id" element={<HobbyDetail />} />
+                <Route
+                    path="/:id/activities"
+                    element={<HobbyDetail colors={colors}/>}
+                />
+                <Route
+                    path="/:hobbyId/activities/add"
+                    element={<ActivityAddForm onAddActivity={handleAddActivity} />}
+                />
+                <Route
+                    path="/:hobbyId/activities/:activityId"
+                    element={
+                        selectedHobby && selectedActivity ? (
+                            <ActivityItem
+                                activity={selectedActivity}
+                                hobby={selectedHobby}
+                                onEditActivity={handleEditActivity}
+                                colors={colors}
+                            />
+                        ) : (
+                            <div>Invalid hobby or activity ID.</div>
+                        )
+                    }/>
                 <Route
                     path="/"
                     element={(

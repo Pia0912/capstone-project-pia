@@ -15,4 +15,5 @@ public class ActivityWithoutID {
     private LocalDate date;
     @Field("hobbyId")
     private String hobbyId;
+    private int rating;
 }

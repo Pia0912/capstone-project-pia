@@ -1,4 +1,4 @@
-import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
+import {ChangeEvent, ChangeEventHandler, useState} from "react";
 import {Hobby} from "../models";
 import {Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
@@ -7,29 +7,31 @@ import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
 import InfoIcon from '@mui/icons-material/Info';
 import {useNavigate} from "react-router-dom";
+import useColors from "../hooks/useColors.ts";
 
 
 
 type Props = {
     hobby: Hobby;
     colors: string[];
-    onEditHobby: (hobbyId: string, newName: string) => void;
+    onEditHobby: (hobbyId: string, newName: string, newColor: string) => void;
     onDeleteHobby: (hobbyId: string) => void;
 };
 
 export default function HobbyItem(props: Props) {
-    const [selectedColor, setSelectedColor] = useState<string>(() => (localStorage.getItem(props.hobby.id) as string) || "");
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(props.hobby.name);
     const [open, setOpen] = useState(false);
 
     const navigate = useNavigate();
+    const [color, setColor] = useColors(props.hobby.id);
+
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
     const handleSaveClick = () => {
-        props.onEditHobby(props.hobby.id, editedName);
+        props.onEditHobby(props.hobby.id, editedName, color);
         setIsEditing(false);
     };
 
@@ -41,14 +43,9 @@ export default function HobbyItem(props: Props) {
         setEditedName(event.target.value);
     };
 
-    useEffect(() => {
-        if (selectedColor !== null) {
-            localStorage.setItem(props.hobby.id, selectedColor);
-        }
-    }, [props.hobby.id, selectedColor]);
-
     const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSelectedColor(event.target.value);
+        const newColor = event.target.value;
+        setColor(newColor);
     };
 
     const handleDeleteClick = () => {
@@ -65,7 +62,7 @@ export default function HobbyItem(props: Props) {
 
     return (
         <>
-            <div className="div-item" style={{ backgroundColor: selectedColor }}>
+            <div className="div-item" style={{ backgroundColor: color }}>
                 {isEditing ? (
                     <>
                         <input
@@ -102,14 +99,14 @@ export default function HobbyItem(props: Props) {
                                 <StyledIconButton
                                     aria-label="show activities"
                                     onClick={() =>
-                                        navigate(`/${props.hobby.id}/activities`, { state: { selectedColor } })
+                                        navigate(`/${props.hobby.id}/activities`, { state: { color: color } })
                                     }
                                 >
                                     <InfoIcon fontSize="small" />
                                 </StyledIconButton>
                             </div>
                         </div>
-                        <select value={selectedColor} onChange={handleColorChange}>
+                        <select value={color} onChange={handleColorChange}>
                             {props.colors.map((colors) => (
                                 <option key={colors} value={colors}>
                                     {colors}

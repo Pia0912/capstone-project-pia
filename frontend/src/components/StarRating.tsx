@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react";
-import "../App.css";
+import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
+
 
 type StarRatingProps = {
+    activityId: string;
     initialRating: number;
     onChange?: (newRating: number) => void;
 };
 
-const LOCAL_STORAGE_KEY = "starRating";
+
 
 export default function StarRating(props: StarRatingProps) {
     const [rating, setRating] = useState<number>(() => {
-        const storedRating = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const storedRating = localStorage.getItem(`${props.activityId}_${LOCAL_STORAGE_KEY}`);
         return storedRating ? parseInt(storedRating, 10) : props.initialRating;
     });
 
     useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, rating.toString());
-    }, [rating]);
+        localStorage.setItem(`${props.activityId}_${LOCAL_STORAGE_KEY}`, rating.toString());
+        if (props.onChange) {
+            props.onChange(rating);
+        }
+    }, [props.activityId, rating]);
 
     const handleClick = (newRating: number) => {
         setRating(newRating);
-        if (props.onChange) {
-            props.onChange(newRating);
-        }
     };
 
     return (
         <div
-            className="ratingControl"
-        >
+            className="ratingControl">
             {[1, 2, 3, 4, 5].map((index) => (
                 <label
                     key={index}
