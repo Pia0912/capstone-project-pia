@@ -16,7 +16,7 @@ export default function HobbyDetail(props: Props) {
     const location = useLocation();
     const selectedColor = location.state?.color || props.colors[0];
 
-    const { handleEditActivity } = useHobbies();
+    const { handleEditActivity, handleDeleteActivity } = useHobbies();
     const data = useActivities();
 
     const [color] = useColors(data?.hobby?.id || "");
@@ -45,6 +45,7 @@ export default function HobbyDetail(props: Props) {
                     hobby={hobby}
                     colors={props.colors}
                     onEditActivity={handleEditActivity}
+                    onDeleteActivity={handleDeleteActivity}
                 />
             </Grid>
             <StyledButtonBack

@@ -104,5 +104,21 @@ export default function useHobbies() {
             });
     }
 
-    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity };
+    function handleDeleteActivity(hobbyId: string, activityId: string) {
+        api.delete(`/hobbies/${hobbyId}/activities/${activityId}`)
+            .catch(console.error);
+        setHobbies((prevHobbies) =>
+            prevHobbies.map((hobby) => {
+                if (hobby.id === hobbyId) {
+                    return {
+                        ...hobby,
+                        activities: hobby.activities.filter((activity) => activity.activityId !== activityId),
+                    };
+                }
+                return hobby;
+            })
+        );
+    }
+
+    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity };
 }

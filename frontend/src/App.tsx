@@ -14,7 +14,7 @@ export default function App() {
     const navigate = useNavigate();
     const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
 
-    const { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity } = useHobbies();
+    const { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity } = useHobbies();
     const { hobbyId, activityId } = useParams();
 
     if (!Array.isArray(hobbies)) {
@@ -44,8 +44,9 @@ export default function App() {
                             <ActivityItem
                                 activity={selectedActivity}
                                 hobby={selectedHobby}
-                                onEditActivity={handleEditActivity}
                                 colors={colors}
+                                onEditActivity={handleEditActivity}
+                                onDeleteActivity={handleDeleteActivity}
                             />
                         ) : (
                             <div>Invalid hobby or activity ID.</div>

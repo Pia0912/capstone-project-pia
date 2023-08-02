@@ -37,13 +37,14 @@ export default function ActivityAddForm(props: Props) {
         setDate("");
         setRating(5);
         navigate(`/${hobbyId}/activities`);
+        window.location.reload();
     }
 
     return (
         <StyledContainer>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend>Add new Hobby</legend>
+                    <legend>Add new Activity</legend>
                     <label htmlFor="name">Name: </label>
                     <input
                         onChange={(event) => setName(event.target.value)}

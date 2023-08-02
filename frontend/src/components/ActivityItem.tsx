@@ -1,17 +1,20 @@
 import { ChangeEvent, useState} from "react";
-import { Grid, Button } from "@mui/material";
+import {Grid, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Dialog} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
 import { Activity, ActivityWithoutID, Hobby } from "../models";
-import StarRating, { LOCAL_STORAGE_KEY } from "./StarRating";
+import StarRating from "./StarRating";
+import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
 import useColors from "../hooks/useColors.ts";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
     activity?: Activity | undefined;
     hobby: Hobby;
-    onEditActivity: (hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) => void;
     colors: string[];
+    onEditActivity: (hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) => void;
+    onDeleteActivity: (hobbyId: string, activityId: string) => void;
 };
 
 export default function ActivityItem(props: Props) {
@@ -30,6 +33,7 @@ export default function ActivityItem(props: Props) {
 
     const hobbyId = props.hobby.id;
     const [color] = useColors(hobbyId);
+    const [open, setOpen] = useState(false);
 
     const handleRatingChange = (newRating: number) => {
         console.log("New rating:", newRating);
@@ -40,7 +44,13 @@ export default function ActivityItem(props: Props) {
         );
     };
 
-    const activityId = props.activity?.activityId;
+    const activityId = props.activity?.activityId as string;
+
+    const handleDeleteActivity = () => {
+        props.onDeleteActivity(props.hobby.id, activityId);
+        handleClose();
+        window.location.reload();
+    };
 
     const handleCardClick = () => {
         if (!isEditing) {
@@ -72,6 +82,7 @@ export default function ActivityItem(props: Props) {
         );
 
         setIsEditing(false);
+        window.location.reload();
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +94,15 @@ export default function ActivityItem(props: Props) {
         }));
     };
 
+
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     return (
         <Grid item xs={6} sm={6} md={6} lg={6} container justifyContent="center" alignItems="flex-start">
@@ -138,6 +158,12 @@ export default function ActivityItem(props: Props) {
                     <StyledIconButton aria-label="edit activity" onClick={handleEditClick}>
                         <EditIcon fontSize="small" />
                     </StyledIconButton>
+                    <StyledIconButton
+                        aria-label="delete activity"
+                        onClick={handleClickOpen}
+                    >
+                        <DeleteIcon fontSize="small" />
+                    </StyledIconButton>
                 </div>
             ) : (
                 <div style={{ margin: "1rem" }}>
@@ -149,7 +175,31 @@ export default function ActivityItem(props: Props) {
                     </StyledButton>
                 </div>
             )}
+            <Dialog
+                open={open}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle>{"You want to delete your Activity?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        ... are you sure?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>No</Button>
+                    <Button
+                        onClick={handleDeleteActivity}
+                        color="error"
+                        variant="outlined"
+                    >
+                        Delete activity
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Grid>
+
     );
 }
 
