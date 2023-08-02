@@ -4,8 +4,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
 import { Activity, ActivityWithoutID, Hobby } from "../models";
-import StarRating, { LOCAL_STORAGE_KEY } from "./StarRating";
+import StarRating from "./StarRating";
 import useColors from "../hooks/useColors.ts";
+import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
 
 type Props = {
     activity?: Activity | undefined;
