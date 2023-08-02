@@ -161,7 +161,36 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
     }
 
+    @Test
+    @DirtiesContext
+    void expectActivityAddedToHobby_whenAddActivityToHobby() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = this.hobbyService.addHobby(newHobby);
+        String hobbyId = addedHobby.getId();
 
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/{hobbyId}/activities", hobbyId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                            "name": "Planting Flowers",
+                            "date": "2023-07-31"
+                        }
+                        """))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // ALSO
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Planting Flowers"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].date").value("2023-07-31"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].hobbyId").value(hobbyId));
+    }
 
     @Test
     @DirtiesContext
