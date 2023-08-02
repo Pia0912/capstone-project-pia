@@ -29,7 +29,7 @@ export default function ActivityItem(props: Props) {
     });
 
     const hobbyId = props.hobby.id;
-    const [color] = useColors(hobbyId); // Get the color using useColors hook
+    const [color] = useColors(hobbyId);
 
     const handleRatingChange = (newRating: number) => {
         console.log("New rating:", newRating);
