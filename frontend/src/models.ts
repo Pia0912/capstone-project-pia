@@ -1,7 +1,7 @@
 export type Hobby = {
     id: string;
     name: string;
-    colors: string[];
+    color: string;
     activities: Activity[];
 };
 

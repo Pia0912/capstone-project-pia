@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type StarRatingProps = {
     activityId: string;
@@ -31,8 +31,8 @@ export default function StarRating(props: StarRatingProps) {
                 <label
                     key={index}
                     style={{
-                        cursor: 'pointer',
-                        color: index <= rating ? '#ffbf00' : '#ccc',
+                        cursor: "pointer",
+                        color: index <= rating ? "#ffbf00" : "#ccc",
                     }}
                     onClick={() => handleClick(index)}
                 >

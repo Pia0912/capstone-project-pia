@@ -17,8 +17,8 @@ export default function HobbyList(props: Props) {
         <main>
             {props.hobbies.map((hobby) => (
                 <HobbyItem
-                    hobby={hobby}
                     key={hobby.id}
+                    hobby={hobby}
                     colors={props.colors}
                     onEditHobby={props.onEditHobby}
                     onDeleteHobby={props.onDeleteHobby}

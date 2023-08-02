@@ -15,6 +15,16 @@ export default function ActivityList(props: Props) {
         return <p>No activities yet.</p>;
     }
 
+    const handleEditActivity = (
+        hobbyId: string,
+        activityId: string,
+        updatedActivity: ActivityWithoutID
+    ) => {
+        // Call the parent component's onEditActivity function to update the activity
+        props.onEditActivity(hobbyId, activityId, updatedActivity);
+    };
+
+
     return (
         <Grid item xs={12} container justifyContent="center" alignItems="center">
             <StyledGrid container justifyContent="center">
@@ -23,7 +33,7 @@ export default function ActivityList(props: Props) {
                         key={activity.activityId}
                         activity={activity}
                         hobby={props.hobby}
-                        onEditActivity={props.onEditActivity}
+                        onEditActivity={handleEditActivity}
                         colors={props.colors}
                     />
                 ))}

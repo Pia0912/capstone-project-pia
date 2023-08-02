@@ -107,7 +107,7 @@ input {
 
 .flip-card {
     background-color: black;
-    width: 200px;
+    width: 500px;
     height: 100px;
     border: 1px solid black;
     padding: 5px;
@@ -131,6 +131,15 @@ input {
     transition: transform 0.8s;
     transform-style: preserve-3d;
 }
+
+.card-inner {
+    justify-content: right;
+    position: inherit;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
 
 .flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
@@ -159,6 +168,14 @@ input {
     padding-bottom: 30px;
 }
 
+.is-flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card.is-flipped .flip-card-inner {
+    transform: rotateY(360deg);
+}
+
 .ratingControl {
     display: flex;
     flex-direction: row;
@@ -174,3 +191,6 @@ input {
     color: white;
 }
 
+.input-activity {
+    font-size: 12px;
+}

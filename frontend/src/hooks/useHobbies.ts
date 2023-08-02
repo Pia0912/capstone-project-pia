@@ -86,14 +86,13 @@ export default function useHobbies() {
         updatedActivity: ActivityWithoutID
     ) {
         api
-            .put(`/api/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
+            .put(`/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
             .then((response) => response.data)
             .catch((error) => console.error(error))
             .then((data) => {
                 setHobbies((prevHobbies) =>
                     prevHobbies.map((hobby) => {
                         if (hobby.id === hobbyId) {
-                            // Update the activities array of the matching hobby
                             const updatedActivities = hobby.activities.map((activity) =>
                                 activity.activityId === activityId ? { ...data, hobbyId: hobbyId } : activity
                             );

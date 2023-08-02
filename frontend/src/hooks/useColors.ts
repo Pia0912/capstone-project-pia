@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function useColors(hobbyId: string): string | undefined {
-    const color = localStorage.getItem(hobbyId) || undefined;
+export default function useColors(id: string): [string, (color: string) => void] {
+    const [color, setColor] = useState<string>(() => localStorage.getItem(id) || "");
 
     useEffect(() => {
-        if (color !== undefined) {
-            localStorage.setItem(hobbyId, color);
+        if (color !== "") {
+            localStorage.setItem(id, color);
         }
-    }, [hobbyId, color]);
+    }, [id, color]);
 
-    return color;
+    return [color, setColor];
 }

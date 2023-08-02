@@ -1,4 +1,3 @@
-
 import { Grid, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import useActivities from "../hooks/useActivities.ts";
@@ -14,7 +13,7 @@ type Props = {
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
     const location = useLocation();
-    const selectedColor = location.state?.selectedColor || props.colors[0];
+    const selectedColor = location.state?.color || props.colors[0]; // Updated to use state?.color
 
     const { handleEditActivity } = useHobbies();
     const data = useActivities();
@@ -23,9 +22,7 @@ export default function HobbyDetail(props: Props) {
         return <div>Loading...</div>;
     }
 
-
     const { hobby, activities } = data;
-
 
     return (
         <>
@@ -47,11 +44,7 @@ export default function HobbyDetail(props: Props) {
                     onEditActivity={handleEditActivity}
                 />
             </Grid>
-            <StyledButtonBack
-                variant="contained"
-                disableElevation
-                onClick={() => navigate("/")}
-            >
+            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate("/")}>
                 Back to List
             </StyledButtonBack>
         </>
