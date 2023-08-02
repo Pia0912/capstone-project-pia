@@ -20,7 +20,6 @@ export default function ActivityList(props: Props) {
         activityId: string,
         updatedActivity: ActivityWithoutID
     ) => {
-        // Call the parent component's onEditActivity function to update the activity
         props.onEditActivity(hobbyId, activityId, updatedActivity);
     };
 
@@ -33,8 +32,8 @@ export default function ActivityList(props: Props) {
                         key={activity.activityId}
                         activity={activity}
                         hobby={props.hobby}
-                        onEditActivity={handleEditActivity}
                         colors={props.colors}
+                        onEditActivity={handleEditActivity}
                     />
                 ))}
             </StyledGrid>

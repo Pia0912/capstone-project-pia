@@ -5,6 +5,7 @@ import useActivities from "../hooks/useActivities.ts";
 import { useLocation, useNavigate } from "react-router-dom";
 import ActivityList from "./ActivityList.tsx";
 import useHobbies from "../hooks/useHobbies.ts";
+import useColors from "../hooks/useColors.ts";
 
 type Props = {
     colors: string[];
@@ -13,10 +14,12 @@ type Props = {
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
     const location = useLocation();
-    const selectedColor = location.state?.color || props.colors[0]; // Updated to use state?.color
+    const selectedColor = location.state?.color || props.colors[0];
 
     const { handleEditActivity } = useHobbies();
     const data = useActivities();
+
+    const [color] = useColors(data?.hobby?.id || "");
 
     if (!data || !data.hobby) {
         return <div>Loading...</div>;
@@ -26,7 +29,7 @@ export default function HobbyDetail(props: Props) {
 
     return (
         <>
-            <div className="div-header" style={{ backgroundColor: selectedColor }}>
+            <div className="div-header" style={{ backgroundColor: color || selectedColor }}>
                 {hobby.name}
             </div>
             <StyledButtonAdd

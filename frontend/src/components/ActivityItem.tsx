@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
 import { Activity, ActivityWithoutID, Hobby } from "../models";
 import StarRating, { LOCAL_STORAGE_KEY } from "./StarRating";
+import useColors from "../hooks/useColors.ts";
 
 type Props = {
     activity?: Activity;
@@ -28,8 +29,7 @@ export default function ActivityItem(props: Props) {
     });
 
     const hobbyId = props.hobby.id;
-    const colorIndex = hobbyId ? parseInt(hobbyId, 10) % props.colors.length : 0;
-    const color = props.colors[colorIndex];
+    const [color] = useColors(hobbyId); // Get the color using useColors hook
 
     const handleRatingChange = (newRating: number) => {
         console.log("New rating:", newRating);
@@ -96,9 +96,8 @@ export default function ActivityItem(props: Props) {
             alignItems="flex-start"
         >
             <div
-                className={`flip-card ${isEditing ? "" : (isFlipped ? "is-flipped" : "")}`}
+                className={`flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`}
                 style={{ backgroundColor: color }}
-
             >
                 <div className={`${isEditing ? "card-inner" : "flip-card-inner"}`}>
                     <div className={`flip-card-front card-front ${
