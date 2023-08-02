@@ -1,20 +1,16 @@
 package de.neuefische.capstone.pia.backend.service;
 
+import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
-import de.neuefische.capstone.pia.backend.model.Activity;
-import de.neuefische.capstone.pia.backend.model.Hobby;
-import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
-import de.neuefische.capstone.pia.backend.model.UUIDService;
+import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class HobbyService {
     private final HobbyRepo hobbyRepo;
-
     private final UUIDService uuidService;
 
     public HobbyService(HobbyRepo hobbyRepo, UUIDService uuidService) {
@@ -23,35 +19,58 @@ public class HobbyService {
     }
 
     public List<Hobby> getHobbies() {
-        return this.hobbyRepo.findAll();
+        return hobbyRepo.findAll();
     }
 
     public Hobby addHobby(HobbyWithoutID newHobby) {
         String id = uuidService.getRandomId();
-        Hobby party = new Hobby(id, newHobby.getName(), new ArrayList<>());
-        return this.hobbyRepo.insert(party);
+        Hobby hobby = new Hobby(id, newHobby.getName(), new ArrayList<>());
+        return hobbyRepo.insert(hobby);
     }
+
     public Hobby updateHobby(String id, HobbyWithoutID hobbyNoID) {
-        Hobby hobby = this.hobbyRepo.findById(id)
+        Hobby hobby = hobbyRepo.findById(id)
                 .orElseThrow(() -> new NoSuchHobbyException(id));
-        List<Activity> existingActivities = hobby.getActivities();
-        Hobby editedHobby = new Hobby(hobby.getId(), hobbyNoID.getName(), existingActivities);
-        return this.hobbyRepo.save(editedHobby);
+        hobby.setName(hobbyNoID.getName());
+        return hobbyRepo.save(hobby);
     }
+
     public void deleteHobby(String id) {
-        this.hobbyRepo.deleteById(id);
+        hobbyRepo.deleteById(id);
     }
 
     public Hobby getHobbyById(String id) {
-        return this.hobbyRepo.findById(id).orElseThrow(() -> new NoSuchHobbyException(id));
+        return hobbyRepo.findById(id).orElseThrow(() -> new NoSuchHobbyException(id));
     }
 
-    public void addActivityToHobby(String hobbyId, Activity activity) {
+    public void addActivityToHobby(String hobbyId, ActivityWithoutID activityWithoutID) {
         Hobby hobby = getHobbyById(hobbyId);
-        activity.setHobbyId(hobbyId);
-        hobby.addActivity(activity);
-        this.hobbyRepo.save(hobby);
+        String activityId = uuidService.getRandomId();
+        activityWithoutID.setHobbyId(hobbyId);
+        Activity newActivity = new Activity(activityId, activityWithoutID.getName(), activityWithoutID.getDate(), hobbyId, activityWithoutID.getRating());
+        hobby.addActivity(newActivity);
+        hobbyRepo.save(hobby);
     }
 
+    public Activity updateActivity(String hobbyId, String activityId, ActivityWithoutID activityNoID) {
+        Hobby hobby = hobbyRepo.findById(hobbyId)
+                .orElseThrow(() -> new NoSuchHobbyException(hobbyId));
+        Map<String, Activity> activityMap = new HashMap<>();
+        for (Activity existingActivity : hobby.getActivities()) {
+            activityMap.put(existingActivity.getActivityId(), existingActivity);
+        }
 
+        if (activityMap.containsKey(activityId)) {
+            Activity editedActivity = activityMap.get(activityId);
+            editedActivity.setName(activityNoID.getName());
+            editedActivity.setDate(activityNoID.getDate());
+            editedActivity.setRating(activityNoID.getRating());
+            return hobbyRepo.save(hobby).getActivities().stream()
+                    .filter(activity -> activity.getActivityId().equals(activityId))
+                    .findFirst()
+                    .orElseThrow(() -> new NoSuchActivityException(activityId));
+        } else {
+            throw new NoSuchActivityException(activityId);
+        }
+    }
 }

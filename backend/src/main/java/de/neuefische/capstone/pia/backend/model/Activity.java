@@ -11,9 +11,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Activity {
-    private String id;
+    private String activityId;
     private String name;
     private LocalDate date;
     @Field("hobbyId")
     private String hobbyId;
+    private int rating;
 }

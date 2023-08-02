@@ -111,7 +111,8 @@ input {
     height: 100px;
     border: 1px solid black;
     padding: 5px;
-    margin: 15px;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
     perspective: 1000px;
     justify-content: flex-end;
 }

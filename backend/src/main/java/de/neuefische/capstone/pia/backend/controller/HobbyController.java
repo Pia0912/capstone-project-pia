@@ -1,6 +1,7 @@
 package de.neuefische.capstone.pia.backend.controller;
 
 import de.neuefische.capstone.pia.backend.model.Activity;
+import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
@@ -19,13 +20,12 @@ public class HobbyController {
 
     @GetMapping
     public List<Hobby> getHobbies() {
-        return this.hobbyService.getHobbies();
+        return hobbyService.getHobbies();
     }
 
     @PostMapping
-    public List<Hobby> addHobby(@RequestBody HobbyWithoutID newHobby){
-        this.hobbyService.addHobby(newHobby);
-        return this.hobbyService.getHobbies();
+    public Hobby addHobby(@RequestBody HobbyWithoutID newHobby) {
+        return hobbyService.addHobby(newHobby);
     }
 
     @PutMapping("/{id}")
@@ -40,19 +40,21 @@ public class HobbyController {
 
     @GetMapping("/{id}")
     public Hobby getHobbyById(@PathVariable String id) {
-        return this.hobbyService.getHobbyById(id);
+        return hobbyService.getHobbyById(id);
     }
-
 
     @GetMapping("/{hobbyId}/activities")
     public List<Activity> getHobbyByIdListActivities(@PathVariable String hobbyId) {
-        Hobby hobby = hobbyService.getHobbyById(hobbyId);
-        return hobby.getActivities();
+        return hobbyService.getHobbyById(hobbyId).getActivities();
     }
 
     @PostMapping("/{hobbyId}/activities")
-    public void addActivityToHobby(@PathVariable String hobbyId, @RequestBody Activity activity) {
-        hobbyService.addActivityToHobby(hobbyId, activity);
+    public void addActivityToHobby(@PathVariable String hobbyId, @RequestBody ActivityWithoutID activityWithoutID) {
+        hobbyService.addActivityToHobby(hobbyId, activityWithoutID);
     }
 
+    @PutMapping("/{hobbyId}/activities/{activityId}")
+    public Activity updateActivity(@PathVariable String hobbyId, @PathVariable String activityId, @RequestBody ActivityWithoutID updatedActivity) {
+        return hobbyService.updateActivity(hobbyId, activityId, updatedActivity);
+    }
 }

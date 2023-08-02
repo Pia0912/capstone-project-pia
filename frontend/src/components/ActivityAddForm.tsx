@@ -1,18 +1,20 @@
-import {FormEvent, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import { FormEvent, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import {ActivityWithoutID} from '../models';
-import {Container} from '@mui/material';
+import { ActivityWithoutID } from '../models';
+import { Container } from '@mui/material';
 import styled from "@emotion/styled";
+import StarRating from "./StarRating";
 
 type Props = {
     onAddActivity: (hobbyId: string, activity: ActivityWithoutID) => void;
-
 };
 
 export default function ActivityAddForm(props: Props) {
     const [name, setName] = useState<string>("");
     const [date, setDate] = useState<string>("");
+    const [rating, setRating] = useState<number>(5);
+
     const { hobbyId } = useParams();
 
     const navigate = useNavigate();
@@ -26,12 +28,14 @@ export default function ActivityAddForm(props: Props) {
 
         const newActivity: ActivityWithoutID = {
             name: name,
-            date:  new Date(date),
+            date: new Date(date),
+            rating: rating,
             hobbyId: hobbyId,
         };
         props.onAddActivity(hobbyId, newActivity);
         setName("");
         setDate("");
+        setRating(5);
         navigate(`/${hobbyId}/activities`);
     }
 
@@ -60,6 +64,8 @@ export default function ActivityAddForm(props: Props) {
                         required
                         className="input-add"
                     />
+                    <label htmlFor="rating">Rating:</label>
+                    <StarRating initialRating={rating} onChange={setRating} activityId="new-activity" />
                 </fieldset>
                 <StyledButton type="submit" variant="outlined">
                     Submit

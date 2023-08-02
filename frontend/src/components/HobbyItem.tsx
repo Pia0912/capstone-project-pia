@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
 import InfoIcon from '@mui/icons-material/Info';
 import {useNavigate} from "react-router-dom";
+import useColors from "../hooks/useColors.ts";
 
 
 
@@ -18,7 +19,7 @@ type Props = {
 };
 
 export default function HobbyItem(props: Props) {
-    const [selectedColor, setSelectedColor] = useState<string>(() => (localStorage.getItem(props.hobby.id) as string) || "");
+    const [selectedColor, setSelectedColor] = useState<string>(() => localStorage.getItem(props.hobby.id) || "");
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(props.hobby.name);
     const [open, setOpen] = useState(false);
@@ -41,11 +42,11 @@ export default function HobbyItem(props: Props) {
         setEditedName(event.target.value);
     };
 
+    const backgroundColor = useColors(props.hobby.id);
+
     useEffect(() => {
-        if (selectedColor !== null) {
-            localStorage.setItem(props.hobby.id, selectedColor);
-        }
-    }, [props.hobby.id, selectedColor]);
+        setSelectedColor(backgroundColor || "");
+    }, [backgroundColor]);
 
     const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (event: ChangeEvent<HTMLSelectElement>) => {
         setSelectedColor(event.target.value);

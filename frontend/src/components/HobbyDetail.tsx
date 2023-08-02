@@ -1,34 +1,31 @@
-import { useLocation, useNavigate} from "react-router-dom";
-import ActivityItem from "./ActivityItem";
-import { Button, Grid } from "@mui/material";
+
+import { Grid, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import useActivities from "../hooks/useActivities.ts";
-import { Activity } from "../models.ts";
 
-export default function HobbyDetail() {
+import { useLocation, useNavigate } from "react-router-dom";
+import ActivityList from "./ActivityList.tsx";
+import useHobbies from "../hooks/useHobbies.ts";
+
+type Props = {
+    colors: string[];
+};
+
+export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
     const location = useLocation();
-    const selectedColor = location.state?.selectedColor || "#f2f2f1";
+    const selectedColor = location.state?.selectedColor || props.colors[0];
 
+    const { handleEditActivity } = useHobbies();
     const data = useActivities();
 
     if (!data || !data.hobby) {
         return <div>Loading...</div>;
     }
 
+
     const { hobby, activities } = data;
 
-    const loadActivities = () => {
-        if (activities === undefined) {
-            return <>Loading...</>;
-        } else if (activities.length === 0) {
-            return <div className="div-header">Please add some activities</div>;
-        } else {
-            return activities.map((activity: Activity, index: number) => (
-                <ActivityItem key={activity.id || index} activity={activity} />
-            ));
-        }
-    };
 
     return (
         <>
@@ -43,7 +40,12 @@ export default function HobbyDetail() {
                 +
             </StyledButtonAdd>
             <Grid container spacing={2}>
-                {loadActivities()}
+                <ActivityList
+                    activities={activities}
+                    hobby={hobby}
+                    colors={props.colors}
+                    onEditActivity={handleEditActivity}
+                />
             </Grid>
             <StyledButtonBack
                 variant="contained"

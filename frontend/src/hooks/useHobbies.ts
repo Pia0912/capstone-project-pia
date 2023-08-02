@@ -3,36 +3,40 @@ import {Activity, ActivityWithoutID, Hobby, HobbyWithoutID} from "../models.ts";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
+const api = axios.create({
+    baseURL: '/api'
+});
+
 export default function useHobbies() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios
-            .get('api/hobbies')
+        api.get('/hobbies')
             .then((response) => response.data)
             .catch(console.error)
             .then((data) => setHobbies(data));
     }, []);
 
     function handleAddHobby(data: HobbyWithoutID) {
-        axios
-            .post('api/hobbies', data)
+        api
+            .post('/hobbies', data)
             .then((response) => response.data)
             .catch((error) => {
                 console.error(error);
             })
             .then((data) => {
-                setHobbies(data);
+                setHobbies((prevHobbies) => [...prevHobbies, data]);
+                navigate('/');
             });
-        navigate('/');
     }
 
     function handleEditHobby(id: string, newName: string) {
         const updatedHobby: HobbyWithoutID = {
             name: newName,
         };
-        axios.put(`/api/hobbies/${id}`, updatedHobby)
+        api
+            .put(`/hobbies/${id}`, updatedHobby)
             .then(response => response.data)
             .catch(error => console.error(error))
             .then(data => {
@@ -49,15 +53,16 @@ export default function useHobbies() {
     }
 
     function handleDeleteHobby(id: string) {
-        axios.delete(`/api/hobbies/${id}`)
+        api
+            .delete(`hobbies/${id}`)
             .catch(console.error);
         setHobbies(hobbies.filter(hobby => hobby.id !== id))
         navigate("/")
     }
 
     function handleAddActivity(hobbyId: string, activity: ActivityWithoutID) {
-        axios
-            .post(`/api/hobbies/${hobbyId}/activities`, activity)
+        api
+            .post(`/hobbies/${hobbyId}/activities`, activity)
             .then((response) => response.data)
             .catch((error) => {
                 console.error(error);
@@ -75,20 +80,24 @@ export default function useHobbies() {
                 );
             });
     }
-    function handleEditActivity(hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) {
-        axios.put(`/api/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
-            .then(response => response.data)
-            .catch(error => console.error(error))
-            .then(data => {
+    function handleEditActivity(
+        hobbyId: string,
+        activityId: string,
+        updatedActivity: ActivityWithoutID
+    ) {
+        api
+            .put(`/api/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
+            .then((response) => response.data)
+            .catch((error) => console.error(error))
+            .then((data) => {
                 setHobbies((prevHobbies) =>
                     prevHobbies.map((hobby) => {
                         if (hobby.id === hobbyId) {
-                            return {
-                                ...hobby,
-                                activities: hobby.activities.map((activity) =>
-                                    activity.id === activityId ? { ...data, hobbyId: hobbyId } : activity
-                                ),
-                            };
+                            // Update the activities array of the matching hobby
+                            const updatedActivities = hobby.activities.map((activity) =>
+                                activity.activityId === activityId ? { ...data, hobbyId: hobbyId } : activity
+                            );
+                            return { ...hobby, activities: updatedActivities };
                         }
                         return hobby;
                     })
