@@ -154,5 +154,49 @@ class HobbyServiceTest {
         assertEquals("Activity not found for ID: " + nonExistentActivityId, exception.getMessage());
     }
 
+    @Test
+    void expectActivitiesToBeDeletedFromHobby_whenDeletingActivity() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String activityId = "existingActivityId";
+        Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5);
 
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>(List.of(existingActivity)));
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // WHEN
+        hobbyService.deleteActivity(hobbyId, activityId);
+
+        // THEN
+        verify(hobbyRepo).findById(hobbyId);
+        verify(hobbyRepo).save(existingHobby);
+        assertEquals(0, existingHobby.getActivities().size());
+    }
+
+    @Test
+    void expectNoSuchHobbyException_whenHobbyIdNotFoundInDeleteActivity() {
+        // GIVEN
+        String nonExistentHobbyId = "abc";
+        String existingActivityId = "existingActivityId";
+        when(hobbyRepo.findById(nonExistentHobbyId)).thenReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchHobbyException.class, () -> hobbyService.deleteActivity(nonExistentHobbyId, existingActivityId));
+    }
+
+    @Test
+    void expectNoSuchActivityException_whenActivityIdNotFoundInDeleteActivity() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String nonExistentActivityId = "abc";
+        Activity existingActivity = new Activity("existingActivityId", "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5);
+
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", new ArrayList<>(List.of(existingActivity)));
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // WHEN & THEN
+        assertThrows(NoSuchActivityException.class, () -> hobbyService.deleteActivity(hobbyId, nonExistentActivityId));
+    }
 }
