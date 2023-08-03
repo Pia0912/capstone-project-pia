@@ -74,13 +74,11 @@ export default function ActivityItem(props: Props) {
             rating: lastSelectedRating,
             hobbyId: props.hobby?.id || "",
         };
-
         props.onEditActivity(
             props.hobby?.id || "",
             activityId || "",
             updatedActivity
         );
-
         setIsEditing(false);
         window.location.reload();
     };
