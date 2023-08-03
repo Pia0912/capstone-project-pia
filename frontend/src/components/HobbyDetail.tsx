@@ -32,6 +32,14 @@ export default function HobbyDetail(props: Props) {
             <div className="div-header" style={{ backgroundColor: color || selectedColor }}>
                 {hobby.name}
             </div>
+            <div className="div-hobbyDetail">
+            <StyledButtonBack
+                variant="contained"
+                disableElevation
+                onClick={() => navigate("/")}
+            >
+                Back
+            </StyledButtonBack>
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
@@ -39,7 +47,8 @@ export default function HobbyDetail(props: Props) {
             >
                 +
             </StyledButtonAdd>
-            <Grid container spacing={2}>
+            </div>
+            <StyledGrid container spacing={2}>
                 <ActivityList
                     activities={activities}
                     hobby={hobby}
@@ -47,26 +56,27 @@ export default function HobbyDetail(props: Props) {
                     onEditActivity={handleEditActivity}
                     onDeleteActivity={handleDeleteActivity}
                 />
-            </Grid>
-            <StyledButtonBack
-                variant="contained"
-                disableElevation
-                onClick={() => navigate("/")}
-            >
-                Back to List
-            </StyledButtonBack>
+            </StyledGrid>
         </>
     );
 }
 
 const StyledButtonBack = styled(Button)`
-  margin-top: 1rem;
-  width: 9rem;
+  height: 3rem;
+  width: 3rem;
   background-color: black;
 `;
 
 const StyledButtonAdd = styled(Button)`
-  margin: 0 20% 2rem 75%;
+  height: 3rem;
+  width: 3rem;
   background-color: black;
   font-size: 25px;
+`;
+
+const StyledGrid = styled(Grid)`
+  padding: 0;
+  margin:0;
+  justify-content: center;
+  align-items: flex-start;
 `;

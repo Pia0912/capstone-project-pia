@@ -105,7 +105,7 @@ export default function ActivityItem(props: Props) {
     }
 
     return (
-        <Grid item xs={6} sm={6} md={6} lg={6} container justifyContent="center" alignItems="flex-start">
+        <StyledGrid item xs={6} sm={6} md={6} lg={6} container>
             <div
                 className={`flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`}
                 style={{ backgroundColor: color }}
@@ -154,7 +154,7 @@ export default function ActivityItem(props: Props) {
                 </div>
             </div>
             {!isEditing ? (
-                <div style={{ margin: "1rem" }}>
+                <div className="div-activity">
                     <StyledIconButton aria-label="edit activity" onClick={handleEditClick}>
                         <EditIcon fontSize="small" />
                     </StyledIconButton>
@@ -198,7 +198,7 @@ export default function ActivityItem(props: Props) {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </Grid>
+        </StyledGrid>
 
     );
 }
@@ -222,4 +222,12 @@ const StyledIconButton = styled(IconButton)`
   width: 32px;
   height: 32px;
   margin-left: 1rem;
+`;
+
+
+const StyledGrid = styled(Grid)`
+  padding: 0;
+  margin:0;
+  justify-content: center;
+  align-items: flex-start;
 `;
