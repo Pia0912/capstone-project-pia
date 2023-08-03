@@ -14,7 +14,7 @@ export default function HobbyList(props: Props) {
     }
 
     return (
-        <main>
+        <div className="div-hobbyList">
             {props.hobbies.map((hobby) => (
                 <HobbyItem
                     key={hobby.id}
@@ -24,6 +24,6 @@ export default function HobbyList(props: Props) {
                     onDeleteHobby={props.onDeleteHobby}
                 />
             ))}
-        </main>
+        </div>
     );
 }

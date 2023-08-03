@@ -6,8 +6,10 @@
 
 header {
     width: 100%;
-    height: 70px;
     text-align: center;
+    position: fixed;
+    top: 1rem;
+    bottom: 1rem;
 }
 
 main {
@@ -16,8 +18,8 @@ main {
     flex-direction: column;
     align-content: center;
     align-items: center;
-    margin: 0;
     gap: 0;
+    margin-top: 4rem;
 }
 
 div {
@@ -43,7 +45,6 @@ div {
     align-items: center;
     height: auto;
     width: 100%;
-
 }
 
 .div-activity {
@@ -58,6 +59,11 @@ div {
     flex-direction: row;
     justify-content: center;
     gap: 17rem;
+}
+
+.div-hobbyList {
+    margin-top: 6rem;
+    width: 100%;
 }
 
 .div-edit {
