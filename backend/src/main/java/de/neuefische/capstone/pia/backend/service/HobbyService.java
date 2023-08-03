@@ -69,4 +69,17 @@ public class HobbyService {
         return editedActivity;
     }
 
+    public void deleteActivity(String hobbyId, String activityId) {
+        Hobby hobby = hobbyRepo.findById(hobbyId)
+                .orElseThrow(() -> new NoSuchHobbyException(hobbyId));
+
+        Activity activityToDelete = hobby.getActivities().stream()
+                .filter(activity -> activity.getActivityId().equals(activityId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchActivityException(activityId));
+
+        hobby.removeActivity(activityToDelete);
+
+        hobbyRepo.save(hobby);
+    }
 }

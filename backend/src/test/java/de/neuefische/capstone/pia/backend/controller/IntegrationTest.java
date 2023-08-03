@@ -111,18 +111,18 @@ class IntegrationTest {
         HobbyWithoutID newHobby = new HobbyWithoutID("DIY");
         this.hobbyService.addHobby(newHobby);
         String id = hobbyService.getHobbies().get(0).getId();
-        String expected = """
-                  []
-                """;
 
-        //WHEN
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/" + id)).andExpect(MockMvcResultMatchers.status().isOk());
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/" + id))
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // WHEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
-
-                //THEN
-                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().json("[]"));
     }
-
     @Test
     @DirtiesContext
     void expectHobbyById_whenGetHobbyById() throws Exception {
@@ -228,5 +228,29 @@ class IntegrationTest {
                 // THEN
                 .andExpect(MockMvcResultMatchers.content().json(expected))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    void expectActivityDeleted_whenDeletingActivity() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        Hobby addedHobby = hobbyService.addHobby(newHobby);
+        String hobbyId = addedHobby.getId();
+        LocalDate activityDate = LocalDate.parse("2023-07-31");
+
+        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4);
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity);
+        String activityId = addedActivity.getActivityId();
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/{hobbyId}/activities/{activityId}", hobbyId, activityId))
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().json("[]"));
     }
 }

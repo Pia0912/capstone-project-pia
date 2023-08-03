@@ -37,6 +37,7 @@ export default function ActivityAddForm(props: Props) {
         setDate("");
         setRating(5);
         navigate(`/${hobbyId}/activities`);
+        window.location.reload();
     }
 
     return (

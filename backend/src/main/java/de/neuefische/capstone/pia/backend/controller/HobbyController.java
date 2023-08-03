@@ -5,6 +5,7 @@ import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class HobbyController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteHobby(@PathVariable String id) {
         hobbyService.deleteHobby(id);
     }
@@ -56,5 +58,11 @@ public class HobbyController {
     @PutMapping("/{hobbyId}/activities/{activityId}")
     public Activity updateActivity(@PathVariable String hobbyId, @PathVariable String activityId, @RequestBody ActivityWithoutID updatedActivity) {
         return hobbyService.updateActivity(hobbyId, activityId, updatedActivity);
+    }
+
+    @DeleteMapping("/{hobbyId}/activities/{activityId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteActivity(@PathVariable String hobbyId, @PathVariable String activityId) {
+        hobbyService.deleteActivity(hobbyId, activityId);
     }
 }

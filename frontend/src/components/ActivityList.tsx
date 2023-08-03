@@ -8,6 +8,7 @@ type Props = {
     hobby: Hobby;
     colors: string[];
     onEditActivity: (hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) => void;
+    onDeleteActivity: (hobbyId: string, activityId: string) => void;
 };
 
 export default function ActivityList(props: Props) {
@@ -34,6 +35,7 @@ export default function ActivityList(props: Props) {
                         hobby={props.hobby}
                         colors={props.colors}
                         onEditActivity={handleEditActivity}
+                        onDeleteActivity={props.onDeleteActivity}
                     />
                 ))}
             </StyledGrid>

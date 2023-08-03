@@ -22,4 +22,8 @@ public class Hobby {
     public void addActivity(Activity activity) {
         activities.add(activity);
     }
+
+    public void removeActivity(Activity activity) {
+        activities.remove(activity);
+    }
 }
