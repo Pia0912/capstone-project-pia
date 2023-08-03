@@ -217,3 +217,41 @@ input {
 .input-activity {
     font-size: 12px;
 }
+
+.profile-container{
+   margin-bottom: 4rem;
+}
+
+.profile-tabs {
+    align-self: flex-end;
+    background-color: black;
+    color: white;
+}
+
+.tab {
+    width: 100px;
+    padding-right: 1rem;
+
+}
+
+.profile-content {
+}
+
+.app-purchase {
+    margin-top: 5rem;
+}
+
+.in-app-container {
+    transform: scale(0.7);
+    margin-top: -4rem;
+    margin-left: 10px;
+}
+
+.tabContent {
+    margin-bottom: -2rem;
+}
+
+.tabContent1 {
+    margin-top: 2rem;
+    margin-bottom: -2rem;
+}

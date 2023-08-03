@@ -14,8 +14,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
-import ProfilePage from "./components/ProfilePage.tsx";
 import InAppPurchase from "./components/InAppPurchase.tsx";
+import InfoTab from "./components/ProfilePage/InfoTab.tsx";
+import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
+import GoalsTab from "./components/ProfilePage/GoalsTab.tsx";
+import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
+import BadgesTab from "./components/ProfilePage/BadgesTab.tsx";
+import FriendsTab from "./components/ProfilePage/FriendsTab.tsx";
 
 
 export default function App() {
@@ -50,7 +55,7 @@ export default function App() {
     const selectedActivity = selectedHobby ? selectedHobby.activities.find((activity) => activity.activityId === activityId) : undefined;
 
     const handleProfileIconClick = () => {
-        navigate("/profile");
+        navigate("/profile/info");
     };
 
     const handleSearchIconClick = () => {
@@ -66,7 +71,14 @@ export default function App() {
             <Header/>
             <main>
                 <Routes>
-                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/profile/info" element={<InfoTab hobbies={hobbies} />} />
+                    <Route path="/profile/stats" element={<StatisticTab />} />
+                    <Route path="/profile/goals" element={<GoalsTab />} />
+                    <Route path="/profile/settings" element={<SettingsTab />} />
+                    <Route path="/profile/badges" element={<BadgesTab />} />
+                    <Route path="/profile/friends" element={<FriendsTab />} />
+                    <Route path="/profile/*" element={<InfoTab hobbies={hobbies} />} />
+
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby}/>}/>
                     <Route

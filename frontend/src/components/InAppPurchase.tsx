@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 export default function InAppPurchase() {
     return (
-        <div>
+        <div className="app-purchase">
             <h2>This Page is locked 🥲</h2>
             <h6>But dont be sad - spending money is not that bad..</h6>
 
@@ -85,6 +85,6 @@ const PurchaseButton = styled.button`
     background-color: darkgreen;
     color: white;
   }
-  position: absolute;
-  top: 23.5rem;
+  position: fixed;
+  top: 28.3rem;
 `;
