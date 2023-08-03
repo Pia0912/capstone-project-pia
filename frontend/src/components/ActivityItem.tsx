@@ -9,6 +9,7 @@ import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
 import useColors from "../hooks/useColors.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+
 type Props = {
     activity?: Activity | undefined;
     hobby: Hobby;
