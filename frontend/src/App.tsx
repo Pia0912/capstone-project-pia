@@ -152,7 +152,7 @@ const StyledPaper = styled(Paper)`
   margin: 0;
   padding: 0;
   height: 4rem;
-  z-index: 1;
+  z-index: 5;
 `;
 
 

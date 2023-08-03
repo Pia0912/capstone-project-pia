@@ -22,7 +22,7 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Get unlimited access to all tools & evaluations!
                     </OptionDescription>
-                    <PurchaseButton>Buy</PurchaseButton>
+                    <PurchaseButton1>Buy</PurchaseButton1>
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Remove Ads</OptionTitle>
@@ -47,7 +47,7 @@ const PurchaseOptions = styled.div`
 const OptionCard = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 1rem 1rem 3rem;
+  padding: 1rem 1rem 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -85,6 +85,25 @@ const PurchaseButton = styled.button`
     background-color: darkgreen;
     color: white;
   }
-  position: fixed;
-  top: 28.3rem;
+  position: relative;
+  top: 1rem;
+  align-items: baseline;
 `;
+
+const PurchaseButton1 = styled.button`
+  background-color: springgreen;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: darkgreen;
+    color: white;
+  }
+  position: relative;
+  top: 0.2rem;
+  align-items: baseline;
+`;
+
