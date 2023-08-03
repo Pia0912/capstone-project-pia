@@ -155,7 +155,7 @@ class HobbyServiceTest {
     }
 
     @Test
-    void expectActivitiesToBeDeletedFromHobby_whenDeletingActivity() {
+    void expectDeleteActivityFromHobby_whenDeletingActivity() {
         // GIVEN
         String hobbyId = "existingHobbyId";
         String activityId = "existingActivityId";
