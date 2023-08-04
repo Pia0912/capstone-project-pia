@@ -8,6 +8,7 @@ import StarRating from "./StarRating";
 
 type Props = {
     onAddActivity: (hobbyId: string, activity: ActivityWithoutID) => void;
+    color: string;
 };
 
 export default function ActivityAddForm(props: Props) {
@@ -31,6 +32,7 @@ export default function ActivityAddForm(props: Props) {
             date: new Date(date),
             rating: rating,
             hobbyId: hobbyId,
+            color: props.color,
         };
         props.onAddActivity(hobbyId, newActivity);
         setName("");

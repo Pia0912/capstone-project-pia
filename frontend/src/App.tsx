@@ -21,6 +21,7 @@ import GoalsTab from "./components/ProfilePage/GoalsTab.tsx";
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import BadgesTab from "./components/ProfilePage/BadgesTab.tsx";
 import FriendsTab from "./components/ProfilePage/FriendsTab.tsx";
+import Calendar from "./components/Calendar.tsx";
 
 
 export default function App() {
@@ -87,7 +88,7 @@ export default function App() {
                     />
                     <Route
                         path="/:hobbyId/activities/add"
-                        element={<ActivityAddForm onAddActivity={handleAddActivity}/>}
+                        element={<ActivityAddForm onAddActivity={handleAddActivity} color={selectedHobby?.color || colors[0]}/>}
                     />
                     <Route
                         path="/:hobbyId/activities/:activityId"
@@ -108,6 +109,8 @@ export default function App() {
                         path="/"
                         element={(
                             <>
+                                <Calendar/>
+                                <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +
                                 </StyledButtonAdd>
@@ -136,12 +139,20 @@ export default function App() {
     );
 }
 
+const StyledH2 = styled.h2`
+  margin-top: 2rem;
+  background-color: black;
+  color: white;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 4px solid black;
+  width: calc(100% - 8px);
+`;
+
 const StyledButtonAdd = styled(Button)`
-  margin: 2rem 20% 2rem 75%;
+  margin: 2rem 20% -6rem 75%;
   background-color: black;
   font-size: 25px;
-  position: fixed;
-  z-index: 1;
 `;
 
 const StyledPaper = styled(Paper)`

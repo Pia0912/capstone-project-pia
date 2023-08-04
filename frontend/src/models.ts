@@ -16,6 +16,7 @@ export type Activity = {
     date: Date;
     hobbyId: string;
     rating: number;
+    color: string;
 }
 
 export type ActivityWithoutID = {
@@ -23,4 +24,5 @@ export type ActivityWithoutID = {
     date?: Date;
     hobbyId: string;
     rating: number;
+    color: string;
 }

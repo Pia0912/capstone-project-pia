@@ -74,7 +74,8 @@ export default function ActivityItem(props: Props) {
             date: editedActivity.date,
             rating: lastSelectedRating,
             hobbyId: props.hobby?.id || "",
-        };
+            color: props.colors[0],
+        }
         props.onEditActivity(
             props.hobby?.id || "",
             activityId || "",
