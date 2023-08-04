@@ -36,8 +36,6 @@ export default function ActivityAddForm(props: Props) {
         setName("");
         setDate("");
         setRating(5);
-        navigate(`/${hobbyId}/activities`);
-        window.location.reload();
     }
 
     return (
@@ -61,7 +59,7 @@ export default function ActivityAddForm(props: Props) {
                         value={date}
                         name="date"
                         id="date"
-                        type="datetime-local"
+                        type="date"
                         required
                         className="input-add"
                     />

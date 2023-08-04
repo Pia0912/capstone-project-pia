@@ -9,7 +9,8 @@ header {
     text-align: center;
     position: fixed;
     top: 1rem;
-    bottom: 1rem;
+    bottom: 7rem;
+    z-index: -7;
 }
 
 main {
@@ -247,8 +248,8 @@ input {
     align-items: flex-start;
     margin-top: -4rem;
     align-self: center;
-    width: 90%; /* Adjust the value for smaller screens */
-    height: 70%; /* Adjust the value for smaller screens */
+    width: 90%;
+    height: 70%;
 
 }
 
@@ -259,4 +260,8 @@ input {
 .tabContent1 {
     margin-top: 2rem;
     margin-bottom: -2rem;
+}
+
+.tabTitle {
+conic-gradient(#553c9a 30%, #ee4b2b 40%, #ee4b2b 70%, #00c2cb 80%, #553c9a);
 }

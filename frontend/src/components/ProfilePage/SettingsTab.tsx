@@ -1,24 +1,25 @@
 import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
 import ProfilePage from "./ProfilePage.tsx";
+import PasswordIcon from '@mui/icons-material/Password';
+import IconButton from "@mui/material/IconButton";
 
 export default function SettingsTab() {
     return (
         <>
             <ProfilePage />
         <div id="settings" >
-                <h3>Account Settings</h3>
+            <h2 className="tabTitle">Account Settings</h2>
                 <div className="tabContent1">
                     <SettingLabel>Change Username</SettingLabel>
-                    <SettingValue>JohnD123</SettingValue>
+                    <SettingButton>JohnD123</SettingButton>
                 </div>
-                <div className="tabContent">
-                    <SettingLabel>Email</SettingLabel>
-                    <SettingValue>johndoe@example.com</SettingValue>
-                </div>
+
                 <div className="tabContent">
                     <SettingLabel>Change Password</SettingLabel>
-                    <SettingButton>Change Password</SettingButton>
+                    <StyledIconButton>
+                        <PasswordIcon />
+                    </StyledIconButton>
                 </div>
         </div>
             </>
@@ -32,17 +33,12 @@ const SettingLabel = styled.div`
   margin-top: 1rem;
 `;
 
-const SettingValue = styled.div`
-  background-color: black;
-  border-radius: 15px;
-  margin-top: -1rem;
-  font-size: 1rem;
-  color: white;
-`;
 
 const SettingButton = styled(Button)`
   background-color: orange;
-  color: #fff;
+  align-self: center;
+  width: 10rem;
+  color: black;
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
@@ -51,5 +47,19 @@ const SettingButton = styled(Button)`
   transition: background-color 0.2s;
   &:hover {
     background-color: orangered;
+  }
+`;
+
+const StyledIconButton = styled(IconButton)`
+  background-color: orange;
+  align-self: center;
+  width: 10rem;
+  color: black;
+  border: 2px solid orange;
+  border-radius: 5%; 
+  padding: 8px;
+  &:hover {
+    background-color: orangered;
+    border: 2px solid orangered;
   }
 `;

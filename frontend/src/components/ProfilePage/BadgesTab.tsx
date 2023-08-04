@@ -1,13 +1,13 @@
-import InAppPurchase from "../InAppPurchase.tsx";
 import ProfilePage from "./ProfilePage.tsx";
+import LoadingPage from "./LoadingPage.tsx";
 
 export default function BadgesTab() {
     return (
         <>
             <ProfilePage />
         <div id="badges" className="tabContent">
-                <h3>Badges</h3>
-            <div className="in-app-container"><InAppPurchase /></div>
+            <h2 className="tabTitle">Badges</h2>
+            <LoadingPage />
         </div>
             </>
     );

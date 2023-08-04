@@ -9,6 +9,8 @@ const api = axios.create({
 
 export default function useHobbies() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
+    const [activities, setActivities] = useState<ActivityWithoutID[]>([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -78,8 +80,12 @@ export default function useHobbies() {
                         return hobby;
                     })
                 );
+
+                setActivities((prevActivities) => [...prevActivities, activity]);
+                navigate(`/${hobbyId}/activities`);
             });
     }
+
     function handleEditActivity(
         hobbyId: string,
         activityId: string,
@@ -120,5 +126,5 @@ export default function useHobbies() {
         );
     }
 
-    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity };
+    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity, activities };
 }

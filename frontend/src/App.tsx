@@ -71,13 +71,13 @@ export default function App() {
             <Header/>
             <main>
                 <Routes>
-                    <Route path="/profile/info" element={<InfoTab hobbies={hobbies} />} />
+                    <Route path="/profile/info" element={<InfoTab hobbies={hobbies} activities={selectedHobby?.activities || []} />} />
                     <Route path="/profile/stats" element={<StatisticTab />} />
                     <Route path="/profile/goals" element={<GoalsTab />} />
                     <Route path="/profile/settings" element={<SettingsTab />} />
                     <Route path="/profile/badges" element={<BadgesTab />} />
                     <Route path="/profile/friends" element={<FriendsTab />} />
-                    <Route path="/profile/*" element={<InfoTab hobbies={hobbies} />} />
+                    <Route path="/profile/*" element={<InfoTab hobbies={hobbies} activities={selectedHobby?.activities || []}/>} />
 
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby}/>}/>

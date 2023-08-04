@@ -1,13 +1,13 @@
-import InAppPurchase from "../InAppPurchase.tsx";
 import ProfilePage from "./ProfilePage.tsx";
+import LoadingPage from "./LoadingPage.tsx";
 
 export default function GoalsTab() {
     return (
         <>
             <ProfilePage />
         <div id="goals" className="tabContent">
-                <h3>Goals</h3>
-            <div className="in-app-container"><InAppPurchase /></div>
+                <h2 className="tabTitle">Goals</h2>
+            <LoadingPage />
         </div>
             </>
     );

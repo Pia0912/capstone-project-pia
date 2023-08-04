@@ -81,7 +81,6 @@ export default function ActivityItem(props: Props) {
             updatedActivity
         );
         setIsEditing(false);
-        window.location.reload();
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {

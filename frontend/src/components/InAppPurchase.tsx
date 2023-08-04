@@ -1,7 +1,16 @@
 import styled from "@emotion/styled";
+import BubblyButton from "./BubblyButton.tsx";
+
 
 
 export default function InAppPurchase() {
+
+    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        // Add your desired logic for handling the button click here
+        console.log("Button clicked!");
+    };
+
     return (
         <div className="app-purchase">
             <h2>This Page is locked 🥲</h2>
@@ -14,7 +23,7 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Get access to all our challenges
                     </OptionDescription>
-                    <PurchaseButton>Buy</PurchaseButton>
+                    <BubblyButton onClick={handleButtonClick} />
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Unlimited Access</OptionTitle>
@@ -22,7 +31,7 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Get unlimited access to all tools & evaluations!
                     </OptionDescription>
-                    <PurchaseButton1>Buy</PurchaseButton1>
+                    <BubblyButton onClick={handleButtonClick} />
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Remove Ads</OptionTitle>
@@ -30,7 +39,7 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Enjoy an ad-free experience.
                     </OptionDescription>
-                    <PurchaseButton>Buy</PurchaseButton>
+                    <BubblyButton onClick={handleButtonClick} />
                 </OptionCard>
             </PurchaseOptions>
         </div>
@@ -73,37 +82,4 @@ const OptionDescription = styled.p`
   margin-bottom: 1rem;
 `;
 
-const PurchaseButton = styled.button`
-  background-color: springgreen;
-  border: none;
-  border-radius: 5px;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  &:hover {
-    background-color: darkgreen;
-    color: white;
-  }
-  position: relative;
-  top: 1rem;
-  align-items: baseline;
-`;
-
-const PurchaseButton1 = styled.button`
-  background-color: springgreen;
-  border: none;
-  border-radius: 5px;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  &:hover {
-    background-color: darkgreen;
-    color: white;
-  }
-  position: relative;
-  top: 0.2rem;
-  align-items: baseline;
-`;
 
