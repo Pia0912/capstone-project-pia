@@ -6,8 +6,11 @@
 
 header {
     width: 100%;
-    height: 70px;
     text-align: center;
+    position: fixed;
+    top: 1rem;
+    bottom: 7rem;
+    z-index: -7;
 }
 
 main {
@@ -16,8 +19,9 @@ main {
     flex-direction: column;
     align-content: center;
     align-items: center;
-    margin: 0;
     gap: 0;
+    margin-top: 4rem;
+    z-index: 5;
 }
 
 div {
@@ -43,7 +47,6 @@ div {
     align-items: center;
     height: auto;
     width: 100%;
-
 }
 
 .div-activity {
@@ -58,6 +61,11 @@ div {
     flex-direction: row;
     justify-content: center;
     gap: 17rem;
+}
+
+.div-hobbyList {
+    margin-top: 6rem;
+    width: 100%;
 }
 
 .div-edit {
@@ -210,4 +218,50 @@ input {
 
 .input-activity {
     font-size: 12px;
+}
+
+.profile-container{
+   margin-bottom: 4rem;
+}
+
+.profile-tabs {
+    align-self: flex-end;
+    background-color: black;
+    color: white;
+}
+
+.tab {
+    width: 100px;
+    padding-right: 1rem;
+
+}
+
+.profile-content {
+}
+
+.app-purchase {
+    margin-top: 5rem;
+}
+
+.in-app-container {
+    transform: scale(0.8);
+    align-items: flex-start;
+    margin-top: -4rem;
+    align-self: center;
+    width: 90%;
+    height: 70%;
+
+}
+
+.tabContent {
+    margin-bottom: -2rem;
+}
+
+.tabContent1 {
+    margin-top: 2rem;
+    margin-bottom: -2rem;
+}
+
+.tabTitle {
+conic-gradient(#553c9a 30%, #ee4b2b 40%, #ee4b2b 70%, #00c2cb 80%, #553c9a);
 }

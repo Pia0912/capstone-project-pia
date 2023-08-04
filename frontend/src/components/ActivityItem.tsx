@@ -1,4 +1,4 @@
-import { ChangeEvent, useState} from "react";
+import React, { ChangeEvent, useState} from "react";
 import {Grid, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Dialog} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
@@ -81,7 +81,6 @@ export default function ActivityItem(props: Props) {
             updatedActivity
         );
         setIsEditing(false);
-        window.location.reload();
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
