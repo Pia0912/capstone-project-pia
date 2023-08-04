@@ -24,7 +24,7 @@ public class HobbyService {
 
     public Hobby addHobby(HobbyWithoutID newHobby) {
         String id = uuidService.getRandomId();
-        Hobby hobby = new Hobby(id, newHobby.getName(), new ArrayList<>());
+        Hobby hobby = new Hobby(id, newHobby.getName(), newHobby.getColor(), new ArrayList<>());
         return hobbyRepo.insert(hobby);
     }
 

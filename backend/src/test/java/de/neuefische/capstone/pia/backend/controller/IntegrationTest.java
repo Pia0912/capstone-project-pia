@@ -37,7 +37,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectHobbyList_whenGettingAllHobbies() throws Exception {
         // GIVEN
-        Hobby newHobby = new Hobby(null, "Gardening", new ArrayList<>());
+        Hobby newHobby = new Hobby(null, "Gardening", "green", new ArrayList<>());
         hobbyRepo.save(newHobby);
 
         String expected = """
@@ -76,14 +76,15 @@ class IntegrationTest {
     @DirtiesContext
     void expectUpdatedHobby_whenPuttingHobby() throws Exception {
         //GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
         this.hobbyService.addHobby(newHobby);
         String id = hobbyService.getHobbies().get(0).getId();
         String actual = """
                    
                         {
                             "id": "%s",
-                            "name": "Cooking"
+                            "name": "Cooking",
+                            "color": "green"
                          }
                     
                 """.formatted(id);
@@ -91,7 +92,8 @@ class IntegrationTest {
                    
                         {
                             "id": "%s",
-                            "name": "Cooking"
+                            "name": "Cooking",
+                            "color": "green"
                          }
                     
                 """.formatted(id);
@@ -108,7 +110,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectNoHobby_whenDeletingHobby() throws Exception {
         //GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("DIY");
+        HobbyWithoutID newHobby = new HobbyWithoutID("DIY", "green");
         this.hobbyService.addHobby(newHobby);
         String id = hobbyService.getHobbies().get(0).getId();
 
@@ -127,7 +129,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectHobbyById_whenGetHobbyById() throws Exception {
         // GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "blue");
         Hobby addedHobby = this.hobbyService.addHobby(newHobby);
         String id = addedHobby.getId();
 
@@ -135,6 +137,7 @@ class IntegrationTest {
                     {
                         "id": "%s",
                         "name": "Gardening",
+                        "color": "blue",
                         "activities": []
                     }
                 """.formatted(id);
@@ -150,7 +153,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectEmptyActivitiesList_whenListActivitiesWithNoActivities() throws Exception {
         // GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
         Hobby addedHobby = this.hobbyService.addHobby(newHobby);
         String hobbyId = addedHobby.getId();
 
@@ -165,7 +168,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectActivityAddedToHobby_whenAddActivityToHobby() throws Exception {
         // GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
         Hobby addedHobby = this.hobbyService.addHobby(newHobby);
         String hobbyId = addedHobby.getId();
 
@@ -196,7 +199,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectUpdatedActivity_whenPuttingActivity() throws Exception {
         // GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
         Hobby addedHobby = hobbyService.addHobby(newHobby);
         String hobbyId = addedHobby.getId();
         LocalDate activityDate = LocalDate.parse("2023-07-31");
@@ -234,7 +237,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectActivityDeleted_whenDeletingActivity() throws Exception {
         // GIVEN
-        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening");
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
         Hobby addedHobby = hobbyService.addHobby(newHobby);
         String hobbyId = addedHobby.getId();
         LocalDate activityDate = LocalDate.parse("2023-07-31");
