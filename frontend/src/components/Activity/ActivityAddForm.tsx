@@ -29,7 +29,7 @@ export default function ActivityAddForm(props: Props) {
 
         const newActivity: ActivityWithoutID = {
             name: name,
-            date: new Date(date),
+            activityDate: date,
             rating: rating,
             hobbyId: hobbyId,
             color: props.color,

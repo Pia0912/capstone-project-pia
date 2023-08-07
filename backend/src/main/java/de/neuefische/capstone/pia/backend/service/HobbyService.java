@@ -47,7 +47,7 @@ public class HobbyService {
         Hobby hobby = getHobbyById(hobbyId);
         String activityId = uuidService.getRandomId();
         activityWithoutID.setHobbyId(hobbyId);
-        Activity newActivity = new Activity(activityId, activityWithoutID.getName(), activityWithoutID.getDate(), hobbyId, activityWithoutID.getRating());
+        Activity newActivity = new Activity(activityId, activityWithoutID.getName(), activityWithoutID.getActivityDate(), hobbyId, activityWithoutID.getRating());
         hobby.addActivity(newActivity);
         hobbyRepo.save(hobby);
         return newActivity;
@@ -61,7 +61,7 @@ public class HobbyService {
                 .orElseThrow(() -> new NoSuchActivityException(activityId));
 
         editedActivity.setName(activityNoID.getName());
-        editedActivity.setDate(activityNoID.getDate());
+        editedActivity.setActivityDate(activityNoID.getActivityDate());
         editedActivity.setRating(activityNoID.getRating());
 
         hobbyRepo.save(hobby);

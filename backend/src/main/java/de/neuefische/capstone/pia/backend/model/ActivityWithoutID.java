@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ActivityWithoutID {
     private String name;
-    private LocalDate date;
+    private LocalDate activityDate;
     @Field("hobbyId")
     private String hobbyId;
     private int rating;

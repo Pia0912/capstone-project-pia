@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Activity {
     private String activityId;
     private String name;
-    private LocalDate date;
+    private LocalDate activityDate;
     @Field("hobbyId")
     private String hobbyId;
     private int rating;

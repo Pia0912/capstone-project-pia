@@ -3,7 +3,7 @@ import {Grid, Button, DialogTitle, DialogContent, DialogContentText, DialogActio
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
-import { Activity, ActivityWithoutID, Hobby } from "../../models.ts";
+import { Activity, Hobby } from "../../models.ts";
 import StarRating from "./StarRating.tsx";
 import {LOCAL_STORAGE_KEY} from "../../constants/starRating.ts";
 import useColors from "../../hooks/useColors.ts";
@@ -14,7 +14,7 @@ type Props = {
     activity?: Activity | undefined;
     hobby: Hobby;
     colors: string[];
-    onEditActivity: (hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) => void;
+    onEditActivity: (hobbyId: string, activityId: string, newName: string, newDate: string, newRating: number, color: string) => void;
     onDeleteActivity: (hobbyId: string, activityId: string) => void;
 };
 
@@ -29,7 +29,7 @@ export default function ActivityItem(props: Props) {
     const [isFlipped, setIsFlipped] = useState(false);
     const [editedActivity, setEditedActivity] = useState({
         name: props.activity?.name || "",
-        date: props.activity?.date ? new Date(props.activity.date) : undefined,
+        date: props.activity?.activityDate || "",
     });
 
     const hobbyId = props.hobby.id;
@@ -37,7 +37,6 @@ export default function ActivityItem(props: Props) {
     const [open, setOpen] = useState(false);
 
     const handleRatingChange = (newRating: number) => {
-        console.log("New rating:", newRating);
         setLastSelectedRating(newRating);
         localStorage.setItem(
             `${props.activity?.activityId}_${LOCAL_STORAGE_KEY}`,
@@ -50,7 +49,6 @@ export default function ActivityItem(props: Props) {
     const handleDeleteActivity = () => {
         props.onDeleteActivity(props.hobby.id, activityId);
         handleClose();
-        window.location.reload();
     };
 
     const handleCardClick = () => {
@@ -69,30 +67,24 @@ export default function ActivityItem(props: Props) {
     };
 
     const handleSaveClick = () => {
-        const updatedActivity: ActivityWithoutID = {
-            name: editedActivity.name,
-            date: editedActivity.date,
-            rating: lastSelectedRating,
-            hobbyId: props.hobby?.id || "",
-            color: props.colors[0],
-        }
         props.onEditActivity(
             props.hobby?.id || "",
             activityId || "",
-            updatedActivity
+            editedActivity.name,
+            editedActivity.date,
+            lastSelectedRating,
+            color
         );
         setIsEditing(false);
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-
         setEditedActivity((prev) => ({
             ...prev,
-            [name]: name === "date" ? new Date(value) : value,
+            [name]: value,
         }));
     };
-
 
 
     const handleClickOpen = () => {
@@ -117,10 +109,10 @@ export default function ActivityItem(props: Props) {
                         {!isEditing ? (
                             <>
                                 <h3>{props.activity?.name}</h3>
-                                {props.activity?.date ? (
-                                    <p>{new Date(props.activity.date).toLocaleDateString()}</p>
-                                ) : null}
-                            </>
+                                <p>{props.activity?.activityDate
+                                        ? new Date(props.activity.activityDate).toLocaleDateString('de-DE')
+                                        : ''}
+                                </p></>
                         ) : (
                             <>
                                 <input
@@ -134,7 +126,7 @@ export default function ActivityItem(props: Props) {
                                     className="input-activity"
                                     type="date"
                                     name="date"
-                                    value={editedActivity.date ? editedActivity.date.toISOString().slice(0, 10) : ""}
+                                    value={editedActivity.date}
                                     onChange={handleInputChange}
                                 />
                             </>
@@ -174,7 +166,7 @@ export default function ActivityItem(props: Props) {
                     </StyledButton>
                 </div>
             )}
-            <Dialog
+            <StyledDialog
                 open={open}
                 keepMounted
                 onClose={handleClose}
@@ -196,7 +188,7 @@ export default function ActivityItem(props: Props) {
                         Delete activity
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </StyledDialog>
         </StyledGrid>
 
     );
@@ -229,4 +221,12 @@ const StyledGrid = styled(Grid)`
   margin:0;
   justify-content: center;
   align-items: flex-start;
+`;
+
+const StyledDialog = styled(Dialog)`
+  padding: 0;
+  margin:0;
+  justify-content: center;
+  align-items: flex-start;
+  height: 80%;
 `;

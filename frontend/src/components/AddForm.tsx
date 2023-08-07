@@ -55,6 +55,7 @@ const StyledContainer = styled(Container)`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: -3rem;
 `;
 
 const StyledButton = styled(Button)`
