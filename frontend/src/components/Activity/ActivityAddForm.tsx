@@ -1,10 +1,10 @@
 import {FormEvent, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import Button from '@mui/material/Button';
-import {ActivityWithoutID} from '../models';
+import {ActivityWithoutID} from '../../models.ts';
 import {Container} from '@mui/material';
 import styled from "@emotion/styled";
-import StarRating from "./StarRating";
+import StarRating from "./StarRating.tsx";
 
 type Props = {
     onAddActivity: (hobbyId: string, activity: ActivityWithoutID) => void;

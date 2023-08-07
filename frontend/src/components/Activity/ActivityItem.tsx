@@ -3,10 +3,10 @@ import {Grid, Button, DialogTitle, DialogContent, DialogContentText, DialogActio
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
-import { Activity, ActivityWithoutID, Hobby } from "../models";
-import StarRating from "./StarRating";
-import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
-import useColors from "../hooks/useColors.ts";
+import { Activity, ActivityWithoutID, Hobby } from "../../models.ts";
+import StarRating from "./StarRating.tsx";
+import {LOCAL_STORAGE_KEY} from "../../constants/starRating.ts";
+import useColors from "../../hooks/useColors.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 

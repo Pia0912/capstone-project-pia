@@ -23,7 +23,9 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Get access to all our challenges
                     </OptionDescription>
+                    <StyledBubbleButton1>
                     <BubblyButton onClick={handleButtonClick} />
+                    </StyledBubbleButton1>
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Unlimited Access</OptionTitle>
@@ -31,7 +33,9 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Get unlimited access to all tools & evaluations!
                     </OptionDescription>
-                    <BubblyButton onClick={handleButtonClick} />
+                    <StyledBubbleButton2>
+                        <BubblyButton onClick={handleButtonClick} />
+                    </StyledBubbleButton2>
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Remove Ads</OptionTitle>
@@ -39,7 +43,9 @@ export default function InAppPurchase() {
                     <OptionDescription>
                         Enjoy an ad-free experience.
                     </OptionDescription>
-                    <BubblyButton onClick={handleButtonClick} />
+                    <StyledBubbleButton3>
+                        <BubblyButton onClick={handleButtonClick} />
+                    </StyledBubbleButton3>
                 </OptionCard>
             </PurchaseOptions>
         </div>
@@ -55,13 +61,15 @@ const PurchaseOptions = styled.div`
 
 const OptionCard = styled.div`
   border: 1px solid #ccc;
+  margin: 0;
   border-radius: 10px;
   padding: 1rem 1rem 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px;
+  width: 90px;
+  height: 250px;
 `;
 
 const OptionTitle = styled.h2`
@@ -81,5 +89,18 @@ const OptionDescription = styled.p`
   color: #555;
   margin-bottom: 1rem;
 `;
+
+const StyledBubbleButton1 = styled.div`
+  padding-top: 0.8rem;
+`;
+
+const StyledBubbleButton2 = styled.div`
+  padding-top: 0;
+`;
+
+const StyledBubbleButton3 = styled.div`
+  padding-top: 0.7rem;
+`;
+
 
 

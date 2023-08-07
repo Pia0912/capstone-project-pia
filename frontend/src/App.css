@@ -241,20 +241,13 @@ input {
 
 .app-purchase {
     margin-top: 5rem;
-}
-
-.in-app-container {
     transform: scale(0.8);
-    align-items: flex-start;
-    margin-top: -4rem;
-    align-self: center;
-    width: 90%;
-    height: 70%;
-
 }
 
 .tabContent {
+    margin-left: 2rem;
     margin-bottom: -2rem;
+    align-self: center;
 }
 
 .tabContent1 {

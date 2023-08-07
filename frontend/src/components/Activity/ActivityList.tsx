@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import {Hobby, Activity, ActivityWithoutID} from "../models";
-import ActivityItem from "./ActivityItem";
+import {Hobby, Activity, ActivityWithoutID} from "../../models.ts";
+import ActivityItem from "./ActivityItem.tsx";
 import styled from "@emotion/styled";
 
 type Props = {

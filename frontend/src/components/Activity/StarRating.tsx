@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
+import {LOCAL_STORAGE_KEY} from "../../constants/starRating.ts";
 
 
 type StarRatingProps = {
@@ -10,18 +10,18 @@ type StarRatingProps = {
 
 
 
-export default function StarRating(props: StarRatingProps) {
+export default function StarRating({ activityId, initialRating, onChange }: StarRatingProps) {
     const [rating, setRating] = useState<number>(() => {
-        const storedRating = localStorage.getItem(`${props.activityId}_${LOCAL_STORAGE_KEY}`);
-        return storedRating ? parseInt(storedRating, 10) : props.initialRating;
+        const storedRating = localStorage.getItem(`${activityId}_${LOCAL_STORAGE_KEY}`);
+        return storedRating ? parseInt(storedRating, 10) : initialRating;
     });
 
     useEffect(() => {
-        localStorage.setItem(`${props.activityId}_${LOCAL_STORAGE_KEY}`, rating.toString());
-        if (props.onChange) {
-            props.onChange(rating);
+        localStorage.setItem(`${activityId}_${LOCAL_STORAGE_KEY}`, rating.toString());
+        if (onChange) {
+            onChange(rating);
         }
-    }, [props.activityId, rating]);
+    }, [activityId, rating, onChange]);
 
     const handleClick = (newRating: number) => {
         setRating(newRating);

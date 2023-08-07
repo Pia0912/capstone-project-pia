@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import useActivities from "../hooks/useActivities.ts";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import ActivityList from "./ActivityList.tsx";
+import ActivityList from "./Activity/ActivityList.tsx";
 import useHobbies from "../hooks/useHobbies.ts";
 import useColors from "../hooks/useColors.ts";
 
