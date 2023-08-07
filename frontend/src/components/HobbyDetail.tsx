@@ -32,7 +32,7 @@ export default function HobbyDetail(props: Props) {
             <div className="div-header" style={{ backgroundColor: color || selectedColor }}>
                 {hobby.name}
             </div>
-            <div className="div-hobbyDetail">
+            <div className="div-hobbyDetail-buttons">
             <StyledButtonBack
                 variant="contained"
                 disableElevation

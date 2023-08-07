@@ -116,7 +116,7 @@ export default function HobbyItem(props: Props) {
                     </>
                 )}
             </div>
-            <Dialog
+            <StyledDialog
                 open={open}
                 keepMounted
                 onClose={handleClose}
@@ -138,7 +138,7 @@ export default function HobbyItem(props: Props) {
                         Delete hobby
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </StyledDialog>
         </>
     );
 }
@@ -169,4 +169,12 @@ const StyledIconButton = styled(IconButton)`
   height: 32px;
   transform: translateY(-3rem);
   margin-left: 4px;
+`;
+
+const StyledDialog = styled(Dialog)`
+  padding: 0;
+  margin:0;
+  justify-content: center;
+  align-items: flex-start;
+  height: 80%;
 `;
