@@ -1,26 +1,55 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import './Calendar.css';
 
-export default function Calendar() {
+type Props = {
+    activityId?: string;
+};
+
+type ActivityWithColor = {
+    activityId: string
+    activityDate: string;
+    color: string;
+};
+
+export default function Calendar({ activityId }: Props) {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [daysArray, setDaysArray] = useState<Array<number | null>>([]);
+    const [daysArray, setDaysArray] = useState<Array<number | null | { day: number; color: string }>>([]);
 
     useEffect(() => {
-        function updateDaysArray(year: number, month: number) {
+        function updateDaysArray(year: number, month: number, activitiesWithColors: Array<{ day: number; color: string }>) {
             const daysInMonth = getDaysInMonth(year, month);
             const firstDayOfMonth = getFirstDayOfMonth(year, month);
-            const newDaysArray: Array<number | null> = [];
+            const newDaysArray: Array<number | null | { day: number; color: string }> = [];
 
             for (let i = 0; i < firstDayOfMonth; i++) {
                 newDaysArray.push(null);
             }
             for (let day = 1; day <= daysInMonth; day++) {
-                newDaysArray.push(day);
+                const activityInfo = activitiesWithColors.find((activity) => activity.day === day);
+                newDaysArray.push(activityInfo || { day, color: "" });
             }
             setDaysArray(newDaysArray);
         }
-        updateDaysArray(currentDate.getFullYear(), currentDate.getMonth());
-    }, [currentDate]);
+
+        axios
+            .get<Array<ActivityWithColor>>(`/api/hobbies/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
+            .then((response) => {
+                const activitiesWithColors = response.data.map((activity) => ({
+                    day: new Date(activity.activityDate).getDate(),
+                    color: activity.color,
+                }));
+
+                updateDaysArray(
+                    currentDate.getFullYear(),
+                    currentDate.getMonth(),
+                    activitiesWithColors
+                );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [currentDate, activityId]);
 
     function getDaysInMonth(year: number, month: number): number {
         return new Date(year, month + 1, 0).getDate();
@@ -70,23 +99,36 @@ export default function Calendar() {
                 <li>Su</li>
             </ul>
 
-            <ul className="days">
-                {daysArray.map((day, index) => {
-                    if (day === null) {
+            <ul className="days" >
+                {daysArray.map((dayInfo, index) => {
+                    if (dayInfo === null) {
                         return <li key={index}></li>;
                     }
-                    const isActive = currentDate.getDate() === day && currentDate.getMonth() === new Date().getMonth();
+
+                    if (typeof dayInfo === 'number') {
+                        return (
+                            <li key={index}>
+                                {dayInfo}
+                            </li>
+                        );
+                    }
+
+                    const { day, color } = dayInfo;
+                    const isActive = currentDate.getDate() === day && currentDate.getMonth() === currentDate.getMonth();
+                    const activityIsDone = dayInfo.day === day;
+
                     return (
                         <li
                             key={index}
                             className={isActive ? "active" : ""}
-                            style={isActive ? { backgroundColor: "orangered" } : {}}
+                            style={activityIsDone ? { backgroundColor: color, borderRadius: '50%' } : {}}
                         >
                             {day}
                         </li>
                     );
                 })}
             </ul>
+
         </>
     );
 }

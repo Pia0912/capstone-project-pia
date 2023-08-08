@@ -76,6 +76,47 @@ class HobbyServiceTest {
     }
 
     @Test
+    void updateHobbyName_WhenPuttingHobby() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String newHobbyName = "Updated Gardening";
+
+        HobbyWithoutID updatedHobby = new HobbyWithoutID(newHobbyName, null);
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // WHEN
+        Hobby result = hobbyService.updateHobby(hobbyId, updatedHobby, null);
+
+        // THEN
+        assertEquals(newHobbyName, result.getName());
+        assertEquals(existingHobby.getColor(), result.getColor()); // Check that color remains unchanged
+        verify(hobbyRepo).findById(hobbyId);
+        verify(hobbyRepo).save(existingHobby);
+    }
+
+    @Test
+    void updateHobbyColor_ShouldUpdateHobbyColorAndReturnUpdatedHobby() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String newColor = "blue";
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // WHEN
+        Hobby result = hobbyService.updateHobbyColor(hobbyId, newColor);
+
+        // THEN
+        assertEquals(newColor, result.getColor());
+        verify(hobbyRepo).findById(hobbyId);
+        verify(hobbyRepo).save(existingHobby);
+    }
+
+    @Test
     void expectDeleteMethodToBeCalled_whenDeletingHobby() {
         //GIVEN
         String id = "abc";
@@ -207,16 +248,15 @@ class HobbyServiceTest {
         LocalDate activityDate = LocalDate.of(2023, 7, 31);
         Activity activity = new Activity("activityId", "Planting Flowers", activityDate, hobbyId, 4, "green");
 
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(activity)));
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        List<Activity> activities = List.of(activity);
+
+        when(hobbyRepo.findAll()).thenReturn(Collections.singletonList(new Hobby(hobbyId, "Gardening", "green", activities)));
 
         // WHEN
-        List<Activity> actualActivities = hobbyService.getActivitiesByMonth(hobbyId, LocalDate.of(2023, 7, 1));
+        List<Activity> actualActivities = hobbyService.getActivitiesByMonth(LocalDate.of(2023, 7, 1));
 
         // THEN
         assertEquals(1, actualActivities.size());
         assertEquals("green", actualActivities.get(0).getColor());
-        verify(hobbyRepo).findById(hobbyId);
     }
-
 }

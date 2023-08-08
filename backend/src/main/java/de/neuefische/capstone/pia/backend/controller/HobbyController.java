@@ -26,6 +26,12 @@ public class HobbyController {
         return hobbyService.getHobbies();
     }
 
+    @GetMapping("/calendar")
+    public List<Activity> getActivitiesByMonth(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate month) {
+        return hobbyService.getActivitiesByMonth(month);
+    }
+
     @PostMapping
     public Hobby addHobby(@RequestBody HobbyWithoutID newHobby) {
         return hobbyService.addHobby(newHobby);
@@ -40,7 +46,6 @@ public class HobbyController {
     public Hobby updateHobbyColor(@PathVariable String id, @RequestParam String color) {
         return hobbyService.updateHobbyColor(id, color);
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -72,13 +77,6 @@ public class HobbyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteActivity(@PathVariable String hobbyId, @PathVariable String activityId) {
         hobbyService.deleteActivity(hobbyId, activityId);
-    }
-
-    @GetMapping("/{hobbyId}/calendar/activities")
-    public List<Activity> getActivitiesByMonth(
-            @PathVariable String hobbyId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate month) {
-        return hobbyService.getActivitiesByMonth(hobbyId, month);
     }
 
 }

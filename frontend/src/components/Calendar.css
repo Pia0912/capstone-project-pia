@@ -1,12 +1,12 @@
 .month {
     padding: 10px 10px;
     width: 100%;
-    background: darkorange;
+    background: black;
     text-align: center;
     justify-content: center;
     display: flex;
     align-items: center;
-    height: 4rem;
+    height: 2.25rem;
 }
 
 .month ul {
@@ -44,14 +44,14 @@
     font-size: 16px;
     margin: 0;
     padding: 10px 0;
-    background-color: #ddd;
+    background: black;
+    color: white;
     width: 350px;
     list-style-type: none;
 }
 
 .weekdays li {
     text-align: center;
-    color: #666;
 }
 
 .days {
@@ -59,9 +59,9 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 2px;
     padding: 10px 0;
-    background: #eee;
+    border: 1px solid black;
     margin: 0;
-    width: 350px;
+    width: 346px;
     list-style-type: none;
 }
 
@@ -75,14 +75,14 @@
     margin-bottom: 5px;
     margin-left: 10px;
     font-size: 12px;
-    color: dimgray;
     cursor: pointer;
 }
 
+
 .days li.active {
     padding: 2px;
-    background: darkorange;
-    color: white !important;
+    border-color: black;
+    color: red !important;
     border-radius: 50%;
 }
 

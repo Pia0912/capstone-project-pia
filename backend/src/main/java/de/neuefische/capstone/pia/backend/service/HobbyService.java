@@ -93,27 +93,32 @@ public class HobbyService {
 
         hobbyRepo.save(hobby);
     }
-
-    public List<Activity> getActivitiesByMonth(String hobbyId, LocalDate month) {
-        Hobby hobby = getHobbyById(hobbyId);
-        List<Activity> activitiesWithColor = new ArrayList<>();
-
-        for (Activity activity : hobby.getActivities()) {
-            LocalDate activityDate = activity.getActivityDate();
-            if (activityDate.getMonth() == month.getMonth() && activityDate.getYear() == month.getYear()) {
-                activity.setColor(hobby.getColor());
-                activitiesWithColor.add(activity);
-            }
-        }
-
-        return activitiesWithColor;
-    }
-
     public Hobby updateHobbyColor(String id, String color) {
         Hobby hobby = hobbyRepo.findById(id)
                 .orElseThrow(() -> new NoSuchHobbyException(id));
         hobby.setColor(color);
         return hobbyRepo.save(hobby);
+    }
+
+    public List<Activity> getActivitiesByMonth(LocalDate month) {
+        List<Activity> activitiesWithColor = new ArrayList<>();
+        List<Hobby> hobbies = getHobbies();
+
+        for (Hobby hobby : hobbies) {
+            for (Activity activity : hobby.getActivities()) {
+                LocalDate activityDate = activity.getActivityDate();
+                if (activityDate.getMonth() == month.getMonth() && activityDate.getYear() == month.getYear()) {
+                    Activity activityWithColor = new Activity();
+                    activityWithColor.setActivityId(activity.getActivityId());
+                    activityWithColor.setActivityDate(activityDate);
+                    activityWithColor.setColor(hobby.getColor());
+                    activitiesWithColor.add(activityWithColor);
+                }
+            }
+        }
+
+
+        return activitiesWithColor;
     }
 }
 

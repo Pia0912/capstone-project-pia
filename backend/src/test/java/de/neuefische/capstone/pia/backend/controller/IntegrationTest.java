@@ -76,37 +76,76 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    void expectUpdatedHobby_whenPuttingHobby() throws Exception {
-        //GIVEN
+    void expectUpdatedHobbyName_whenPuttingHobby() throws Exception {
+        // GIVEN
         HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
-        this.hobbyService.addHobby(newHobby);
-        String id = hobbyService.getHobbies().get(0).getId();
-        String actual = """
-                   
-                        {
-                            "id": "%s",
-                            "name": "Cooking",
-                            "color": "green"
-                         }
-                    
-                """.formatted(id);
-        String expected = """
-                   
-                        {
-                            "id": "%s",
-                            "name": "Cooking",
-                            "color": "green"
-                         }
-                    
-                """.formatted(id);
+        Hobby addedHobby = this.hobbyService.addHobby(newHobby);
+        String id = addedHobby.getId();
 
-
-        //WHEN
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/" + id).content(actual).contentType(MediaType.APPLICATION_JSON))
-
-                //THEN
-                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+        String updatedName = "Cooking";
+        String updatedHobbyJson = """
+    {
+        "id": "%s",
+        "name": "%s",
+        "color": "green"
     }
+    """.formatted(id, updatedName);
+
+        String expectedJson = """
+    {
+        "id": "%s",
+        "name": "%s",
+        "color": "green"
+    }
+    """.formatted(id, updatedName);
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{id}", id)
+                        .content(updatedHobbyJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.content().json(expectedJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    void expectUpdatedHobbyColor_whenPuttingHobbyColor() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "lightblue");
+        Hobby addedHobby = this.hobbyService.addHobby(newHobby);
+        String id = addedHobby.getId();
+
+        String updatedColor = "green";
+        String updatedHobbyJson = """
+    {
+        "id": "%s",
+        "name": "Gardening",
+        "color": "%s"
+    }
+    """.formatted(id, updatedColor);
+
+        String expectedJson = """
+    {
+        "id": "%s",
+        "name": "Gardening",
+        "color": "%s"
+    }
+    """.formatted(id, updatedColor);
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{id}/color", id)
+                        .param("color", updatedColor)  // Add the color as a query parameter
+                        .content(updatedHobbyJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                // THEN
+                .andExpect(MockMvcResultMatchers.content().json(expectedJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
 
     @Test
     @DirtiesContext
@@ -269,35 +308,21 @@ class IntegrationTest {
     void expectActivityColor_whenGetActivityByMonth() throws Exception {
         // GIVEN
         HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
-        Hobby addedHobby = this.hobbyService.addHobby(newHobby);
+        Hobby addedHobby = hobbyService.addHobby(newHobby);
         String hobbyId = addedHobby.getId();
+        LocalDate activityDate = LocalDate.parse("2023-07-31");
 
-        // Add an activity with a specific color
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/{hobbyId}/activities", hobbyId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                    {
-                        "name": "Planting Flowers",
-                        "activityDate": "2023-07-31",
-                        "color": "green"
-                    }
-                    """))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-
-
+        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4, "green");
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity, "green");
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/calendar/activities", hobbyId)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/calendar")
                         .param("month", "2023-07-01")
                         .contentType(MediaType.APPLICATION_JSON))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Planting Flowers"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].activityDate").value("2023-07-31"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].color").value("green"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].hobbyId").value(hobbyId));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].color").value(addedActivity.getColor()));
     }
+
 
 }

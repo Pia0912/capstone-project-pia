@@ -110,7 +110,7 @@ export default function App() {
                         path="/"
                         element={(
                             <>
-                                <Calendar />
+                                <Calendar activityId={activityId}/>
                                 <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +
