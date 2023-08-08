@@ -17,4 +17,5 @@ public class Activity {
     @Field("hobbyId")
     private String hobbyId;
     private int rating;
+    private String color;
 }

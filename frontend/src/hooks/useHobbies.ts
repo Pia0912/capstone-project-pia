@@ -33,25 +33,37 @@ export default function useHobbies() {
             });
     }
 
-    function handleEditHobby(id: string, newName: string) {
+    function handleEditHobbyName(id: string, newName: string) {
         const updatedHobby: HobbyWithoutID = {
             name: newName,
+            color: '',
         };
         api
             .put(`/hobbies/${id}`, updatedHobby)
             .then(response => response.data)
             .catch(error => console.error(error))
             .then(data => {
-                setHobbies(
-                    hobbies.map(hobby => {
-                        if (hobby.id === id) {
-                            return data;
-                        }
-                        return hobby;
-                    })
-                );
+                setHobbies(prevHobbies => {
+                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                });
+                console.log("Updated hobby state:", hobbies);
             });
-        navigate(`/`);
+        navigate('/');
+    }
+
+    function handleEditHobbyColor(id: string, newColor: string) {
+        api
+            .put(`/hobbies/${id}/color`, null, {
+                params: { color: newColor },
+            })
+            .then(response => response.data)
+            .catch(error => console.error(error))
+            .then(data => {
+                setHobbies(prevHobbies => {
+                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                });
+                console.log("Updated hobby state:", hobbies);
+            });
     }
 
     function handleDeleteHobby(id: string) {
@@ -143,5 +155,5 @@ export default function useHobbies() {
             });
     }
 
-    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity, activities };
+    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity, activities };
 }

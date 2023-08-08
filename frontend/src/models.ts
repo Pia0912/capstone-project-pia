@@ -7,6 +7,7 @@ export type Hobby = {
 
 export type HobbyWithoutID = {
     name: string;
+    color: string;
 };
 
 

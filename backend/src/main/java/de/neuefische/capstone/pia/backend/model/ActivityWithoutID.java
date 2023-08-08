@@ -16,4 +16,5 @@ public class ActivityWithoutID {
     @Field("hobbyId")
     private String hobbyId;
     private int rating;
+    private String color;
 }

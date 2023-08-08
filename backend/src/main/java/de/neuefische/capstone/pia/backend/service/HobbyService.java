@@ -6,6 +6,7 @@ import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -28,10 +29,13 @@ public class HobbyService {
         return hobbyRepo.insert(hobby);
     }
 
-    public Hobby updateHobby(String id, HobbyWithoutID hobbyNoID) {
+    public Hobby updateHobby(String id, HobbyWithoutID hobbyNoID, String newColor) {
         Hobby hobby = hobbyRepo.findById(id)
                 .orElseThrow(() -> new NoSuchHobbyException(id));
         hobby.setName(hobbyNoID.getName());
+        if (newColor != null) {
+            hobby.setColor(newColor);
+        }
         return hobbyRepo.save(hobby);
     }
 
@@ -43,30 +47,37 @@ public class HobbyService {
         return hobbyRepo.findById(id).orElseThrow(() -> new NoSuchHobbyException(id));
     }
 
-    public Activity addActivityToHobby(String hobbyId, ActivityWithoutID activityWithoutID) {
+    public Activity addActivityToHobby(String hobbyId, ActivityWithoutID activityWithoutID, String color) {
         Hobby hobby = getHobbyById(hobbyId);
         String activityId = uuidService.getRandomId();
+
         activityWithoutID.setHobbyId(hobbyId);
-        Activity newActivity = new Activity(activityId, activityWithoutID.getName(), activityWithoutID.getActivityDate(), hobbyId, activityWithoutID.getRating());
+        activityWithoutID.setColor(color);
+
+        Activity newActivity = new Activity(activityId, activityWithoutID.getName(), activityWithoutID.getActivityDate(), hobbyId, activityWithoutID.getRating(), color);
         hobby.addActivity(newActivity);
         hobbyRepo.save(hobby);
         return newActivity;
     }
 
-    public Activity updateActivity(String hobbyId, String activityId, ActivityWithoutID activityNoID) {
+
+    public Activity updateActivity(String hobbyId, String activityId, ActivityWithoutID updatedActivity) {
         Hobby hobby = hobbyRepo.findById(hobbyId).orElseThrow(() -> new NoSuchHobbyException(hobbyId));
-        Activity editedActivity = hobby.getActivities().stream()
+        Activity activityToUpdate = hobby.getActivities().stream()
                 .filter(activity -> activity.getActivityId().equals(activityId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchActivityException(activityId));
 
-        editedActivity.setName(activityNoID.getName());
-        editedActivity.setActivityDate(activityNoID.getActivityDate());
-        editedActivity.setRating(activityNoID.getRating());
+        activityToUpdate.setName(updatedActivity.getName());
+        activityToUpdate.setActivityDate(updatedActivity.getActivityDate());
+        activityToUpdate.setRating(updatedActivity.getRating());
+
+        String activityColor = hobby.getColor();
+        activityToUpdate.setColor(activityColor);
 
         hobbyRepo.save(hobby);
 
-        return editedActivity;
+        return activityToUpdate;
     }
 
     public void deleteActivity(String hobbyId, String activityId) {
@@ -82,4 +93,27 @@ public class HobbyService {
 
         hobbyRepo.save(hobby);
     }
+
+    public List<Activity> getActivitiesByMonth(String hobbyId, LocalDate month) {
+        Hobby hobby = getHobbyById(hobbyId);
+        List<Activity> activitiesWithColor = new ArrayList<>();
+
+        for (Activity activity : hobby.getActivities()) {
+            LocalDate activityDate = activity.getActivityDate();
+            if (activityDate.getMonth() == month.getMonth() && activityDate.getYear() == month.getYear()) {
+                activity.setColor(hobby.getColor());
+                activitiesWithColor.add(activity);
+            }
+        }
+
+        return activitiesWithColor;
+    }
+
+    public Hobby updateHobbyColor(String id, String color) {
+        Hobby hobby = hobbyRepo.findById(id)
+                .orElseThrow(() -> new NoSuchHobbyException(id));
+        hobby.setColor(color);
+        return hobbyRepo.save(hobby);
+    }
 }
+

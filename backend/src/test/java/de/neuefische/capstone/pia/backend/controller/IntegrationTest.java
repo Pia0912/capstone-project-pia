@@ -62,13 +62,15 @@ class IntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
-                            "name": "Gardening"
+                            "name": "Gardening",
+                            "color": "green"
                         }
                         """))
                 //THEN
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.name").value("Gardening"));
+                .andExpect(jsonPath("$.name").value("Gardening"))
+                .andExpect(jsonPath("$.color").value("green"));
     }
 
 
@@ -178,7 +180,8 @@ class IntegrationTest {
                         .content("""
                         {
                             "name": "Planting Flowers",
-                            "activityDate": "2023-07-31"
+                            "activityDate": "2023-07-31",
+                            "color": "green"
                         }
                         """))
 
@@ -192,6 +195,7 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Planting Flowers"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].activityDate").value("2023-07-31"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].color").value("green"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].hobbyId").value(hobbyId));
     }
 
@@ -204,15 +208,16 @@ class IntegrationTest {
         String hobbyId = addedHobby.getId();
         LocalDate activityDate = LocalDate.parse("2023-07-31");
 
-        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4);
-        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity);
+        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4, "green");
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity, "green");
         String activityId = addedActivity.getActivityId();
 
         String actual = """
                 {
                     "name": "Watering Flowers",
                     "activityDate": "2023-08-02",
-                    "rating": 5
+                    "rating": 5,
+                    "color": "green"
                  }
             """;
         String expected = """
@@ -220,7 +225,8 @@ class IntegrationTest {
                     "activityId": "%s",
                     "name": "Watering Flowers",
                     "activityDate": "2023-08-02",
-                    "rating": 5
+                    "rating": 5,
+                    "color": "green"
                  }
             """.formatted(activityId);
 
@@ -242,8 +248,8 @@ class IntegrationTest {
         String hobbyId = addedHobby.getId();
         LocalDate activityDate = LocalDate.parse("2023-07-31");
 
-        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4);
-        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity);
+        ActivityWithoutID newActivity = new ActivityWithoutID("Planting Flowers", activityDate, hobbyId, 4, "green");
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity, "green");
         String activityId = addedActivity.getActivityId();
 
         // WHEN
@@ -256,4 +262,42 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().json("[]"));
     }
+
+
+    @Test
+    @DirtiesContext
+    void expectActivityColor_whenGetActivityByMonth() throws Exception {
+        // GIVEN
+        HobbyWithoutID newHobby = new HobbyWithoutID("Gardening", "green");
+        Hobby addedHobby = this.hobbyService.addHobby(newHobby);
+        String hobbyId = addedHobby.getId();
+
+        // Add an activity with a specific color
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/{hobbyId}/activities", hobbyId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                    {
+                        "name": "Planting Flowers",
+                        "activityDate": "2023-07-31",
+                        "color": "green"
+                    }
+                    """))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+
+
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/calendar/activities", hobbyId)
+                        .param("month", "2023-07-01")
+                        .contentType(MediaType.APPLICATION_JSON))
+                // THEN
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Planting Flowers"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].activityDate").value("2023-07-31"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].color").value("green"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].hobbyId").value(hobbyId));
+    }
+
 }

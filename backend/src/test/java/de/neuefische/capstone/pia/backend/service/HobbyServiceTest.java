@@ -119,7 +119,7 @@ class HobbyServiceTest {
         String hobbyId = "existingHobbyId";
         LocalDate activityDate = LocalDate.parse("2023-07-31");
         String generatedActivityId = "someActivityId";
-        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5);
+        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5, "green");
 
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
@@ -127,14 +127,14 @@ class HobbyServiceTest {
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN
-        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity);
+        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity, "green");
 
         // THEN
         verify(hobbyRepo).findById(hobbyId);
         verify(hobbyRepo).save(existingHobby);
 
         // ALSO
-        assertEquals(new Activity(generatedActivityId, "New Activity", activityDate, hobbyId, 5), addedActivity);
+        assertEquals(new Activity(generatedActivityId, "New Activity", activityDate, hobbyId, 5, "green"), addedActivity);
     }
 
     @Test
@@ -143,7 +143,7 @@ class HobbyServiceTest {
         String hobbyId = "existingHobbyId";
         String nonExistentActivityId = "abc";
         LocalDate activityDate = LocalDate.parse("2023-07-31");
-        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5);
+        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5, "green");
 
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
@@ -159,7 +159,7 @@ class HobbyServiceTest {
         // GIVEN
         String hobbyId = "existingHobbyId";
         String activityId = "existingActivityId";
-        Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5);
+        Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
 
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
@@ -190,7 +190,7 @@ class HobbyServiceTest {
         // GIVEN
         String hobbyId = "existingHobbyId";
         String nonExistentActivityId = "abc";
-        Activity existingActivity = new Activity("existingActivityId", "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5);
+        Activity existingActivity = new Activity("existingActivityId", "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
 
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
@@ -199,4 +199,24 @@ class HobbyServiceTest {
         // WHEN & THEN
         assertThrows(NoSuchActivityException.class, () -> hobbyService.deleteActivity(hobbyId, nonExistentActivityId));
     }
+
+    @Test
+    void getActivitiesByMonth_ShouldReturnActivitiesWithColor() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        LocalDate activityDate = LocalDate.of(2023, 7, 31);
+        Activity activity = new Activity("activityId", "Planting Flowers", activityDate, hobbyId, 4, "green");
+
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(activity)));
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+
+        // WHEN
+        List<Activity> actualActivities = hobbyService.getActivitiesByMonth(hobbyId, LocalDate.of(2023, 7, 1));
+
+        // THEN
+        assertEquals(1, actualActivities.size());
+        assertEquals("green", actualActivities.get(0).getColor());
+        verify(hobbyRepo).findById(hobbyId);
+    }
+
 }

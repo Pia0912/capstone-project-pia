@@ -33,7 +33,8 @@ export default function App() {
     const {
         hobbies,
         handleAddHobby,
-        handleEditHobby,
+        handleEditHobbyName,
+        handleEditHobbyColor,
         handleDeleteHobby,
         handleAddActivity,
         handleEditActivity,
@@ -81,7 +82,7 @@ export default function App() {
                     <Route path="/profile/*" element={<InfoTab hobbies={hobbies} activities={selectedHobby?.activities || []}/>} />
 
                     <Route path="/app" element={<InAppPurchase/>}/>
-                    <Route path="/add" element={<AddForm onAddHobby={handleAddHobby}/>}/>
+                    <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
                     <Route
                         path="/:id/activities"
                         element={<HobbyDetail colors={colors}/>}
@@ -114,7 +115,8 @@ export default function App() {
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +
                                 </StyledButtonAdd>
-                                <HobbyList hobbies={hobbies} colors={colors} onEditHobby={handleEditHobby}
+                                <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
+                                           onEditHobbyColor={handleEditHobbyColor}
                                            onDeleteHobby={handleDeleteHobby}/>
                             </>
                         )}

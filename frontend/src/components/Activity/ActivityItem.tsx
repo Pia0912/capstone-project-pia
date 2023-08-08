@@ -6,7 +6,6 @@ import styled from "@emotion/styled";
 import { Activity, Hobby } from "../../models.ts";
 import StarRating from "./StarRating.tsx";
 import {LOCAL_STORAGE_KEY} from "../../constants/starRating.ts";
-import useColors from "../../hooks/useColors.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 
@@ -32,8 +31,7 @@ export default function ActivityItem(props: Props) {
         date: props.activity?.activityDate || "",
     });
 
-    const hobbyId = props.hobby.id;
-    const [color] = useColors(hobbyId);
+    const color = props.hobby.color;
     const [open, setOpen] = useState(false);
 
     const handleRatingChange = (newRating: number) => {

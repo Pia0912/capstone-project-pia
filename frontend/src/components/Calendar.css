@@ -57,7 +57,7 @@
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-gap: 2px;
+    gap: 2px;
     padding: 10px 0;
     background: #eee;
     margin: 0;
@@ -78,7 +78,6 @@
     color: dimgray;
     cursor: pointer;
 }
-
 
 .days li.active {
     padding: 2px;

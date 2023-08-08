@@ -2,10 +2,9 @@ import { Grid, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import useActivities from "../hooks/useActivities.ts";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ActivityList from "./Activity/ActivityList.tsx";
 import useHobbies from "../hooks/useHobbies.ts";
-import useColors from "../hooks/useColors.ts";
 import CachedIcon from '@mui/icons-material/Cached';
 
 type Props = {
@@ -14,13 +13,11 @@ type Props = {
 
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const location = useLocation();
-    const selectedColor = location.state?.color || props.colors[0];
+
 
     const { handleEditActivity, handleDeleteActivity } = useHobbies();
     const data = useActivities();
 
-    const [color] = useColors(data?.hobby?.id || "");
 
     if (!data || !data.hobby) {
         return <div>Loading...</div>;
@@ -35,7 +32,7 @@ export default function HobbyDetail(props: Props) {
 
     return (
         <>
-            <div className="div-header" style={{ backgroundColor: color || selectedColor }}>
+            <div className="div-header" style={{ backgroundColor: hobby.color }}>
                 {hobby.name}
             </div>
             <div className="div-hobbyDetail-buttons">
