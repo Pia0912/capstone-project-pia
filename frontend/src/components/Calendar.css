@@ -1,21 +1,21 @@
-ul {
-    width: 77%;
-}
-body {font-family: Verdana, sans-serif;}
-
-/* Month header */
 .month {
-    padding: 25px 25px;
+    padding: 10px 10px;
     width: 100%;
-    background: #1abc9c;
+    background: darkorange;
     text-align: center;
     justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 4rem;
 }
 
-/* Month list */
 .month ul {
     margin: 0;
-    padding: 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
 }
 
 .month ul li {
@@ -23,57 +23,71 @@ body {font-family: Verdana, sans-serif;}
     font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 3px;
+    cursor: pointer;
 }
 
-/* Previous button inside month header */
 .month .prev {
-    float: left;
     padding-top: 10px;
+    margin-right: 20px;
+    list-style-type: none;
 }
 
-/* Next button */
 .month .next {
-    float: right;
     padding-top: 10px;
+    margin-left: 20px;
+    list-style-type: none;
 }
 
-/* Weekdays (Mon-Sun) */
 .weekdays {
-    position: relative;
-    width: 77%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     font-size: 16px;
     margin: 0;
     padding: 10px 0;
-    background-color:#ddd;
+    background-color: #ddd;
+    width: 350px;
+    list-style-type: none;
 }
 
 .weekdays li {
-    display: inline-block;
-    width: 13.6%;
-    color: #666;
     text-align: center;
+    color: #666;
 }
 
-/* Days (1-31) */
 .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 2px;
     padding: 10px 0;
     background: #eee;
     margin: 0;
+    width: 350px;
+    list-style-type: none;
 }
 
 .days li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
     list-style-type: none;
-    display: inline-block;
-    width: 13.6%;
-    text-align: center;
     margin-bottom: 5px;
-    font-size:12px;
-    color: #777;
+    margin-left: 10px;
+    font-size: 12px;
+    color: dimgray;
+    cursor: pointer;
 }
 
-/* Highlight the "current" day */
-.days li .active {
-    padding: 5px;
-    background: #1abc9c;
-    color: white !important
+
+.days li.active {
+    padding: 2px;
+    background: darkorange;
+    color: white !important;
+    border-radius: 50%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
 }

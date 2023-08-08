@@ -21,6 +21,7 @@ import GoalsTab from "./components/ProfilePage/GoalsTab.tsx";
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import BadgesTab from "./components/ProfilePage/BadgesTab.tsx";
 import FriendsTab from "./components/ProfilePage/FriendsTab.tsx";
+import Calendar from "./components/Calendar.tsx";
 
 
 export default function App() {
@@ -108,6 +109,7 @@ export default function App() {
                         path="/"
                         element={(
                             <>
+                                <Calendar />
                                 <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +
@@ -142,7 +144,6 @@ const StyledH2 = styled.h2`
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-top: 4px solid black;
-  border-radius: 90%;
   width: calc(100% - 8px);
 `;
 

@@ -178,7 +178,7 @@ class IntegrationTest {
                         .content("""
                         {
                             "name": "Planting Flowers",
-                            "date": "2023-07-31"
+                            "activityDate": "2023-07-31"
                         }
                         """))
 
@@ -191,7 +191,7 @@ class IntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Planting Flowers"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].date").value("2023-07-31"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].activityDate").value("2023-07-31"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].hobbyId").value(hobbyId));
     }
 
@@ -211,7 +211,7 @@ class IntegrationTest {
         String actual = """
                 {
                     "name": "Watering Flowers",
-                    "date": "2023-08-02",
+                    "activityDate": "2023-08-02",
                     "rating": 5
                  }
             """;
@@ -219,7 +219,7 @@ class IntegrationTest {
                 {
                     "activityId": "%s",
                     "name": "Watering Flowers",
-                    "date": "2023-08-02",
+                    "activityDate": "2023-08-02",
                     "rating": 5
                  }
             """.formatted(activityId);

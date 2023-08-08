@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ActivityList from "./Activity/ActivityList.tsx";
 import useHobbies from "../hooks/useHobbies.ts";
 import useColors from "../hooks/useColors.ts";
+import CachedIcon from '@mui/icons-material/Cached';
 
 type Props = {
     colors: string[];
@@ -27,6 +28,11 @@ export default function HobbyDetail(props: Props) {
 
     const { hobby, activities } = data;
 
+    const handleReload = () => {
+        window.location.href = window.location.pathname + "?timestamp=" + Date.now();
+    };
+
+
     return (
         <>
             <div className="div-header" style={{ backgroundColor: color || selectedColor }}>
@@ -40,6 +46,13 @@ export default function HobbyDetail(props: Props) {
             >
                 Back
             </StyledButtonBack>
+                <StyledButtonReload
+                    variant="contained"
+                    disableElevation
+                    onClick={handleReload}
+                >
+                   <CachedIcon/>
+                </StyledButtonReload>
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
@@ -71,6 +84,14 @@ const StyledButtonAdd = styled(Button)`
   height: 3rem;
   width: 3rem;
   background-color: black;
+  font-size: 25px;
+`;
+
+const StyledButtonReload = styled(Button)`
+  height: 3rem;
+  width: 3rem;
+  background-color: black;
+  color: white;
   font-size: 25px;
 `;
 

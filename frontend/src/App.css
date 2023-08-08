@@ -61,7 +61,7 @@ div {
     padding: 0;
     flex-direction: row;
     align-self: center;
-    gap: 10rem;
+    gap: 5rem;
 }
 
 .div-hobbyList {
@@ -259,3 +259,5 @@ input {
 .tabTitle {
 conic-gradient(#553c9a 30%, #ee4b2b 40%, #ee4b2b 70%, #00c2cb 80%, #553c9a);
 }
+
+
