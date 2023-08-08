@@ -1,33 +1,34 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import './Calendar.css';
+import { useNavigate } from 'react-router-dom';
 
-type Props = {
-    activityId?: string;
-};
 
 type ActivityWithColor = {
-    activityId: string
     activityDate: string;
     color: string;
+    day: number;
+    hobbyId: string;
 };
 
-export default function Calendar({ activityId }: Props) {
+export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [daysArray, setDaysArray] = useState<Array<number | null | { day: number; color: string }>>([]);
+    const [daysArray, setDaysArray] = useState<Array<ActivityWithColor | null>>([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        function updateDaysArray(year: number, month: number, activitiesWithColors: Array<{ day: number; color: string }>) {
+        function updateDaysArray(year: number, month: number, activitiesWithColors: Array<ActivityWithColor>) {
             const daysInMonth = getDaysInMonth(year, month);
             const firstDayOfMonth = getFirstDayOfMonth(year, month);
-            const newDaysArray: Array<number | null | { day: number; color: string }> = [];
+            const newDaysArray: Array<ActivityWithColor | null> = [];
 
             for (let i = 0; i < firstDayOfMonth; i++) {
                 newDaysArray.push(null);
             }
             for (let day = 1; day <= daysInMonth; day++) {
                 const activityInfo = activitiesWithColors.find((activity) => activity.day === day);
-                newDaysArray.push(activityInfo || { day, color: "" });
+                newDaysArray.push(activityInfo || { day, color: "", activityDate: "", hobbyId: "" });
             }
             setDaysArray(newDaysArray);
         }
@@ -36,8 +37,8 @@ export default function Calendar({ activityId }: Props) {
             .get<Array<ActivityWithColor>>(`/api/hobbies/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
             .then((response) => {
                 const activitiesWithColors = response.data.map((activity) => ({
+                    ...activity,
                     day: new Date(activity.activityDate).getDate(),
-                    color: activity.color,
                 }));
 
                 updateDaysArray(
@@ -49,7 +50,7 @@ export default function Calendar({ activityId }: Props) {
             .catch((error) => {
                 console.error(error);
             });
-    }, [currentDate, activityId]);
+    }, [currentDate]);
 
     function getDaysInMonth(year: number, month: number): number {
         return new Date(year, month + 1, 0).getDate();
@@ -76,6 +77,13 @@ export default function Calendar({ activityId }: Props) {
         });
     }
 
+    const dayActivityCounts: { [key: number]: number } = {};
+    daysArray.forEach(dayInfo => {
+        if (dayInfo !== null) {
+            dayActivityCounts[dayInfo.day] = (dayActivityCounts[dayInfo.day] || 0) + 1;
+        }
+    });
+
     return (
         <>
             <div className="month">
@@ -99,36 +107,38 @@ export default function Calendar({ activityId }: Props) {
                 <li>Su</li>
             </ul>
 
-            <ul className="days" >
+            <ul className="days">
                 {daysArray.map((dayInfo, index) => {
                     if (dayInfo === null) {
                         return <li key={index}></li>;
                     }
 
-                    if (typeof dayInfo === 'number') {
-                        return (
-                            <li key={index}>
-                                {dayInfo}
-                            </li>
-                        );
-                    }
+                    const { day, color, hobbyId } = dayInfo;
 
-                    const { day, color } = dayInfo;
                     const isActive = currentDate.getDate() === day && currentDate.getMonth() === currentDate.getMonth();
                     const activityIsDone = dayInfo.day === day;
+
+                    const handleActivityClick = () => {
+                        if (activityIsDone && hobbyId) {
+                            navigate(`/${hobbyId}/activities`);
+                        }
+                    };
+
+
+                    const backgroundColor = activityIsDone ? color : 'white';
 
                     return (
                         <li
                             key={index}
                             className={isActive ? "active" : ""}
-                            style={activityIsDone ? { backgroundColor: color, borderRadius: '50%' } : {}}
+                            style={{ background: backgroundColor, borderRadius: '50%', cursor: 'pointer' }}
+                            onClick={handleActivityClick}
                         >
                             {day}
                         </li>
                     );
                 })}
             </ul>
-
         </>
     );
 }

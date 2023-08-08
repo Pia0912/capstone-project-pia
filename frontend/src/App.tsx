@@ -26,7 +26,7 @@ import Calendar from "./components/Calendar.tsx";
 
 export default function App() {
     const navigate = useNavigate();
-    const colors = ['choose color', 'lightblue', 'lightgreen', 'pink', 'violet', 'orange', 'turquoise'];
+    const colors = ['choose color', 'lightblue', 'cornflowerblue', 'lightgreen', 'pink', 'mediumpurple', 'orange', 'tomato'];
     const [value, setValue] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -110,7 +110,7 @@ export default function App() {
                         path="/"
                         element={(
                             <>
-                                <Calendar activityId={activityId}/>
+                                <Calendar/>
                                 <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +

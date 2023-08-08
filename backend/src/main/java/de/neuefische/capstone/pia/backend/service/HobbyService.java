@@ -112,6 +112,8 @@ public class HobbyService {
                     activityWithColor.setActivityId(activity.getActivityId());
                     activityWithColor.setActivityDate(activityDate);
                     activityWithColor.setColor(hobby.getColor());
+                    activityWithColor.setHobbyId(hobby.getId());
+                    activityWithColor.setRating(activity.getRating());
                     activitiesWithColor.add(activityWithColor);
                 }
             }
