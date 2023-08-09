@@ -84,8 +84,10 @@ export default function ActivityItem(props: Props) {
         setOpen(false);
     }
 
-    const flipCardClasses = `flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`;
-    const flipCardInnerClasses = `${isEditing ? "card-inner" : "flip-card-inner"}`;
+    let flipCardClasses = "flip-card";
+    if (!isEditing) {
+        flipCardClasses += isFlipped ? " is-flipped" : "";
+    }const flipCardInnerClasses = `${isEditing ? "card-inner" : "flip-card-inner"}`;
     const cardFrontClasses = `flip-card-front card-front ${isEditing ? "hidden" : ""}`;
 
     return (
