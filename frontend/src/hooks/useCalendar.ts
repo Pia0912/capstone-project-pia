@@ -134,7 +134,8 @@ export default function useCalendar() {
         setCurrentDate(prevDate => {
             const prevMonth = prevDate.getMonth() - 1;
             const prevYear = prevMonth < 0 ? prevDate.getFullYear() - 1 : prevDate.getFullYear();
-            return new Date(prevYear, prevMonth, prevDate.getDate());
+            const newMonth = prevMonth < 0 ? 11 : prevMonth;
+            return new Date(prevYear, newMonth, prevDate.getDate());
         });
     }
 
@@ -142,9 +143,11 @@ export default function useCalendar() {
         setCurrentDate(prevDate => {
             const nextMonth = prevDate.getMonth() + 1;
             const nextYear = nextMonth > 11 ? prevDate.getFullYear() + 1 : prevDate.getFullYear();
-            return new Date(nextYear, nextMonth, prevDate.getDate());
+            const newMonth = nextMonth > 11 ? 0 : nextMonth;
+            return new Date(nextYear, newMonth, prevDate.getDate());
         });
     }
+
 
     const handleToggle = () => {
         if (activityNames.length > 0) {
@@ -153,14 +156,11 @@ export default function useCalendar() {
     };
 
     const handleClose = (event: Event) => {
-        if (
-            anchorRef.current &&
-            anchorRef.current.contains(event.target as HTMLElement)
-        ) {
-            return;
+        if (!anchorRef.current?.contains(event.target as HTMLElement)) {
+            setOpen(false);
         }
-        setOpen(false);
     };
+
 
     const handleMenuItemClick = (index: number) => {
         setSelectedIndex(index);

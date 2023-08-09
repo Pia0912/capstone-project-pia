@@ -17,7 +17,8 @@ type Props = {
 };
 
 export default function ActivityItem(props: Props) {
-    const [lastSelectedRating, setLastSelectedRating] = useState(props.activity?.rating || 5);
+    const initialRating = props.activity ? props.activity.rating : 5;
+    const [lastSelectedRating, setLastSelectedRating] = useState(initialRating);
     const [isEditing, setIsEditing] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
     const [editedActivity, setEditedActivity] = useState({
@@ -83,16 +84,18 @@ export default function ActivityItem(props: Props) {
         setOpen(false);
     }
 
+    const flipCardClasses = `flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`;
+    const flipCardInnerClasses = `${isEditing ? "card-inner" : "flip-card-inner"}`;
+    const cardFrontClasses = `flip-card-front card-front ${isEditing ? "hidden" : ""}`;
+
     return (
         <StyledGrid item xs={6} sm={6} md={6} lg={6} container>
-            <div
-                className={`flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`}
-                style={{ backgroundColor: color }}
-            >
-                <div className={`${isEditing ? "card-inner" : "flip-card-inner"}`}>
-                    <div className={`flip-card-front card-front ${isEditing ? "hidden" : ""}`}
-                         style={{ backgroundColor: color }}
-                         onClick={handleCardClick}
+            <div className={flipCardClasses} style={{ backgroundColor: color }}>
+                <div className={flipCardInnerClasses}>
+                    <div
+                        className={cardFrontClasses}
+                        style={{ backgroundColor: color }}
+                        onClick={handleCardClick}
                     >
                         {!isEditing ? (
                             <>

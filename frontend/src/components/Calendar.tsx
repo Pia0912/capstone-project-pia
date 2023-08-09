@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useCalendar from "../hooks/useCalendar.ts";
 
+
 export default function Calendar() {
     const {currentDate, daysArray, activityNames,
         setSelectedDay,selectedDayActivities, open, selectedIndex,
@@ -37,19 +38,19 @@ export default function Calendar() {
                 <ul className="days">
                     {daysArray.map((dayInfo, index) => {
                         if (dayInfo === null) {
-                            return <li key={index}></li>;
+                            return <li key={`empty-${index}`}></li>;
                         }
 
                         const { day, color } = dayInfo;
 
-                        const isActive = currentDate.getDate() === day && currentDate.getMonth() === currentDate.getMonth();
+                        const isActive = currentDate.getDate() === day && currentDate.getMonth()
                         const activityIsDone = dayInfo.day === day;
 
                         const backgroundColor = activityIsDone ? color : 'white';
 
                         return (
                             <li
-                                key={index}
+                                key={`empty-${index}`}
                                 className={`calendar-day ${isActive ? "active" : ""}`}
                                 onClick={() => setSelectedDay(day)}
                             >

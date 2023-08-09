@@ -141,15 +141,16 @@ export default function App() {
 }
 
 const StyledH2 = styled.h2`
-  margin-top: 1.5rem;
+  margin-top: 0;
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-top: 4px solid black;
+  border-radius: 5%;
   width: calc(100% - 8px);
 `;
 
 const StyledButtonAdd = styled(Button)`
-  margin: 2rem 20% -6rem 75%;
+  margin: 0.25rem 20% -6rem 75%;
   background-color: black;
   font-size: 25px;
 `;
