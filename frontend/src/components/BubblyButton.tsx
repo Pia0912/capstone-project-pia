@@ -72,13 +72,14 @@ const StyledButton = styled.button`
   &:after {
     display: none;
     bottom: -75%;
-    background-image: radial-gradient(circle, orangered 20%, transparent 20%),
-    radial-gradient(circle, yellow 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%),
-    radial-gradient(circle, orangered 20%, transparent 20%),
+    background-image: radial-gradient(circle, orangered 50%, transparent 20%),
+    radial-gradient(circle, yellow 50%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #ff0081 50%, transparent 20%),
+    radial-gradient(circle, orangered 50%, transparent 20%),
+    radial-gradient(circle, #ff0081 30%, transparent 20%),
     radial-gradient(circle, #ff0081 20%, transparent 20%),
-    radial-gradient(circle, #ff0081 20%, transparent 20%),
-    radial-gradient(circle, deepskyblue 20%, transparent 20%);
+    radial-gradient(circle, deepskyblue 50%, transparent 20%);
+    radial-gradient(circle, blue 50%, transparent 20%);
     background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
   }
 
@@ -95,7 +96,7 @@ const StyledButton = styled.button`
     }
     &:after {
       display: block;
-      animation: bottomBubbles ease-in-out 1s forwards;
+      animation: bottomBubbles ease-in-out 2s forwards;
     }
   }
 `;

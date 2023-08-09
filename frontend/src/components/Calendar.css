@@ -1,15 +1,13 @@
 .calendar-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: lightgray;
-    padding: 20px;
 }
 
-
 .month {
-margin-top: 5px;
+    margin-top: 5px;
     padding: 10px 10px;
     width: 100%;
     background: black;
@@ -78,6 +76,7 @@ margin-top: 5px;
 
 .days li {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 25px;
@@ -87,17 +86,26 @@ margin-top: 5px;
     margin-left: 10px;
     font-size: 12px;
     cursor: pointer;
-    position: relative; /* Added */
-    z-index: 1; /* Added */
-
+    position: relative;
+    z-index: 1;
 }
 
-
-.days li.active {
-    padding: 2px;
-    border-color: black;
-    color: red !important;
+.days li .day-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: transparent;
     border-radius: 50%;
+    width: 2.3rem;
+    height: 0.5rem;
+}
+
+.calendar-day {
+    padding-top: 3rem;
+
+}
+.days li.active .day-circle {
+    color: red !important;
 }
 
 .buttons {
@@ -114,5 +122,4 @@ margin-top: 5px;
     border-radius: 5px;
     padding: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1;
 }

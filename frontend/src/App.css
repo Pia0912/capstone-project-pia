@@ -22,7 +22,8 @@ main {
     align-items: center;
     gap: 0;
     margin-top: 4rem;
-    z-index: 5;
+    overflow: hidden;
+    background: white;
 }
 
 div {

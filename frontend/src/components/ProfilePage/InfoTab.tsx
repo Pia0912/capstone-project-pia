@@ -1,42 +1,49 @@
-import {Activity, Hobby} from "../../models.ts";
 import styled from "@emotion/styled";
 import ProfilePage from "./ProfilePage.tsx";
+import useHobbies from "../../hooks/useHobbies.ts";
+export default function InfoTab() {
+    const { hobbies } = useHobbies();
 
-type InfoTabProps = {
-    hobbies: Hobby[];
-    activities: Activity[];
-
-}
-export default function InfoTab(props: InfoTabProps) {
-
-    console.log("Activities:", props.activities);
-    function countActivitiesForHobby(hobbyId: string): number {
-        if (!props.activities) {
+    function countActivitiesForHobby(hobbyId: string) {
+        const hobby = hobbies.find((hobby) => hobby.id === hobbyId);
+        if (!hobby) {
             return 0;
         }
-        return props.activities.filter(
-            (activity) => activity.hobbyId === hobbyId
-        ).length;
+        return hobby.activities.length;
     }
 
     return (
         <>
-        <ProfilePage />
-        <div id="info" className="tabContent">
-            <h2 className="tabTitle">Info</h2>
+            <ProfilePage />
+            <div id="info" className="tabContent">
+                <h2 className="tabTitle">Info</h2>
+                <SettingsBar1>
+                    <h6>Number of Hobbies: {hobbies.length}</h6>
+                </SettingsBar1>
                 <SettingsBar>
-                    <h6>Number of Hobbies: {props.hobbies.length}</h6>
-                    {props.hobbies.map((hobby) => (
+                    {hobbies.map((hobby) => (
                         <h6 key={hobby.id}>
-                            {hobby.name}: {countActivitiesForHobby(hobby.id)}
+                            Activities for {hobby.name}: {countActivitiesForHobby(hobby.id)}
                         </h6>
-
                     ))}
                 </SettingsBar>
-        </div>
+            </div>
         </>
     );
 }
+
+const SettingsBar1 = styled.div`
+  width: 300px;
+  height: auto;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 2rem;
+  padding: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+`;
 
 const SettingsBar = styled.div`
   width: 300px;
@@ -46,6 +53,7 @@ const SettingsBar = styled.div`
   background-color: #f0f0f0;
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 2rem;
-  margin-left: 2rem;
+  margin: 2rem;
+  padding: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 `;
