@@ -13,13 +13,11 @@ type Props = {
 
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-
-
     const { handleEditActivity, handleDeleteActivity } = useHobbies();
     const data = useActivities();
 
 
-    if (!data || !data.hobby) {
+    if (!data?.hobby) {
         return <div>Loading...</div>;
     }
 

@@ -5,12 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
 import { Activity, Hobby } from "../../models.ts";
 import StarRating from "./StarRating.tsx";
-import {LOCAL_STORAGE_KEY} from "../../constants/starRating.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 
 type Props = {
-    activity?: Activity | undefined;
+    activity?: Activity;
     hobby: Hobby;
     colors: string[];
     onEditActivity: (hobbyId: string, activityId: string, newName: string, newDate: string, newRating: number, color: string) => void;
@@ -18,17 +17,12 @@ type Props = {
 };
 
 export default function ActivityItem(props: Props) {
-    const [lastSelectedRating, setLastSelectedRating] = useState(() => {
-        const storedRating = localStorage.getItem(
-            `${props.activity?.activityId}_${LOCAL_STORAGE_KEY}`
-        );
-        return storedRating ? parseInt(storedRating, 10) : props.activity?.rating || 5;
-    });
+    const [lastSelectedRating, setLastSelectedRating] = useState(props.activity?.rating || 5);
     const [isEditing, setIsEditing] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
     const [editedActivity, setEditedActivity] = useState({
-        name: props.activity?.name || "",
-        date: props.activity?.activityDate || "",
+        name: props.activity?.name ?? "",
+        date: props.activity?.activityDate ?? "",
     });
 
     const color = props.hobby.color;
@@ -36,10 +30,6 @@ export default function ActivityItem(props: Props) {
 
     const handleRatingChange = (newRating: number) => {
         setLastSelectedRating(newRating);
-        localStorage.setItem(
-            `${props.activity?.activityId}_${LOCAL_STORAGE_KEY}`,
-            newRating.toString()
-        );
     };
 
     const activityId = props.activity?.activityId as string;
@@ -132,9 +122,9 @@ export default function ActivityItem(props: Props) {
                     </div>
                     <div className="flip-card-back" onClick={handleCardClick}>
                         <p>RATING: </p>
-                        {props.activity?.activityId && (
+                        {activityId && (
                             <StarRating
-                                activityId={props.activity.activityId}
+                                activityId={activityId}
                                 initialRating={lastSelectedRating}
                                 onChange={handleRatingChange}
                             />

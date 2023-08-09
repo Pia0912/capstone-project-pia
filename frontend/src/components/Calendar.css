@@ -1,3 +1,13 @@
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: lightgray;
+    padding: 20px;
+}
+
+
 .month {
 margin-top: 5px;
     padding: 10px 10px;
@@ -58,7 +68,7 @@ margin-top: 5px;
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 5px;
     padding: 10px 0;
     border: 1px solid black;
     margin: 0;
@@ -77,6 +87,9 @@ margin-top: 5px;
     margin-left: 10px;
     font-size: 12px;
     cursor: pointer;
+    position: relative; /* Added */
+    z-index: 1; /* Added */
+
 }
 
 
@@ -90,4 +103,16 @@ margin-top: 5px;
 .buttons {
     display: flex;
     flex-direction: row;
+}
+
+.activity-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }

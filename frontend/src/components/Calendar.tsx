@@ -1,91 +1,17 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import './Calendar.css';
-import { useNavigate } from 'react-router-dom';
-
-
-type ActivityWithColor = {
-    activityDate: string;
-    color: string;
-    day: number;
-    hobbyId: string;
-};
+import React from 'react';
+import {ButtonGroup, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@mui/material";
+import Button from "@mui/material/Button";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import useCalendar from "../hooks/useCalendar.ts";
 
 export default function Calendar() {
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const [daysArray, setDaysArray] = useState<Array<ActivityWithColor | null>>([]);
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        function updateDaysArray(year: number, month: number, activitiesWithColors: Array<ActivityWithColor>) {
-            const daysInMonth = getDaysInMonth(year, month);
-            const firstDayOfMonth = getFirstDayOfMonth(year, month);
-            const newDaysArray: Array<ActivityWithColor | null> = [];
-
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                newDaysArray.push(null);
-            }
-            for (let day = 1; day <= daysInMonth; day++) {
-                const activityInfo = activitiesWithColors.find((activity) => activity.day === day);
-                newDaysArray.push(activityInfo || { day, color: "", activityDate: "", hobbyId: "" });
-            }
-            setDaysArray(newDaysArray);
-        }
-
-        axios
-            .get<Array<ActivityWithColor>>(`/api/hobbies/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
-            .then((response) => {
-                const activitiesWithColors = response.data.map((activity) => ({
-                    ...activity,
-                    day: new Date(activity.activityDate).getDate(),
-                }));
-
-                updateDaysArray(
-                    currentDate.getFullYear(),
-                    currentDate.getMonth(),
-                    activitiesWithColors
-                );
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, [currentDate]);
-
-    function getDaysInMonth(year: number, month: number): number {
-        return new Date(year, month + 1, 0).getDate();
-    }
-
-    function getFirstDayOfMonth(year: number, month: number): number {
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
-        return firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-    }
-
-    function handlePrevMonth() {
-        setCurrentDate(prevDate => {
-            const prevMonth = prevDate.getMonth() - 1;
-            const prevYear = prevMonth < 0 ? prevDate.getFullYear() - 1 : prevDate.getFullYear();
-            return new Date(prevYear, prevMonth, prevDate.getDate());
-        });
-    }
-
-    function handleNextMonth() {
-        setCurrentDate(prevDate => {
-            const nextMonth = prevDate.getMonth() + 1;
-            const nextYear = nextMonth > 11 ? prevDate.getFullYear() + 1 : prevDate.getFullYear();
-            return new Date(nextYear, nextMonth, prevDate.getDate());
-        });
-    }
-
-    const dayActivityCounts: { [key: number]: number } = {};
-    daysArray.forEach(dayInfo => {
-        if (dayInfo !== null) {
-            dayActivityCounts[dayInfo.day] = (dayActivityCounts[dayInfo.day] || 0) + 1;
-        }
-    });
+    const {currentDate, daysArray, activityNames,
+        setSelectedDay,selectedDayActivities, open, selectedIndex,
+        anchorRef, handlePrevMonth, handleNextMonth, handleToggle, handleClose, handleMenuItemClick,} = useCalendar();
 
     return (
-        <>
+        <div className="calendar-container">
             <div className="month">
                 <ul className="buttons">
                     <li className="prev" onClick={handlePrevMonth}>&#10094;</li>
@@ -97,48 +23,107 @@ export default function Calendar() {
                 </ul>
             </div>
 
-            <ul className="weekdays">
-                <li>Mo</li>
-                <li>Tu</li>
-                <li>We</li>
-                <li>Th</li>
-                <li>Fr</li>
-                <li>Sa</li>
-                <li>Su</li>
-            </ul>
+            <div className="calendar-content">
+                <ul className="weekdays">
+                    <li>Mo</li>
+                    <li>Tu</li>
+                    <li>We</li>
+                    <li>Th</li>
+                    <li>Fr</li>
+                    <li>Sa</li>
+                    <li>Su</li>
+                </ul>
 
-            <ul className="days">
-                {daysArray.map((dayInfo, index) => {
-                    if (dayInfo === null) {
-                        return <li key={index}></li>;
-                    }
-
-                    const { day, color, hobbyId } = dayInfo;
-
-                    const isActive = currentDate.getDate() === day && currentDate.getMonth() === currentDate.getMonth();
-                    const activityIsDone = dayInfo.day === day;
-
-                    const handleActivityClick = () => {
-                        if (activityIsDone && hobbyId) {
-                            navigate(`/${hobbyId}/activities`);
+                <ul className="days">
+                    {daysArray.map((dayInfo, index) => {
+                        if (dayInfo === null) {
+                            return <li key={index}></li>;
                         }
-                    };
 
+                        const { day, color } = dayInfo;
 
-                    const backgroundColor = activityIsDone ? color : 'white';
+                        const isActive = currentDate.getDate() === day && currentDate.getMonth() === currentDate.getMonth();
+                        const activityIsDone = dayInfo.day === day;
 
-                    return (
-                        <li
-                            key={index}
-                            className={isActive ? "active" : ""}
-                            style={{ background: backgroundColor, borderRadius: '50%', cursor: 'pointer' }}
-                            onClick={handleActivityClick}
-                        >
-                            {day}
-                        </li>
-                    );
-                })}
-            </ul>
-        </>
+                        const backgroundColor = activityIsDone ? color : 'white';
+
+                        return (
+                            <li
+                                key={index}
+                                className={isActive ? "active" : ""}
+                                style={{ background: backgroundColor, borderRadius: '50%', cursor: 'pointer' }}
+                                onClick={() => setSelectedDay(day)}
+                            >
+                                <div>{day}</div>
+                                <div style={{ display: 'inline-block', marginLeft: '4px', backgroundColor: 'transparent' }}>
+                                    {activityNames.length > 0 && (
+                                        <React.Fragment>
+                                            <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
+                                                <Button
+                                                    style={{ backgroundColor: 'transparent', color: 'black', margin: 0, padding: 0 }}
+                                                    size="small"
+                                                    aria-controls={open ? 'split-button-menu' : undefined}
+                                                    aria-expanded={open ? 'true' : undefined}
+                                                    aria-label="select merge strategy"
+                                                    aria-haspopup="menu"
+                                                    onClick={handleToggle}
+                                                >
+                                                    <ArrowDropDownIcon style={{ fontSize: '15px' }} />
+                                                </Button>
+                                            </ButtonGroup>
+                                            <Popper
+                                                sx={{
+                                                    zIndex: 1,
+                                                }}
+                                                open={open}
+                                                anchorEl={anchorRef.current}
+                                                role={undefined}
+                                                transition
+                                                disablePortal
+                                            >
+                                                {({ TransitionProps, placement }) => (
+                                                    <Grow
+                                                        {...TransitionProps}
+                                                        style={{
+                                                            transformOrigin:
+                                                                placement === 'bottom'
+                                                                    ? 'center top'
+                                                                    : 'center bottom',
+                                                        }}
+                                                    >
+                                                        <Paper style={{ backgroundColor: 'white', color: 'black', width: '250px' }}>
+                                                            <ClickAwayListener onClickAway={handleClose}>
+                                                                <MenuList
+                                                                    id="split-button-menu"
+                                                                    autoFocusItem
+                                                                >
+                                                                    {selectedDayActivities.map(
+                                                                        (activity, index) => (
+                                                                            <MenuItem
+                                                                                key={activity.activityId}
+                                                                                disabled={index === 2}
+                                                                                selected={index === selectedIndex}
+                                                                                onClick={() => handleMenuItemClick(index)}
+                                                                                style={{ backgroundColor: activity.color, width: '250px' }}
+                                                                            >
+                                                                                {activity.name}
+                                                                            </MenuItem>
+                                                                        )
+                                                                    )}
+                                                                </MenuList>
+                                                            </ClickAwayListener>
+                                                        </Paper>
+                                                    </Grow>
+                                                )}
+                                            </Popper>
+                                        </React.Fragment>
+                                    )}
+                                </div>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </div>
     );
 }

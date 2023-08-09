@@ -262,6 +262,7 @@ class HobbyServiceTest {
         assertEquals("green", actualActivities.get(0).getColor());
         assertEquals("existingHobbyId", actualActivities.get(0).getHobbyId());
         assertEquals(4, actualActivities.get(0).getRating());
+        assertEquals("Planting Flowers", actualActivities.get(0).getName());
 
     }
 }

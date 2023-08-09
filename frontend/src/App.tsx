@@ -23,7 +23,6 @@ import BadgesTab from "./components/ProfilePage/BadgesTab.tsx";
 import FriendsTab from "./components/ProfilePage/FriendsTab.tsx";
 import Calendar from "./components/Calendar.tsx";
 
-
 export default function App() {
     const navigate = useNavigate();
     const colors = ['choose color', 'lightblue', 'cornflowerblue', 'lightgreen', 'pink', 'mediumpurple', 'orange', 'tomato'];
@@ -110,7 +109,7 @@ export default function App() {
                         path="/"
                         element={(
                             <>
-                                <Calendar/>
+                                <Calendar />
                                 <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +

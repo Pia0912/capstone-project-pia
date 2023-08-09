@@ -28,3 +28,13 @@ export type ActivityWithoutID = {
     rating: number;
     color: string;
 }
+
+
+export type ActivityWithColor = {
+    activityDate: string;
+    name: string;
+    color: string;
+    day: number;
+    hobbyId: string;
+    activityId: string;
+};
