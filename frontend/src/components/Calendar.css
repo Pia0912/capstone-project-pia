@@ -5,10 +5,11 @@
     align-items: center;
     justify-content: center;
     background-color: white;
+    margin: 0;
+    padding: 0;
 }
 
 .month {
-    margin-top: 5px;
     padding: 10px 10px;
     width: 100%;
     background: black;
@@ -73,7 +74,7 @@
     margin: 0;
     width: 346px;
     list-style-type: none;
-
+    box-shadow: 2px 2px black;
 }
 
 .days li {

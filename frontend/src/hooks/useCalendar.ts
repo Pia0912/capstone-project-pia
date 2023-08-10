@@ -30,7 +30,7 @@ export default function useCalendar() {
             }
             for (let day = 1; day <= daysInMonth; day++) {
                 const activityInfo = activitiesWithColors.find((activity) => activity.day === day);
-                newDaysArray.push(activityInfo || {
+                newDaysArray.push(activityInfo ?? {
                     activityDate: "",
                     name: "",
                     color: "",
@@ -156,11 +156,8 @@ export default function useCalendar() {
     };
 
     const handleGradient = () => {
-        console.log("activityColors length:", activityColors.length);
-
         if (activityColors.length > 1) {
             const gradientColors = activityColors.join(', ');
-            console.log("gradientColors:", gradientColors);
             return `linear-gradient(to bottom, ${gradientColors})`;
         } else if (activityColors.length === 1) {
             return activityColors[0];
@@ -180,8 +177,6 @@ export default function useCalendar() {
         setSelectedIndex(index);
         setOpen(false);
     };
-
-    console.log(currentDate)
 
     return {
         currentDate,

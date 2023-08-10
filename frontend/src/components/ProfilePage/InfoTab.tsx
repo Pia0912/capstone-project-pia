@@ -13,7 +13,7 @@ export default function InfoTab() {
     }
 
     return (
-        <>
+        <div className="div-infoTab">
             <ProfilePage />
             <div id="info" className="tabContent">
                 <h2 className="tabTitle">Info</h2>
@@ -28,12 +28,12 @@ export default function InfoTab() {
                     ))}
                 </SettingsBar>
             </div>
-        </>
+        </div>
     );
 }
 
 const SettingsBar1 = styled.div`
-  width: 263px;
+  width: 250px;
   height: auto;
   align-items: center;
   align-self: flex-end;
@@ -46,7 +46,7 @@ const SettingsBar1 = styled.div`
 `;
 
 const SettingsBar = styled.div`
-  width: 263px;
+  width: 250px;
   height: auto;
   align-items: center;
   justify-content: space-around;
@@ -54,6 +54,7 @@ const SettingsBar = styled.div`
   border-radius: 10px;
   overflow: hidden;
   margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
   padding: 2rem;
-  box-shadow: 5px 5px black;
+  box-shadow: 3px 3px black;
 `;

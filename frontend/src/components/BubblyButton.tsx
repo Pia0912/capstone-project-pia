@@ -17,7 +17,7 @@ export default function BubblyButton ({ onClick }: BubblyButtonProps)  {
 
     return (
         <AnimatedStyledButton onClick={handleButtonClick} className={animate ? "animate" : ""}>
-            Buy!
+            Upgrade!
         </AnimatedStyledButton>
     );
 }
@@ -35,7 +35,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.3s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px rgba(0, 230, 0, 200);
+  box-shadow: 3px 3px black;
 
   &:focus {
     outline: 0;
@@ -128,6 +128,7 @@ const bottomBubbles = `
 `;
 
 const AnimatedStyledButton = styled(StyledButton)`
+  font-size: 16px;
   @keyframes topBubbles {
     ${topBubbles}
   }

@@ -10,7 +10,7 @@ import HobbyDetail from "./components/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import SearchIcon from '@mui/icons-material/Search';
+import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
@@ -25,7 +25,7 @@ import Calendar from "./components/Calendar.tsx";
 
 export default function App() {
     const navigate = useNavigate();
-    const colors = ['choose color', 'lightblue', 'cornflowerblue', 'lightgreen', 'pink', 'mediumpurple', 'orange', 'tomato'];
+    const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -131,7 +131,7 @@ export default function App() {
                     }}
                 >
                     <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
-                    <StyledBottomNavigationAction label="Activities" icon={<SearchIcon/>} onClick={handleSearchIconClick}/>
+                    <StyledBottomNavigationAction label="Upgrade" icon={<AppShortcutIcon/>} onClick={handleSearchIconClick}/>
                     <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>}
                                             onClick={handleProfileIconClick}/>
                 </StyledBottomNavigation>

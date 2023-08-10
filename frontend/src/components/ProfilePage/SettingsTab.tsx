@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 
 export default function SettingsTab() {
     return (
-        <>
+        <div className="div-settingsTab">
             <ProfilePage />
         <div id="settings" >
             <h2 className="tabTitle">Account Settings</h2>
@@ -22,21 +22,32 @@ export default function SettingsTab() {
                     </StyledIconButton>
                 </div>
         </div>
-            </>
+            </div>
     );
 }
 
 const SettingLabel = styled.div`
-  align-self: flex-start;
+  align-self: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  justify-self: center;
+  justify-content: center;
+  
   font-size: 1rem;
-  margin-right: 1rem;
   margin-top: 1rem;
+  
 `;
 
 
 const SettingButton = styled(Button)`
   background-color: orange;
   align-self: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  justify-self: center;
+  justify-content: center;
   width: 10rem;
   color: black;
   border: none;
@@ -46,20 +57,25 @@ const SettingButton = styled(Button)`
   cursor: pointer;
   transition: background-color 0.2s;
   &:hover {
-    background-color: orangered;
+    background-color: tomato;
   }
 `;
 
 const StyledIconButton = styled(IconButton)`
   background-color: orange;
   align-self: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  justify-self: center;
+  justify-content: center;
   width: 10rem;
   color: black;
   border: 2px solid orange;
   border-radius: 5%; 
   padding: 8px;
   &:hover {
-    background-color: orangered;
-    border: 2px solid orangered;
+    background-color: tomato;
+    border: 2px solid tomato;
   }
 `;

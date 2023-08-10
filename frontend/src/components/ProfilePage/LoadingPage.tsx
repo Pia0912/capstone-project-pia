@@ -4,6 +4,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function LoadingPage() {
     return (
+        <>
         <ConstructionContainer>
             <IconsContainer>
                 <StyledSettingsIcon />
@@ -15,6 +16,7 @@ export default function LoadingPage() {
                 <Description>We are currently working on something awesome.</Description>
             </Message>
         </ConstructionContainer>
+        </>
     );
 }
 

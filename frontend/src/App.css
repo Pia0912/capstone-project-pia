@@ -6,13 +6,13 @@
 
 header {
     width: 100%;
-    height: 100px;
+    height: 70px;
     text-align: center;
     position: fixed;
-    top: 1rem;
-    bottom: 7rem;
-    z-index: -7;
-
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    color: white;
 }
 
 
@@ -26,7 +26,7 @@ main {
     align-content: center;
     align-items: center;
     gap: 0;
-    margin-top: 4rem;
+    margin-top: 54px;
     overflow: hidden;
 }
 
@@ -46,9 +46,9 @@ div {
     align-self: center;
     justify-content: space-between;
     height: 150px;
-    width: 97%;
+    width: 95%;
     border-radius: 5px;
-
+    box-shadow: 4px 4px black;
 }
 
 .div-header {
@@ -89,6 +89,8 @@ div {
     padding: 0;
     gap: 0;
 }
+
+
 
 select {
     background: transparent;
@@ -143,14 +145,14 @@ input {
     min-width: 140px;
     height: 100px;
     border: 1px solid black;
-    padding: 5px;
+    padding: 2px 5px;
     margin-top: 1rem;
-    margin-left: 1.5rem;
+    margin-left: 1rem;
     margin-right: 1.5rem;
     perspective: 1000px;
     justify-content: flex-end;
     border-radius: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px black;
 }
 
 .flip-card-front h3 {
@@ -193,18 +195,19 @@ input {
 
 .flip-card-front {
     color: black;
-    padding-top: 5px;
-    padding-bottom: 30px;
+    padding: 15px 5px 30px;
+    border: 1px solid black;
     border-radius: 15px;
+    box-shadow: 3px 3px black;
 }
 
 .flip-card-back {
     background-color: black;
     color: white;
     transform: rotateY(180deg);
-    padding-top: 15px;
-    padding-bottom: 30px;
+    padding: 15px 5px 30px;
     border-radius: 15px;
+    box-shadow: 3px 3px gray;
 }
 
 .is-flipped .flip-card-inner {
@@ -250,12 +253,9 @@ input {
 
 }
 
-.profile-content {
-}
-
 .app-purchase {
-    margin-top: 5rem;
-    transform: scale(0.88);
+    padding: 4rem 3rem 15rem;
+    background-color: coral;
 }
 
 .tabContent {
@@ -269,8 +269,40 @@ input {
     margin-bottom: -2rem;
 }
 
-.tabTitle {
-conic-gradient(#553c9a 30%, #ee4b2b 40%, #ee4b2b 70%, #00c2cb 80%, #553c9a);
+.div-statisticTab {
+    padding: 3rem 5rem 21rem;
+    background-color: tomato;
 }
 
+.div-settingsTab {
+    padding: 3rem 6rem 18rem;
+    background-color: cornflowerblue;
+}
 
+.div-infoTab {
+    padding: 3rem 3rem 21rem;
+    background-color: lightgreen;
+}
+
+.div-goalsTab {
+    padding: 3rem 5rem 21rem;
+    background-color: mediumpurple;
+}
+
+.div-friendsTab {
+    padding: 3rem 5rem 14rem;
+    background-color: pink;
+}
+
+.div-badgesTab {
+    padding: 3rem 5rem 14rem;
+    background-color: lightblue;
+}
+
+.tabTitle {
+    background-color: inherit;
+}
+
+.noActivities{
+    margin-top: 2rem;
+}

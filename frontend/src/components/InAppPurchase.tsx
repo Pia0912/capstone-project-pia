@@ -13,14 +13,14 @@ export default function InAppPurchase() {
     return (
         <div className="app-purchase">
             <h2>This Page is locked 🥲</h2>
-            <h6>But dont be sad - spending money is not that bad..</h6>
+            <h6>But dont be sad - see what's possible..</h6>
 
             <PurchaseOptions>
                 <OptionCard>
                     <OptionTitle>Badge Hunter</OptionTitle>
-                    <OptionPrice>$2.99</OptionPrice>
+                    <OptionPrice></OptionPrice>
                     <OptionDescription>
-                        Get access to all our challenges
+                        Get access to all weekly challenges
                     </OptionDescription>
                     <StyledBubbleButton1>
                     <BubblyButton onClick={handleButtonClick} />
@@ -28,23 +28,13 @@ export default function InAppPurchase() {
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Unlimited Access</OptionTitle>
-                    <OptionPrice>$9.99</OptionPrice>
+                    <OptionPrice></OptionPrice>
                     <OptionDescription>
                         Get unlimited access to all tools & evaluations!
                     </OptionDescription>
                     <StyledBubbleButton2>
                         <BubblyButton onClick={handleButtonClick} />
                     </StyledBubbleButton2>
-                </OptionCard>
-                <OptionCard>
-                    <OptionTitle>Remove Ads</OptionTitle>
-                    <OptionPrice>$2.99</OptionPrice>
-                    <OptionDescription>
-                        Enjoy an ad-free experience.
-                    </OptionDescription>
-                    <StyledBubbleButton3>
-                        <BubblyButton onClick={handleButtonClick} />
-                    </StyledBubbleButton3>
                 </OptionCard>
             </PurchaseOptions>
         </div>
@@ -53,7 +43,7 @@ export default function InAppPurchase() {
 
 const PurchaseOptions = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   margin: 1rem;
 `;
@@ -63,13 +53,13 @@ const OptionCard = styled.div`
   margin: 0;
   border-radius: 10px;
   padding: 1rem 1rem 1rem;
-  box-shadow: 0 2px 15px darkslategrey;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 90px;
   height: 250px;
-  background-color: aqua ;
+  background-color: aqua;
+  box-shadow: 3px 3px black;
 `;
 
 const OptionTitle = styled.h2`
@@ -96,10 +86,6 @@ const StyledBubbleButton1 = styled.div`
 
 const StyledBubbleButton2 = styled.div`
   padding-top: 0;
-`;
-
-const StyledBubbleButton3 = styled.div`
-  padding-top: 0.7rem;
 `;
 
 

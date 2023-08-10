@@ -12,7 +12,7 @@ type Props = {
 
 export default function ActivityList(props: Props) {
     if (!props.activities || props.activities.length === 0) {
-        return <p>No activities yet.</p>;
+        return <p className="noActivities">No activities yet.</p>;
     }
 
     const handleEditActivity = (
@@ -29,7 +29,7 @@ export default function ActivityList(props: Props) {
 
 
     return (
-        <Grid item xs={12} container justifyContent="center" alignItems="center">
+        <Grid item xs={12} container>
                 {props.activities.map((activity) => (
                     <ActivityItem
                         key={activity.activityId}

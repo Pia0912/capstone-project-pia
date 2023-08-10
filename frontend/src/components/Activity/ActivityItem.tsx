@@ -203,7 +203,7 @@ const StyledButtonBack = styled(Button)`
 
 const StyledIconButton = styled(IconButton)`
   padding: 0;
-  margin: 0;
+  margin-top: 1rem;
   width: 32px;
   height: 32px;
 `;
