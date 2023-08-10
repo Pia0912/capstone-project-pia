@@ -9,7 +9,7 @@ import styled from "@emotion/styled";
 import HobbyDetail from "./components/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
-import RestoreIcon from '@mui/icons-material/Restore';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
@@ -130,7 +130,7 @@ export default function App() {
                         setValue(newValue);
                     }}
                 >
-                    <StyledBottomNavigationAction label="List" icon={<RestoreIcon/>} onClick={handleListIconClick}/>
+                    <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
                     <StyledBottomNavigationAction label="Activities" icon={<SearchIcon/>} onClick={handleSearchIconClick}/>
                     <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>}
                                             onClick={handleProfileIconClick}/>

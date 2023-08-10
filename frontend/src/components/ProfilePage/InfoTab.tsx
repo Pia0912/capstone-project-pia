@@ -33,27 +33,27 @@ export default function InfoTab() {
 }
 
 const SettingsBar1 = styled.div`
-  width: 300px;
+  width: 263px;
   height: auto;
   align-items: center;
-  justify-content: space-around;
-  background-color: #f0f0f0;
+  align-self: flex-end;
+  background-color: cornflowerblue;
   border-radius: 10px;
   overflow: hidden;
-  margin: 2rem;
+  margin-left: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 3px black;
 `;
 
 const SettingsBar = styled.div`
-  width: 300px;
-  height: 100px;
+  width: 263px;
+  height: auto;
   align-items: center;
   justify-content: space-around;
-  background-color: #f0f0f0;
+  background-color: tomato;
   border-radius: 10px;
   overflow: hidden;
-  margin: 2rem;
+  margin-left: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px black;
 `;

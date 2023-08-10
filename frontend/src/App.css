@@ -12,8 +12,13 @@ header {
     top: 1rem;
     bottom: 7rem;
     z-index: -7;
+
 }
 
+
+.header-icon:hover {
+    transform: scale(1.1);
+}
 main {
     width: 100vw;
     display: flex;
@@ -23,7 +28,6 @@ main {
     gap: 0;
     margin-top: 4rem;
     overflow: hidden;
-    background: white;
 }
 
 div {
@@ -39,9 +43,11 @@ div {
 
 .div-item {
     align-items: center;
+    align-self: center;
     justify-content: space-between;
     height: 150px;
-    width: 100%;
+    width: 97%;
+    border-radius: 5px;
 
 }
 
@@ -52,13 +58,13 @@ div {
 }
 
 .div-activity {
-    margin: 1rem;
     display: flex;
     flex-direction: row;
 }
 
 .div-hobbyDetail-buttons {
     margin-right: 0.25rem;
+    margin-bottom: -0.5rem;
     padding: 0;
     flex-direction: row;
     align-self: center;
@@ -89,7 +95,7 @@ select {
     border: 1px solid;
     border-radius: 12px;
     padding: 6px;
-    margin-left: 15rem;
+    margin-left: 11rem;
     margin-top: 1rem;
     width: auto;
     align-self: center;
@@ -131,21 +137,24 @@ input {
 }
 
 
-
 .flip-card {
     background-color: black;
-    width: 500px;
+    width: calc(100% / 2);
+    min-width: 140px;
     height: 100px;
     border: 1px solid black;
     padding: 5px;
+    margin-top: 1rem;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     perspective: 1000px;
     justify-content: flex-end;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .flip-card-front h3 {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 
@@ -157,6 +166,7 @@ input {
     text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
+
 }
 
 .card-inner {
@@ -183,8 +193,9 @@ input {
 
 .flip-card-front {
     color: black;
-    padding-top: 15px;
+    padding-top: 5px;
     padding-bottom: 30px;
+    border-radius: 15px;
 }
 
 .flip-card-back {
@@ -193,6 +204,7 @@ input {
     transform: rotateY(180deg);
     padding-top: 15px;
     padding-bottom: 30px;
+    border-radius: 15px;
 }
 
 .is-flipped .flip-card-inner {
@@ -243,7 +255,7 @@ input {
 
 .app-purchase {
     margin-top: 5rem;
-    transform: scale(0.8);
+    transform: scale(0.88);
 }
 
 .tabContent {

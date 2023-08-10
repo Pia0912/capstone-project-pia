@@ -203,9 +203,9 @@ const StyledButtonBack = styled(Button)`
 
 const StyledIconButton = styled(IconButton)`
   padding: 0;
+  margin: 0;
   width: 32px;
   height: 32px;
-  margin-left: 1rem;
 `;
 
 
@@ -213,7 +213,9 @@ const StyledGrid = styled(Grid)`
   padding: 0;
   margin:0;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledDialog = styled(Dialog)`

@@ -1,7 +1,6 @@
 import { Grid } from "@mui/material";
 import {Hobby, Activity} from "../../models.ts";
 import ActivityItem from "./ActivityItem.tsx";
-import styled from "@emotion/styled";
 
 type Props = {
     activities: Activity[] | undefined;
@@ -31,7 +30,6 @@ export default function ActivityList(props: Props) {
 
     return (
         <Grid item xs={12} container justifyContent="center" alignItems="center">
-            <StyledGrid container justifyContent="center">
                 {props.activities.map((activity) => (
                     <ActivityItem
                         key={activity.activityId}
@@ -42,11 +40,6 @@ export default function ActivityList(props: Props) {
                         onDeleteActivity={props.onDeleteActivity}
                     />
                 ))}
-            </StyledGrid>
         </Grid>
     );
 }
-
-const StyledGrid = styled(Grid)`
-  margin: 2rem;
-`;

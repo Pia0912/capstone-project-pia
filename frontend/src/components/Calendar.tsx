@@ -7,9 +7,23 @@ import useCalendar from "../hooks/useCalendar.ts";
 
 
 export default function Calendar() {
-    const {currentDate, daysArray, activityNames,
-        setSelectedDay,selectedDayActivities, open, selectedIndex,
-        anchorRef, handlePrevMonth, handleNextMonth, handleToggle, handleClose, handleMenuItemClick,} = useCalendar();
+    const today = new Date();
+
+    const {currentDate,
+        daysArray,
+        dayActivityCounts,
+        setSelectedDay,
+        selectedDayActivities,
+        open,
+        selectedIndex,
+        anchorRef,
+        handlePrevMonth, handleNextMonth,
+        handleToggle, handleClose,
+        handleMenuItemClick,
+    handleGradient} = useCalendar();
+
+
+
 
     return (
         <div className="calendar-container">
@@ -42,11 +56,23 @@ export default function Calendar() {
                         }
 
                         const { day, color } = dayInfo;
+                        const currentDay = currentDate.getDate();
+                        const currentMonth = currentDate.getMonth();
+                        const currentYear = currentDate.getFullYear();
 
-                        const isActive = currentDate.getDate() === day && currentDate.getMonth()
+                        const isActive =
+                            currentDay === day && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+
+
                         const activityIsDone = dayInfo.day === day;
+                        const activityCount = dayActivityCounts[day] || 0;
 
-                        const backgroundColor = activityIsDone ? color : 'white';
+                        let backgroundColor = activityIsDone ? color : 'white';
+                        if (activityCount > 1) {
+                            backgroundColor = handleGradient();
+                        }
+
+
 
                         return (
                             <li
@@ -55,22 +81,34 @@ export default function Calendar() {
                                 onClick={() => setSelectedDay(day)}
                             >
                                 <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
-                                {activityNames.length > 0 && (
                                     <React.Fragment>
-                                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem', }}
-                                        >
-                                            <Button
-                                                size="small"
-                                                style={{ backgroundColor: 'transparent', color: 'black', paddingTop: '3rem' }}
-                                                aria-controls={open ? 'split-button-menu' : undefined}
-                                                aria-expanded={open ? 'true' : undefined}
-                                                aria-label="select merge strategy"
-                                                aria-haspopup="menu"
-                                                onClick={handleToggle}
-                                            >
-                                                <ArrowDropDownIcon style={{ fontSize: '20px' }} />
-                                            </Button>
+                                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
+                                            {dayActivityCounts[day] > 0 ? (
+                                                <Button
+                                                    size="small"
+                                                    style={{ backgroundColor: 'transparent', color: 'black', paddingTop: '3rem' }}
+                                                    aria-controls={open ? 'split-button-menu' : undefined}
+                                                    aria-expanded={open ? 'true' : undefined}
+                                                    aria-label="select merge strategy"
+                                                    aria-haspopup="menu"
+                                                    onClick={handleToggle}
+                                                >
+                                                    <ArrowDropDownIcon style={{ fontSize: '20px' }} />
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    size="small"
+                                                    style={{ backgroundColor: 'transparent', color: 'transparent', paddingTop: '3rem' }}
+                                                    aria-controls={open ? 'split-button-menu' : undefined}
+                                                    aria-expanded={open ? 'true' : undefined}
+                                                    aria-label="select merge strategy"
+                                                    aria-haspopup="menu"
+                                                >
+                                                    +
+                                                </Button>
+                                            )}
                                         </ButtonGroup>
+
                                         <Popper
                                             sx={{
                                                 zIndex: 1,
@@ -117,7 +155,7 @@ export default function Calendar() {
                                             )}
                                         </Popper>
                                     </React.Fragment>
-                                )}
+
                             </li>
                         );
                     })}

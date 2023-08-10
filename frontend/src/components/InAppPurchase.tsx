@@ -7,7 +7,6 @@ export default function InAppPurchase() {
 
     const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        // Add your desired logic for handling the button click here
         console.log("Button clicked!");
     };
 
@@ -64,12 +63,13 @@ const OptionCard = styled.div`
   margin: 0;
   border-radius: 10px;
   padding: 1rem 1rem 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 15px darkslategrey;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 90px;
   height: 250px;
+  background-color: aqua ;
 `;
 
 const OptionTitle = styled.h2`

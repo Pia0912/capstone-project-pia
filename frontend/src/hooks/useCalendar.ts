@@ -8,6 +8,7 @@ export default function useCalendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [daysArray, setDaysArray] = useState<Array<ActivityWithColor | null>>([]);
     const [activityNames, setActivityNames] = useState<string[]>([]);
+    const [activityColors, setActivityColors] = useState<string[]>([]);
     const [selectedDay, setSelectedDay] = useState<number | null>(null);
     const [selectedDayActivities, setSelectedDayActivities] = useState<ActivityWithColor[]>([]);
 
@@ -60,9 +61,6 @@ export default function useCalendar() {
             });
     }, [currentDate]);
 
-
-
-
     useEffect(() => {
         const convertActivityToActivityWithColor = (activity: Activity): ActivityWithColor => {
             return {
@@ -98,7 +96,8 @@ export default function useCalendar() {
             .get<Array<Hobby>>(`/api/hobbies`)
             .then((response) => {
                 setHobbies(response.data);
-                setActivityNames(response.data.map(hobby => hobby.name));
+                setActivityNames(response.data.map(activity => activity.name));
+                setActivityColors(response.data.map(activity => activity.color));
             })
             .catch((error) => {
                 console.error(error);
@@ -120,7 +119,6 @@ export default function useCalendar() {
     });
 
 
-
     function getDaysInMonth(year: number, month: number): number {
         return new Date(year, month + 1, 0).getDate();
     }
@@ -135,6 +133,8 @@ export default function useCalendar() {
             const prevMonth = prevDate.getMonth() - 1;
             const prevYear = prevMonth < 0 ? prevDate.getFullYear() - 1 : prevDate.getFullYear();
             const newMonth = prevMonth < 0 ? 11 : prevMonth;
+
+
             return new Date(prevYear, newMonth, prevDate.getDate());
         });
     }
@@ -155,18 +155,33 @@ export default function useCalendar() {
         }
     };
 
+    const handleGradient = () => {
+        console.log("activityColors length:", activityColors.length);
+
+        if (activityColors.length > 1) {
+            const gradientColors = activityColors.join(', ');
+            console.log("gradientColors:", gradientColors);
+            return `linear-gradient(to bottom, ${gradientColors})`;
+        } else if (activityColors.length === 1) {
+            return activityColors[0];
+        } else {
+            return 'white';
+        }
+    };
+
+
     const handleClose = (event: Event) => {
         if (!anchorRef.current?.contains(event.target as HTMLElement)) {
             setOpen(false);
         }
     };
 
-
     const handleMenuItemClick = (index: number) => {
         setSelectedIndex(index);
         setOpen(false);
     };
 
+    console.log(currentDate)
 
     return {
         currentDate,
@@ -182,6 +197,8 @@ export default function useCalendar() {
         handleNextMonth,
         handleToggle,
         handleClose,
-        handleMenuItemClick,}
+        handleMenuItemClick,
+        dayActivityCounts,
+    handleGradient}
 
 }

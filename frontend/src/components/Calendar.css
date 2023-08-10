@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: white;
 }
 
 .month {
@@ -72,6 +73,7 @@
     margin: 0;
     width: 346px;
     list-style-type: none;
+
 }
 
 .days li {
