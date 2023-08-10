@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 
 type Props = {
     onAddHobby: (data: HobbyWithoutID) => void;
-    colors: string[]; // Assuming you have an array of colors passed as a prop
+    colors: string[];
 };
 
 export default function AddForm(props: Props) {
@@ -20,16 +20,16 @@ export default function AddForm(props: Props) {
         event.preventDefault();
         const data: HobbyWithoutID = {
             name: name,
-            color: color, // Include the selected color in the data object
+            color: color,
         };
         props.onAddHobby(data);
         setName("");
-        setColor(""); // Reset color after submission
+        setColor("");
         navigate("/");
     }
 
     function handleColorChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        setColor(event.target.value); // Update color state when selection changes
+        setColor(event.target.value);
     }
 
     return (
@@ -51,8 +51,8 @@ export default function AddForm(props: Props) {
                     <select
                         value={color}
                         onChange={handleColorChange}
-                        name="color" // Assign a name to the select element
-                        id="color" // Assign an ID to the select element
+                        name="color"
+                        id="color"
                     >
                         <option value="">Select a color</option>
                         {props.colors.map((color) => (
