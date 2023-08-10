@@ -1,22 +1,15 @@
 import './Calendar.css';
-import {
-    ButtonGroup,
-    ClickAwayListener,
-    Grow,
-    MenuItem,
-    MenuList,
-    Paper,
-    Popper
-} from "@mui/material";
+import React from 'react';
+import {ButtonGroup, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@mui/material";
 import Button from "@mui/material/Button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useCalendar from "../hooks/useCalendar.ts";
 
+
 export default function Calendar() {
     const today = new Date();
 
-    const {
-        currentDate,
+    const {currentDate,
         daysArray,
         dayActivityCounts,
         setSelectedDay,
@@ -24,117 +17,13 @@ export default function Calendar() {
         open,
         selectedIndex,
         anchorRef,
-        handlePrevMonth,
-        handleNextMonth,
-        handleToggle,
-        handleClose,
+        handlePrevMonth, handleNextMonth,
+        handleToggle, handleClose,
         handleMenuItemClick,
-        handleGradient
-    } = useCalendar();
+        handleGradient} = useCalendar();
 
-    const renderButtonGroup = (day: number) => (
-            <ButtonGroup
-                variant="contained"
-                ref={anchorRef}
-                aria-label="split button"
-                style={{
-                    backgroundColor: 'transparent',
-                    color: 'black',
-                    marginTop: '-4rem',
-                    padding: 0,
-                    width: '3rem',
-                    height: '4.5rem'
-                }}
-            >
-                {dayActivityCounts[day] > 0 ? (
-                    <Button
-                        size="small"
-                        style={{
-                            backgroundColor: 'transparent',
-                            color: 'black',
-                            paddingTop: '3rem'
-                        }}
-                        aria-controls={open ? 'split-button-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-label="select merge strategy"
-                        aria-haspopup="menu"
-                        onClick={handleToggle}
-                    >
-                        <ArrowDropDownIcon style={{ fontSize: '20px' }} />
-                    </Button>
-                ) : (
-                    <Button
-                        size="small"
-                        style={{
-                            backgroundColor: 'transparent',
-                            color: 'transparent',
-                            paddingTop: '3rem'
-                        }}
-                        aria-controls={open ? 'split-button-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-label="select merge strategy"
-                        aria-haspopup="menu"
-                    >
-                        +
-                    </Button>
-                )}
-            </ButtonGroup>
-        );
 
-    const renderPopper = () => {
-        return(
-            <Popper
-                sx={{
-                    zIndex: 1,
-                }}
-                open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                transition
-                disablePortal
-            >
-                {({TransitionProps, placement}) => (
-                    <Grow
-                        {...TransitionProps}
-                        style={{
-                            transformOrigin:
-                                placement === 'bottom'
-                                    ? 'center top'
-                                    : 'center bottom',
-                        }}
-                    >
-                        <Paper style={{backgroundColor: 'white', color: 'black', width: '350px'}}>
-                            <ClickAwayListener onClickAway={handleClose}>
-                                <MenuList
-                                    id="split-button-menu"
-                                    autoFocusItem
-                                >
-                                    {selectedDayActivities.map(
-                                        (activity, index) => (
-                                            <MenuItem
-                                                key={activity.activityId}
-                                                disabled={index === 2}
-                                                selected={index === selectedIndex}
-                                                onClick={() => handleMenuItemClick(index)}
-                                                style={{
-                                                    backgroundColor: activity.color,
-                                                    width: '350px',
-                                                    margin: 0,
-                                                    padding: 0
-                                                }}
-                                            >
-                                                {activity.name}
-                                            </MenuItem>
-                                        )
-                                    )}
-                                </MenuList>
-                            </ClickAwayListener>
-                        </Paper>
-                    </Grow>
-                )}
-            </Popper>
-        );
-    }
+
 
     return (
         <div className="calendar-container">
@@ -148,7 +37,6 @@ export default function Calendar() {
                     <li className="next" onClick={handleNextMonth}>&#10095;</li>
                 </ul>
             </div>
-
 
             <div className="calendar-content">
                 <ul className="weekdays">
@@ -175,6 +63,7 @@ export default function Calendar() {
                         const isActive =
                             currentDay === day && currentMonth === today.getMonth() && currentYear === today.getFullYear();
 
+
                         const activityIsDone = dayInfo.day === day;
                         const activityCount = dayActivityCounts[day] || 0;
 
@@ -183,17 +72,90 @@ export default function Calendar() {
                             backgroundColor = handleGradient();
                         }
 
+
+
                         return (
                             <li
-                                key={`empty-${dayInfo.activityId}`}
-                                className={`calendar-day ${isActive ? 'active' : ''}`}
+                                key={`empty-${index}`}
+                                className={`calendar-day ${isActive ? "active" : ""}`}
                                 onClick={() => setSelectedDay(day)}
                             >
-                                <div className="day-circle" style={{ background: backgroundColor }}>
-                                    {day}
-                                </div>
-                                {renderButtonGroup(day)}
-                                {renderPopper()}
+                                <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
+                                <React.Fragment>
+                                    <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
+                                        {dayActivityCounts[day] > 0 ? (
+                                            <Button
+                                                size="small"
+                                                style={{ backgroundColor: 'transparent', color: 'black', paddingTop: '3rem' }}
+                                                aria-controls={open ? 'split-button-menu' : undefined}
+                                                aria-expanded={open ? 'true' : undefined}
+                                                aria-label="select merge strategy"
+                                                aria-haspopup="menu"
+                                                onClick={handleToggle}
+                                            >
+                                                <ArrowDropDownIcon style={{ fontSize: '20px' }} />
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                size="small"
+                                                style={{ backgroundColor: 'transparent', color: 'transparent', paddingTop: '3rem' }}
+                                                aria-controls={open ? 'split-button-menu' : undefined}
+                                                aria-expanded={open ? 'true' : undefined}
+                                                aria-label="select merge strategy"
+                                                aria-haspopup="menu"
+                                            >
+                                                +
+                                            </Button>
+                                        )}
+                                    </ButtonGroup>
+
+                                    <Popper
+                                        sx={{
+                                            zIndex: 1,
+                                        }}
+                                        open={open}
+                                        anchorEl={anchorRef.current}
+                                        role={undefined}
+                                        transition
+                                        disablePortal
+                                    >
+                                        {({ TransitionProps, placement }) => (
+                                            <Grow
+                                                {...TransitionProps}
+                                                style={{
+                                                    transformOrigin:
+                                                        placement === 'bottom'
+                                                            ? 'center top'
+                                                            : 'center bottom',
+                                                }}
+                                            >
+                                                <Paper style={{ backgroundColor: 'white', color: 'black', width: '350px' }}>
+                                                    <ClickAwayListener onClickAway={handleClose}>
+                                                        <MenuList
+                                                            id="split-button-menu"
+                                                            autoFocusItem
+                                                        >
+                                                            {selectedDayActivities.map(
+                                                                (activity, index) => (
+                                                                    <MenuItem
+                                                                        key={activity.activityId}
+                                                                        disabled={index === 2}
+                                                                        selected={index === selectedIndex}
+                                                                        onClick={() => handleMenuItemClick(index)}
+                                                                        style={{ backgroundColor: activity.color, width: '350px', margin: 0, padding: 0 }}
+                                                                    >
+                                                                        {activity.name}
+                                                                    </MenuItem>
+                                                                )
+                                                            )}
+                                                        </MenuList>
+                                                    </ClickAwayListener>
+                                                </Paper>
+                                            </Grow>
+                                        )}
+                                    </Popper>
+                                </React.Fragment>
+
                             </li>
                         );
                     })}
