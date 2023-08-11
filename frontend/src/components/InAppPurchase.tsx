@@ -7,39 +7,34 @@ export default function InAppPurchase() {
 
     const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        // Add your desired logic for handling the button click here
         console.log("Button clicked!");
     };
 
     return (
         <div className="app-purchase">
             <h2>This Page is locked 🥲</h2>
-            <h6>But dont be sad - spending money is not that bad..</h6>
+            <h6>But dont be sad - see what's possible..</h6>
 
             <PurchaseOptions>
                 <OptionCard>
                     <OptionTitle>Badge Hunter</OptionTitle>
-                    <OptionPrice>$2.99</OptionPrice>
+                    <OptionPrice></OptionPrice>
                     <OptionDescription>
-                        Get access to all our challenges
+                        Get access to all weekly challenges
                     </OptionDescription>
+                    <StyledBubbleButton1>
                     <BubblyButton onClick={handleButtonClick} />
+                    </StyledBubbleButton1>
                 </OptionCard>
                 <OptionCard>
                     <OptionTitle>Unlimited Access</OptionTitle>
-                    <OptionPrice>$9.99</OptionPrice>
+                    <OptionPrice></OptionPrice>
                     <OptionDescription>
                         Get unlimited access to all tools & evaluations!
                     </OptionDescription>
-                    <BubblyButton onClick={handleButtonClick} />
-                </OptionCard>
-                <OptionCard>
-                    <OptionTitle>Remove Ads</OptionTitle>
-                    <OptionPrice>$2.99</OptionPrice>
-                    <OptionDescription>
-                        Enjoy an ad-free experience.
-                    </OptionDescription>
-                    <BubblyButton onClick={handleButtonClick} />
+                    <StyledBubbleButton2>
+                        <BubblyButton onClick={handleButtonClick} />
+                    </StyledBubbleButton2>
                 </OptionCard>
             </PurchaseOptions>
         </div>
@@ -48,20 +43,23 @@ export default function InAppPurchase() {
 
 const PurchaseOptions = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   margin: 1rem;
 `;
 
 const OptionCard = styled.div`
   border: 1px solid #ccc;
+  margin: 0;
   border-radius: 10px;
   padding: 1rem 1rem 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px;
+  width: 90px;
+  height: 250px;
+  background-color: aqua;
+  box-shadow: 3px 3px black;
 `;
 
 const OptionTitle = styled.h2`
@@ -81,5 +79,14 @@ const OptionDescription = styled.p`
   color: #555;
   margin-bottom: 1rem;
 `;
+
+const StyledBubbleButton1 = styled.div`
+  padding-top: 0.8rem;
+`;
+
+const StyledBubbleButton2 = styled.div`
+  padding-top: 0;
+`;
+
 
 

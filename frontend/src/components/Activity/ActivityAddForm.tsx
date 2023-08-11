@@ -1,13 +1,14 @@
 import {FormEvent, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import Button from '@mui/material/Button';
-import {ActivityWithoutID} from '../models';
+import {ActivityWithoutID} from '../../models.ts';
 import {Container} from '@mui/material';
 import styled from "@emotion/styled";
-import StarRating from "./StarRating";
+import StarRating from "./StarRating.tsx";
 
 type Props = {
     onAddActivity: (hobbyId: string, activity: ActivityWithoutID) => void;
+    color: string;
 };
 
 export default function ActivityAddForm(props: Props) {
@@ -28,9 +29,10 @@ export default function ActivityAddForm(props: Props) {
 
         const newActivity: ActivityWithoutID = {
             name: name,
-            date: new Date(date),
+            activityDate: date,
             rating: rating,
             hobbyId: hobbyId,
+            color: props.color,
         };
         props.onAddActivity(hobbyId, newActivity);
         setName("");
@@ -81,6 +83,7 @@ const StyledContainer = styled(Container)`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 3rem;
 `;
 
 const StyledButton = styled(Button)`

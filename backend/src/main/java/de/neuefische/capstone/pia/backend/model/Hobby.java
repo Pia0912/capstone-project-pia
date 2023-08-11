@@ -17,6 +17,7 @@ public class Hobby {
     @Id
     private String id;
     private String name;
+    private String color;
     private List<Activity> activities = new ArrayList<>();
 
     public void addActivity(Activity activity) {

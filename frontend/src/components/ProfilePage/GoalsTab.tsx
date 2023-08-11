@@ -3,12 +3,12 @@ import LoadingPage from "./LoadingPage.tsx";
 
 export default function GoalsTab() {
     return (
-        <>
+        <div className="div-goalsTab">
             <ProfilePage />
         <div id="goals" className="tabContent">
                 <h2 className="tabTitle">Goals</h2>
             <LoadingPage />
         </div>
-            </>
+            </div>
     );
 }

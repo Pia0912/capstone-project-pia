@@ -2,10 +2,10 @@ import { Grid, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import useActivities from "../hooks/useActivities.ts";
 
-import { useLocation, useNavigate } from "react-router-dom";
-import ActivityList from "./ActivityList.tsx";
+import { useNavigate } from "react-router-dom";
+import ActivityList from "./Activity/ActivityList.tsx";
 import useHobbies from "../hooks/useHobbies.ts";
-import useColors from "../hooks/useColors.ts";
+import CachedIcon from '@mui/icons-material/Cached';
 
 type Props = {
     colors: string[];
@@ -13,26 +13,27 @@ type Props = {
 
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const location = useLocation();
-    const selectedColor = location.state?.color || props.colors[0];
-
     const { handleEditActivity, handleDeleteActivity } = useHobbies();
     const data = useActivities();
 
-    const [color] = useColors(data?.hobby?.id || "");
 
-    if (!data || !data.hobby) {
+    if (!data?.hobby) {
         return <div>Loading...</div>;
     }
 
     const { hobby, activities } = data;
 
+    const handleReload = () => {
+        window.location.href = window.location.pathname + "?timestamp=" + Date.now();
+    };
+
+
     return (
         <>
-            <div className="div-header" style={{ backgroundColor: color || selectedColor }}>
+            <div className="div-header" style={{ backgroundColor: hobby.color }}>
                 {hobby.name}
             </div>
-            <div className="div-hobbyDetail">
+            <div className="div-hobbyDetail-buttons">
             <StyledButtonBack
                 variant="contained"
                 disableElevation
@@ -40,6 +41,13 @@ export default function HobbyDetail(props: Props) {
             >
                 Back
             </StyledButtonBack>
+                <StyledButtonReload
+                    variant="contained"
+                    disableElevation
+                    onClick={handleReload}
+                >
+                   <CachedIcon/>
+                </StyledButtonReload>
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
@@ -71,6 +79,14 @@ const StyledButtonAdd = styled(Button)`
   height: 3rem;
   width: 3rem;
   background-color: black;
+  font-size: 25px;
+`;
+
+const StyledButtonReload = styled(Button)`
+  height: 3rem;
+  width: 3rem;
+  background-color: black;
+  color: white;
   font-size: 25px;
 `;
 

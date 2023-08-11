@@ -3,46 +3,34 @@ import {Grid, Button, DialogTitle, DialogContent, DialogContentText, DialogActio
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import styled from "@emotion/styled";
-import { Activity, ActivityWithoutID, Hobby } from "../models";
-import StarRating from "./StarRating";
-import {LOCAL_STORAGE_KEY} from "../constants/starRating.ts";
-import useColors from "../hooks/useColors.ts";
+import { Activity, Hobby } from "../../models.ts";
+import StarRating from "./StarRating.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 
 type Props = {
-    activity?: Activity | undefined;
+    activity?: Activity;
     hobby: Hobby;
     colors: string[];
-    onEditActivity: (hobbyId: string, activityId: string, updatedActivity: ActivityWithoutID) => void;
+    onEditActivity: (hobbyId: string, activityId: string, newName: string, newDate: string, newRating: number, color: string) => void;
     onDeleteActivity: (hobbyId: string, activityId: string) => void;
 };
 
 export default function ActivityItem(props: Props) {
-    const [lastSelectedRating, setLastSelectedRating] = useState(() => {
-        const storedRating = localStorage.getItem(
-            `${props.activity?.activityId}_${LOCAL_STORAGE_KEY}`
-        );
-        return storedRating ? parseInt(storedRating, 10) : props.activity?.rating || 5;
-    });
+    const initialRating = props.activity ? props.activity.rating : 5;
+    const [lastSelectedRating, setLastSelectedRating] = useState(initialRating);
     const [isEditing, setIsEditing] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
     const [editedActivity, setEditedActivity] = useState({
-        name: props.activity?.name || "",
-        date: props.activity?.date ? new Date(props.activity.date) : undefined,
+        name: props.activity?.name ?? "",
+        date: props.activity?.activityDate ?? "",
     });
 
-    const hobbyId = props.hobby.id;
-    const [color] = useColors(hobbyId);
+    const color = props.hobby.color;
     const [open, setOpen] = useState(false);
 
     const handleRatingChange = (newRating: number) => {
-        console.log("New rating:", newRating);
         setLastSelectedRating(newRating);
-        localStorage.setItem(
-            `${props.activity?.activityId}_${LOCAL_STORAGE_KEY}`,
-            newRating.toString()
-        );
     };
 
     const activityId = props.activity?.activityId as string;
@@ -50,7 +38,6 @@ export default function ActivityItem(props: Props) {
     const handleDeleteActivity = () => {
         props.onDeleteActivity(props.hobby.id, activityId);
         handleClose();
-        window.location.reload();
     };
 
     const handleCardClick = () => {
@@ -69,29 +56,24 @@ export default function ActivityItem(props: Props) {
     };
 
     const handleSaveClick = () => {
-        const updatedActivity: ActivityWithoutID = {
-            name: editedActivity.name,
-            date: editedActivity.date,
-            rating: lastSelectedRating,
-            hobbyId: props.hobby?.id || "",
-        };
         props.onEditActivity(
             props.hobby?.id || "",
             activityId || "",
-            updatedActivity
+            editedActivity.name,
+            editedActivity.date,
+            lastSelectedRating,
+            color
         );
         setIsEditing(false);
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-
         setEditedActivity((prev) => ({
             ...prev,
-            [name]: name === "date" ? new Date(value) : value,
+            [name]: value,
         }));
     };
-
 
 
     const handleClickOpen = () => {
@@ -102,24 +84,28 @@ export default function ActivityItem(props: Props) {
         setOpen(false);
     }
 
+    let flipCardClasses = "flip-card";
+    if (!isEditing) {
+        flipCardClasses += isFlipped ? " is-flipped" : "";
+    }const flipCardInnerClasses = `${isEditing ? "card-inner" : "flip-card-inner"}`;
+    const cardFrontClasses = `flip-card-front card-front ${isEditing ? "hidden" : ""}`;
+
     return (
         <StyledGrid item xs={6} sm={6} md={6} lg={6} container>
-            <div
-                className={`flip-card ${isEditing ? "" : isFlipped ? "is-flipped" : ""}`}
-                style={{ backgroundColor: color }}
-            >
-                <div className={`${isEditing ? "card-inner" : "flip-card-inner"}`}>
-                    <div className={`flip-card-front card-front ${isEditing ? "hidden" : ""}`}
-                         style={{ backgroundColor: color }}
-                         onClick={handleCardClick}
+            <div className={flipCardClasses} style={{ backgroundColor: color }}>
+                <div className={flipCardInnerClasses}>
+                    <div
+                        className={cardFrontClasses}
+                        style={{ backgroundColor: color }}
+                        onClick={handleCardClick}
                     >
                         {!isEditing ? (
                             <>
                                 <h3>{props.activity?.name}</h3>
-                                {props.activity?.date ? (
-                                    <p>{new Date(props.activity.date).toLocaleDateString()}</p>
-                                ) : null}
-                            </>
+                                <p>{props.activity?.activityDate
+                                        ? new Date(props.activity.activityDate).toLocaleDateString('de-DE')
+                                        : ''}
+                                </p></>
                         ) : (
                             <>
                                 <input
@@ -133,7 +119,7 @@ export default function ActivityItem(props: Props) {
                                     className="input-activity"
                                     type="date"
                                     name="date"
-                                    value={editedActivity.date ? editedActivity.date.toISOString().slice(0, 10) : ""}
+                                    value={editedActivity.date}
                                     onChange={handleInputChange}
                                 />
                             </>
@@ -141,9 +127,9 @@ export default function ActivityItem(props: Props) {
                     </div>
                     <div className="flip-card-back" onClick={handleCardClick}>
                         <p>RATING: </p>
-                        {props.activity?.activityId && (
+                        {activityId && (
                             <StarRating
-                                activityId={props.activity.activityId}
+                                activityId={activityId}
                                 initialRating={lastSelectedRating}
                                 onChange={handleRatingChange}
                             />
@@ -173,7 +159,7 @@ export default function ActivityItem(props: Props) {
                     </StyledButton>
                 </div>
             )}
-            <Dialog
+            <StyledDialog
                 open={open}
                 keepMounted
                 onClose={handleClose}
@@ -195,7 +181,7 @@ export default function ActivityItem(props: Props) {
                         Delete activity
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </StyledDialog>
         </StyledGrid>
 
     );
@@ -217,9 +203,9 @@ const StyledButtonBack = styled(Button)`
 
 const StyledIconButton = styled(IconButton)`
   padding: 0;
+  margin-top: 1rem;
   width: 32px;
   height: 32px;
-  margin-left: 1rem;
 `;
 
 
@@ -227,5 +213,15 @@ const StyledGrid = styled(Grid)`
   padding: 0;
   margin:0;
   justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledDialog = styled(Dialog)`
+  padding: 0;
+  margin:0;
+  justify-content: center;
   align-items: flex-start;
+  height: 80%;
 `;

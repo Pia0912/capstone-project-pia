@@ -4,7 +4,8 @@ import HobbyItem from "./HobbyItem";
 type Props = {
     hobbies: Hobby[];
     colors: string[];
-    onEditHobby: (hobbyId: string, newName: string) => void;
+    onEditHobbyName: (hobbyId: string, newName: string) => void;
+    onEditHobbyColor: (hobbyId: string, newColor: string) => void;
     onDeleteHobby: (hobbyId: string) => void;
 };
 
@@ -20,7 +21,8 @@ export default function HobbyList(props: Props) {
                     key={hobby.id}
                     hobby={hobby}
                     colors={props.colors}
-                    onEditHobby={props.onEditHobby}
+                    onEditHobbyName={props.onEditHobbyName}
+                    onEditHobbyColor={props.onEditHobbyColor}
                     onDeleteHobby={props.onDeleteHobby}
                 />
             ))}

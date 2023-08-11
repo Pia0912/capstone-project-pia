@@ -7,14 +7,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import styled from "@emotion/styled";
 import InfoIcon from '@mui/icons-material/Info';
 import {useNavigate} from "react-router-dom";
-import useColors from "../hooks/useColors.ts";
 
 
 
 type Props = {
     hobby: Hobby;
     colors: string[];
-    onEditHobby: (hobbyId: string, newName: string, newColor: string) => void;
+    onEditHobbyName: (hobbyId: string, newName: string) => void;
+    onEditHobbyColor: (hobbyId: string, newColor: string) => void;
     onDeleteHobby: (hobbyId: string) => void;
 };
 
@@ -22,17 +22,23 @@ export default function HobbyItem(props: Props) {
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(props.hobby.name);
     const [open, setOpen] = useState(false);
+    const [color, setColor] = useState(props.hobby.color);
 
     const navigate = useNavigate();
-    const [color, setColor] = useColors(props.hobby.id);
 
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
     const handleSaveClick = () => {
-        props.onEditHobby(props.hobby.id, editedName, color);
+        props.onEditHobbyName(props.hobby.id, editedName);
         setIsEditing(false);
+    };
+
+    const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (event: ChangeEvent<HTMLSelectElement>) => {
+        const newColor = event.target.value;
+        setColor(newColor);
+        props.onEditHobbyColor(props.hobby.id, newColor);
     };
 
     const handleEditBack = () => {
@@ -41,11 +47,6 @@ export default function HobbyItem(props: Props) {
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEditedName(event.target.value);
-    };
-
-    const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (event: ChangeEvent<HTMLSelectElement>) => {
-        const newColor = event.target.value;
-        setColor(newColor);
     };
 
     const handleDeleteClick = () => {
@@ -99,7 +100,7 @@ export default function HobbyItem(props: Props) {
                                 <StyledIconButton
                                     aria-label="show activities"
                                     onClick={() =>
-                                        navigate(`/${props.hobby.id}/activities`, { state: { color: color } })
+                                        navigate(`/${props.hobby.id}/activities`, { state: { color: props.hobby.color } })
                                     }
                                 >
                                     <InfoIcon fontSize="small" />
@@ -116,7 +117,7 @@ export default function HobbyItem(props: Props) {
                     </>
                 )}
             </div>
-            <Dialog
+            <StyledDialog
                 open={open}
                 keepMounted
                 onClose={handleClose}
@@ -138,7 +139,7 @@ export default function HobbyItem(props: Props) {
                         Delete hobby
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </StyledDialog>
         </>
     );
 }
@@ -169,4 +170,12 @@ const StyledIconButton = styled(IconButton)`
   height: 32px;
   transform: translateY(-3rem);
   margin-left: 4px;
+`;
+
+const StyledDialog = styled(Dialog)`
+  padding: 0;
+  margin:0;
+  justify-content: center;
+  align-items: flex-start;
+  height: 80%;
 `;

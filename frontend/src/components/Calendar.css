@@ -1,0 +1,128 @@
+.calendar-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.month {
+    padding: 10px 10px;
+    width: 100%;
+    background: black;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 2.25rem;
+}
+
+.month ul {
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+}
+
+.month ul li {
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+}
+
+.month .prev {
+    padding-top: 10px;
+    margin-right: 20px;
+    list-style-type: none;
+}
+
+.month .next {
+    padding-top: 10px;
+    margin-left: 20px;
+    list-style-type: none;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-size: 16px;
+    margin: 0;
+    padding: 10px 0;
+    background: black;
+    color: white;
+    width: 350px;
+    list-style-type: none;
+}
+
+.weekdays li {
+    text-align: center;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 10px 0;
+    border: 1px solid black;
+    margin: 0;
+    width: 346px;
+    list-style-type: none;
+    box-shadow: 2px 2px black;
+}
+
+.days li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    list-style-type: none;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.days li .day-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: transparent;
+    border-radius: 50%;
+    width: 2.3rem;
+    height: 0.5rem;
+}
+
+.calendar-day {
+    padding-top: 3rem;
+
+}
+.days li.active .day-circle {
+    color: red !important;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.activity-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

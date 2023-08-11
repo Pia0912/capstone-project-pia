@@ -1,51 +1,60 @@
-import {Activity, Hobby} from "../../models.ts";
 import styled from "@emotion/styled";
 import ProfilePage from "./ProfilePage.tsx";
+import useHobbies from "../../hooks/useHobbies.ts";
+export default function InfoTab() {
+    const { hobbies } = useHobbies();
 
-type InfoTabProps = {
-    hobbies: Hobby[];
-    activities: Activity[];
-
-}
-export default function InfoTab(props: InfoTabProps) {
-
-    console.log("Activities:", props.activities);
-    function countActivitiesForHobby(hobbyId: string): number {
-        if (!props.activities) {
+    function countActivitiesForHobby(hobbyId: string) {
+        const hobby = hobbies.find((hobby) => hobby.id === hobbyId);
+        if (!hobby) {
             return 0;
         }
-        return props.activities.filter(
-            (activity) => activity.hobbyId === hobbyId
-        ).length;
+        return hobby.activities.length;
     }
 
     return (
-        <>
-        <ProfilePage />
-        <div id="info" className="tabContent">
-            <h2 className="tabTitle">Info</h2>
+        <div className="div-infoTab">
+            <ProfilePage />
+            <div id="info" className="tabContent">
+                <h2 className="tabTitle">Info</h2>
+                <SettingsBar1>
+                    <h6>Number of Hobbies: {hobbies.length}</h6>
+                </SettingsBar1>
                 <SettingsBar>
-                    <h6>Number of Hobbies: {props.hobbies.length}</h6>
-                    {props.hobbies.map((hobby) => (
+                    {hobbies.map((hobby) => (
                         <h6 key={hobby.id}>
-                            {hobby.name}: {countActivitiesForHobby(hobby.id)}
+                            Activities for {hobby.name}: {countActivitiesForHobby(hobby.id)}
                         </h6>
-
                     ))}
                 </SettingsBar>
+            </div>
         </div>
-        </>
     );
 }
 
-const SettingsBar = styled.div`
-  width: 300px;
-  height: 100px;
+const SettingsBar1 = styled.div`
+  width: 250px;
+  height: auto;
   align-items: center;
-  justify-content: space-around;
-  background-color: #f0f0f0;
+  align-self: flex-end;
+  background-color: cornflowerblue;
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 2rem;
-  margin-left: 2rem;
+  margin-left: 1.5rem;
+  padding: 2rem;
+  box-shadow: 3px 3px black;
+`;
+
+const SettingsBar = styled.div`
+  width: 250px;
+  height: auto;
+  align-items: center;
+  justify-content: space-around;
+  background-color: tomato;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 2rem;
+  box-shadow: 3px 3px black;
 `;

@@ -6,13 +6,19 @@
 
 header {
     width: 100%;
+    height: 70px;
     text-align: center;
     position: fixed;
-    top: 1rem;
-    bottom: 7rem;
-    z-index: -7;
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    color: white;
 }
 
+
+.header-icon:hover {
+    transform: scale(1.1);
+}
 main {
     width: 100vw;
     display: flex;
@@ -20,8 +26,8 @@ main {
     align-content: center;
     align-items: center;
     gap: 0;
-    margin-top: 4rem;
-    z-index: 5;
+    margin-top: 54px;
+    overflow: hidden;
 }
 
 div {
@@ -37,10 +43,12 @@ div {
 
 .div-item {
     align-items: center;
+    align-self: center;
     justify-content: space-between;
     height: 150px;
-    width: 100%;
-
+    width: 95%;
+    border-radius: 5px;
+    box-shadow: 4px 4px black;
 }
 
 .div-header {
@@ -50,17 +58,17 @@ div {
 }
 
 .div-activity {
-    margin: 1rem;
     display: flex;
     flex-direction: row;
 }
 
-.div-hobbyDetail {
-    margin-left: 1rem;
+.div-hobbyDetail-buttons {
+    margin-right: 0.25rem;
+    margin-bottom: -0.5rem;
     padding: 0;
     flex-direction: row;
-    justify-content: center;
-    gap: 17rem;
+    align-self: center;
+    gap: 5rem;
 }
 
 .div-hobbyList {
@@ -82,12 +90,14 @@ div {
     gap: 0;
 }
 
+
+
 select {
     background: transparent;
     border: 1px solid;
     border-radius: 12px;
     padding: 6px;
-    margin-left: 15rem;
+    margin-left: 11rem;
     margin-top: 1rem;
     width: auto;
     align-self: center;
@@ -129,21 +139,24 @@ input {
 }
 
 
-
 .flip-card {
     background-color: black;
-    width: 500px;
+    width: calc(100% / 2);
+    min-width: 140px;
     height: 100px;
     border: 1px solid black;
-    padding: 5px;
-    margin-left: 1.5rem;
+    padding: 2px 5px;
+    margin-top: 1rem;
+    margin-left: 1rem;
     margin-right: 1.5rem;
     perspective: 1000px;
     justify-content: flex-end;
+    border-radius: 15px;
+    box-shadow: 3px 3px black;
 }
 
 .flip-card-front h3 {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 
@@ -155,6 +168,7 @@ input {
     text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
+
 }
 
 .card-inner {
@@ -181,16 +195,19 @@ input {
 
 .flip-card-front {
     color: black;
-    padding-top: 15px;
-    padding-bottom: 30px;
+    padding: 15px 5px 30px;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 3px 3px black;
 }
 
 .flip-card-back {
     background-color: black;
     color: white;
     transform: rotateY(180deg);
-    padding-top: 15px;
-    padding-bottom: 30px;
+    padding: 15px 5px 30px;
+    border-radius: 15px;
+    box-shadow: 3px 3px gray;
 }
 
 .is-flipped .flip-card-inner {
@@ -236,25 +253,15 @@ input {
 
 }
 
-.profile-content {
-}
-
 .app-purchase {
-    margin-top: 5rem;
-}
-
-.in-app-container {
-    transform: scale(0.8);
-    align-items: flex-start;
-    margin-top: -4rem;
-    align-self: center;
-    width: 90%;
-    height: 70%;
-
+    padding: 4rem 3rem 15rem;
+    background-color: coral;
 }
 
 .tabContent {
+    margin-left: 2rem;
     margin-bottom: -2rem;
+    align-self: center;
 }
 
 .tabContent1 {
@@ -262,6 +269,40 @@ input {
     margin-bottom: -2rem;
 }
 
+.div-statisticTab {
+    padding: 3rem 5rem 21rem;
+    background-color: tomato;
+}
+
+.div-settingsTab {
+    padding: 3rem 6rem 18rem;
+    background-color: cornflowerblue;
+}
+
+.div-infoTab {
+    padding: 3rem 3rem 25rem;
+    background-color: lightgreen;
+}
+
+.div-goalsTab {
+    padding: 3rem 5rem 21rem;
+    background-color: mediumpurple;
+}
+
+.div-friendsTab {
+    padding: 3rem 5rem 14rem;
+    background-color: pink;
+}
+
+.div-badgesTab {
+    padding: 3rem 5rem 14rem;
+    background-color: lightblue;
+}
+
 .tabTitle {
-conic-gradient(#553c9a 30%, #ee4b2b 40%, #ee4b2b 70%, #00c2cb 80%, #553c9a);
+    background-color: inherit;
+}
+
+.noActivities{
+    margin-top: 2rem;
 }

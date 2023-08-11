@@ -1,16 +1,18 @@
-import {FormEvent, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import {HobbyWithoutID} from '../models';
-import {Container} from '@mui/material';
+import { HobbyWithoutID } from '../models';
+import { Container } from '@mui/material';
 import styled from "@emotion/styled";
 
 type Props = {
     onAddHobby: (data: HobbyWithoutID) => void;
+    colors: string[];
 };
 
 export default function AddForm(props: Props) {
     const [name, setName] = useState<string>("");
+    const [color, setColor] = useState<string>(""); // State for color selection
 
     const navigate = useNavigate();
 
@@ -18,10 +20,16 @@ export default function AddForm(props: Props) {
         event.preventDefault();
         const data: HobbyWithoutID = {
             name: name,
+            color: color,
         };
         props.onAddHobby(data);
         setName("");
+        setColor("");
         navigate("/");
+    }
+
+    function handleColorChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        setColor(event.target.value);
     }
 
     return (
@@ -39,6 +47,20 @@ export default function AddForm(props: Props) {
                         required
                         className="input-add"
                     />
+                    <label htmlFor="color">Color: </label>
+                    <select
+                        value={color}
+                        onChange={handleColorChange}
+                        name="color"
+                        id="color"
+                    >
+                        <option value="">Select a color</option>
+                        {props.colors.map((color) => (
+                            <option key={color} value={color}>
+                                {color}
+                            </option>
+                        ))}
+                    </select>
                 </fieldset>
                 <StyledButton type="submit" variant="outlined">
                     Submit
@@ -55,6 +77,7 @@ const StyledContainer = styled(Container)`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 3rem;
 `;
 
 const StyledButton = styled(Button)`

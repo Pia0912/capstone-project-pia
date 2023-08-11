@@ -17,7 +17,7 @@ export default function BubblyButton ({ onClick }: BubblyButtonProps)  {
 
     return (
         <AnimatedStyledButton onClick={handleButtonClick} className={animate ? "animate" : ""}>
-            Buy!
+            Upgrade!
         </AnimatedStyledButton>
     );
 }
@@ -35,7 +35,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.3s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px rgba(0, 230, 0, 200);
+  box-shadow: 3px 3px black;
 
   &:focus {
     outline: 0;
@@ -72,13 +72,14 @@ const StyledButton = styled.button`
   &:after {
     display: none;
     bottom: -75%;
-    background-image: radial-gradient(circle, orangered 20%, transparent 20%),
-    radial-gradient(circle, yellow 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%),
-    radial-gradient(circle, orangered 20%, transparent 20%),
+    background-image: radial-gradient(circle, orangered 50%, transparent 20%),
+    radial-gradient(circle, yellow 50%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #ff0081 50%, transparent 20%),
+    radial-gradient(circle, orangered 50%, transparent 20%),
+    radial-gradient(circle, #ff0081 30%, transparent 20%),
     radial-gradient(circle, #ff0081 20%, transparent 20%),
-    radial-gradient(circle, #ff0081 20%, transparent 20%),
-    radial-gradient(circle, deepskyblue 20%, transparent 20%);
+    radial-gradient(circle, deepskyblue 50%, transparent 20%);
+    radial-gradient(circle, blue 50%, transparent 20%);
     background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
   }
 
@@ -95,7 +96,7 @@ const StyledButton = styled.button`
     }
     &:after {
       display: block;
-      animation: bottomBubbles ease-in-out 1s forwards;
+      animation: bottomBubbles ease-in-out 2s forwards;
     }
   }
 `;
@@ -127,6 +128,7 @@ const bottomBubbles = `
 `;
 
 const AnimatedStyledButton = styled(StyledButton)`
+  font-size: 16px;
   @keyframes topBubbles {
     ${topBubbles}
   }

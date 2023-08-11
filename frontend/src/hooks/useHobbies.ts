@@ -33,25 +33,37 @@ export default function useHobbies() {
             });
     }
 
-    function handleEditHobby(id: string, newName: string) {
+    function handleEditHobbyName(id: string, newName: string) {
         const updatedHobby: HobbyWithoutID = {
             name: newName,
+            color: '',
         };
         api
             .put(`/hobbies/${id}`, updatedHobby)
             .then(response => response.data)
             .catch(error => console.error(error))
             .then(data => {
-                setHobbies(
-                    hobbies.map(hobby => {
-                        if (hobby.id === id) {
-                            return data;
-                        }
-                        return hobby;
-                    })
-                );
+                setHobbies(prevHobbies => {
+                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                });
+                console.log("Updated hobby state:", hobbies);
             });
-        navigate(`/`);
+        navigate('/');
+    }
+
+    function handleEditHobbyColor(id: string, newColor: string) {
+        api
+            .put(`/hobbies/${id}/color`, null, {
+                params: { color: newColor },
+            })
+            .then(response => response.data)
+            .catch(error => console.error(error))
+            .then(data => {
+                setHobbies(prevHobbies => {
+                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                });
+                console.log("Updated hobby state:", hobbies);
+            });
     }
 
     function handleDeleteHobby(id: string) {
@@ -86,45 +98,62 @@ export default function useHobbies() {
             });
     }
 
-    function handleEditActivity(
-        hobbyId: string,
-        activityId: string,
-        updatedActivity: ActivityWithoutID
-    ) {
-        api
-            .put(`/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
+    function handleEditActivity(hobbyId: string, activityId: string, newName: string, newDate: string, newRating: number, color: string) {
+        const updatedActivity: ActivityWithoutID = {
+            name: newName,
+            activityDate: newDate,
+            rating: newRating,
+            hobbyId: hobbyId,
+            color: color,
+        };
+
+        api.put(`/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
             .then((response) => response.data)
-            .catch((error) => console.error(error))
+            .catch(error => console.error(error))
             .then((data) => {
-                setHobbies((prevHobbies) =>
-                    prevHobbies.map((hobby) => {
-                        if (hobby.id === hobbyId) {
-                            const updatedActivities = hobby.activities.map((activity) =>
-                                activity.activityId === activityId ? { ...data, hobbyId: hobbyId } : activity
-                            );
-                            return { ...hobby, activities: updatedActivities };
-                        }
-                        return hobby;
+                setActivities(
+                    activities.map((activity) => {
+                        if (activity.activityId === activityId)
+                            {return data;
+                            }
+                        return activity;
                     })
                 );
+
+                setHobbies((prevHobbies) =>
+                    prevHobbies.map((hobby) =>
+                        hobby.id === hobbyId
+                            ? {
+                                ...hobby,
+                                activities: hobby.activities.map((activity) =>
+                                    activity.activityId === activityId ? { ...data, hobbyId } : activity
+                                ),
+                            }
+                            : hobby
+                    )
+                );
+                navigate(`/${hobbyId}/activities`);
             });
     }
 
     function handleDeleteActivity(hobbyId: string, activityId: string) {
         api.delete(`/hobbies/${hobbyId}/activities/${activityId}`)
-            .catch(console.error);
-        setHobbies((prevHobbies) =>
-            prevHobbies.map((hobby) => {
-                if (hobby.id === hobbyId) {
-                    return {
-                        ...hobby,
-                        activities: hobby.activities.filter((activity) => activity.activityId !== activityId),
-                    };
-                }
-                return hobby;
-            })
-        );
+            .catch(console.error)
+            .then(() => {
+                setHobbies((prevHobbies) =>
+                    prevHobbies.map((hobby) => {
+                        if (hobby.id === hobbyId) {
+                            return {
+                                ...hobby,
+                                activities: hobby.activities.filter((activity) => activity.activityId !== activityId),
+                            };
+                        }
+                        return hobby;
+                    })
+                );
+                navigate(`/${hobbyId}/activities`);
+            });
     }
 
-    return { hobbies, handleAddHobby, handleEditHobby, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity, activities };
+    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity, activities };
 }
