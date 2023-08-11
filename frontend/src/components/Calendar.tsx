@@ -51,9 +51,9 @@ export default function Calendar() {
                 </ul>
 
                 <ul className="days">
-                    {daysArray.map((dayInfo) => {
+                    {daysArray.map((dayInfo, index) => {
                         if (dayInfo === null) {
-                            return <li key={`empty-${Math.random()}`}></li>;
+                            return <li key={`empty-${index}`}></li>;
                         }
 
                         const {day, color} = dayInfo;
@@ -83,7 +83,6 @@ export default function Calendar() {
                                 <div className="day-circle" style={{background: backgroundColor}}>{day}</div>
                                 <React.Fragment>
                                     <StyledButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-                                        {dayActivityCounts[day] > 0 ? (
                                             <Button
                                                 size="small"
                                                 style={{
@@ -99,22 +98,6 @@ export default function Calendar() {
                                             >
                                                 <ArrowDropDownIcon style={{fontSize: '20px'}}/>
                                             </Button>
-                                        ) : (
-                                            <Button
-                                                size="small"
-                                                style={{
-                                                    backgroundColor: 'transparent',
-                                                    color: 'transparent',
-                                                    paddingTop: '3rem'
-                                                }}
-                                                aria-controls={open ? 'split-button-menu' : undefined}
-                                                aria-expanded={open ? 'true' : undefined}
-                                                aria-label="select merge strategy"
-                                                aria-haspopup="menu"
-                                            >
-                                                +
-                                            </Button>
-                                        )}
                                     </StyledButtonGroup>
 
                                     <Popper
