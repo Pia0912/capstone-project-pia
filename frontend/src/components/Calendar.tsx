@@ -4,12 +4,14 @@ import {ButtonGroup, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper}
 import Button from "@mui/material/Button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useCalendar from "../hooks/useCalendar.ts";
+import styled from "@emotion/styled";
 
 
 export default function Calendar() {
     const today = new Date();
 
-    const {currentDate,
+    const {
+        currentDate,
         daysArray,
         dayActivityCounts,
         setSelectedDay,
@@ -20,9 +22,8 @@ export default function Calendar() {
         handlePrevMonth, handleNextMonth,
         handleToggle, handleClose,
         handleMenuItemClick,
-        handleGradient} = useCalendar();
-
-
+        handleGradient
+    } = useCalendar();
 
 
     return (
@@ -31,8 +32,8 @@ export default function Calendar() {
                 <ul className="buttons">
                     <li className="prev" onClick={handlePrevMonth}>&#10094;</li>
                     <li>
-                        {currentDate.toLocaleString('default', { month: 'long' })}<br />
-                        <span style={{ fontSize: '18px' }}>{currentDate.getFullYear()}</span>
+                        {currentDate.toLocaleString('default', {month: 'long'})}<br/>
+                        <span style={{fontSize: '18px'}}>{currentDate.getFullYear()}</span>
                     </li>
                     <li className="next" onClick={handleNextMonth}>&#10095;</li>
                 </ul>
@@ -50,12 +51,12 @@ export default function Calendar() {
                 </ul>
 
                 <ul className="days">
-                    {daysArray.map((dayInfo, index) => {
+                    {daysArray.map((dayInfo) => {
                         if (dayInfo === null) {
-                            return <li key={`empty-${index}`}></li>;
+                            return <li key={`empty-${Math.random()}`}></li>;
                         }
 
-                        const { day, color } = dayInfo;
+                        const {day, color} = dayInfo;
                         const currentDay = currentDate.getDate();
                         const currentMonth = currentDate.getMonth();
                         const currentYear = currentDate.getFullYear();
@@ -73,32 +74,39 @@ export default function Calendar() {
                         }
 
 
-
                         return (
                             <li
-                                key={`empty-${index}`}
-                                className={`calendar-day ${isActive ? "active" : ""}`}
-                                onClick={() => setSelectedDay(day)}
+                                key={`day-${dayInfo.day}`}
+                                className={`calendar-day ${isActive ? 'active' : ''}`}
+                                onClick={() => setSelectedDay(dayInfo.day)}
                             >
-                                <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
+                                <div className="day-circle" style={{background: backgroundColor}}>{day}</div>
                                 <React.Fragment>
-                                    <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
+                                    <StyledButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
                                         {dayActivityCounts[day] > 0 ? (
                                             <Button
                                                 size="small"
-                                                style={{ backgroundColor: 'transparent', color: 'black', paddingTop: '3rem' }}
+                                                style={{
+                                                    backgroundColor: 'transparent',
+                                                    color: 'black',
+                                                    paddingTop: '3rem'
+                                                }}
                                                 aria-controls={open ? 'split-button-menu' : undefined}
                                                 aria-expanded={open ? 'true' : undefined}
                                                 aria-label="select merge strategy"
                                                 aria-haspopup="menu"
                                                 onClick={handleToggle}
                                             >
-                                                <ArrowDropDownIcon style={{ fontSize: '20px' }} />
+                                                <ArrowDropDownIcon style={{fontSize: '20px'}}/>
                                             </Button>
                                         ) : (
                                             <Button
                                                 size="small"
-                                                style={{ backgroundColor: 'transparent', color: 'transparent', paddingTop: '3rem' }}
+                                                style={{
+                                                    backgroundColor: 'transparent',
+                                                    color: 'transparent',
+                                                    paddingTop: '3rem'
+                                                }}
                                                 aria-controls={open ? 'split-button-menu' : undefined}
                                                 aria-expanded={open ? 'true' : undefined}
                                                 aria-label="select merge strategy"
@@ -107,7 +115,7 @@ export default function Calendar() {
                                                 +
                                             </Button>
                                         )}
-                                    </ButtonGroup>
+                                    </StyledButtonGroup>
 
                                     <Popper
                                         sx={{
@@ -119,7 +127,7 @@ export default function Calendar() {
                                         transition
                                         disablePortal
                                     >
-                                        {({ TransitionProps, placement }) => (
+                                        {({TransitionProps, placement}) => (
                                             <Grow
                                                 {...TransitionProps}
                                                 style={{
@@ -129,7 +137,7 @@ export default function Calendar() {
                                                             : 'center bottom',
                                                 }}
                                             >
-                                                <Paper style={{ backgroundColor: 'white', color: 'black', width: '350px' }}>
+                                                <StyledPaper>
                                                     <ClickAwayListener onClickAway={handleClose}>
                                                         <MenuList
                                                             id="split-button-menu"
@@ -142,7 +150,12 @@ export default function Calendar() {
                                                                         disabled={index === 2}
                                                                         selected={index === selectedIndex}
                                                                         onClick={() => handleMenuItemClick(index)}
-                                                                        style={{ backgroundColor: activity.color, width: '350px', margin: 0, padding: 0 }}
+                                                                        style={{
+                                                                            backgroundColor: activity.color,
+                                                                            width: '350px',
+                                                                            margin: 0,
+                                                                            padding: 0
+                                                                        }}
                                                                     >
                                                                         {activity.name}
                                                                     </MenuItem>
@@ -150,7 +163,7 @@ export default function Calendar() {
                                                             )}
                                                         </MenuList>
                                                     </ClickAwayListener>
-                                                </Paper>
+                                                </StyledPaper>
                                             </Grow>
                                         )}
                                     </Popper>
@@ -164,3 +177,21 @@ export default function Calendar() {
         </div>
     );
 }
+
+const StyledPaper = styled(Paper)`
+  background-color: white;
+  color: black;
+  min-width: 350px;
+  
+`;
+
+
+const StyledButtonGroup = styled(ButtonGroup)`
+  background-color: transparent;
+  color: black;
+  margin-top: -4rem;
+  padding: 0;
+  width: 3rem;
+  height: 4.5rem;
+  
+`;

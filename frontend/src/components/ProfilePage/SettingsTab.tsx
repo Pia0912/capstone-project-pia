@@ -28,26 +28,14 @@ export default function SettingsTab() {
 
 const SettingLabel = styled.div`
   align-self: center;
-  align-content: center;
-  align-items: center;
-  justify-items: center;
-  justify-self: center;
-  justify-content: center;
-  
   font-size: 1rem;
   margin-top: 1rem;
-  
 `;
 
 
 const SettingButton = styled(Button)`
   background-color: orange;
   align-self: center;
-  align-content: center;
-  align-items: center;
-  justify-items: center;
-  justify-self: center;
-  justify-content: center;
   width: 10rem;
   color: black;
   border: none;
@@ -64,11 +52,6 @@ const SettingButton = styled(Button)`
 const StyledIconButton = styled(IconButton)`
   background-color: orange;
   align-self: center;
-  align-content: center;
-  align-items: center;
-  justify-items: center;
-  justify-self: center;
-  justify-content: center;
   width: 10rem;
   color: black;
   border: 2px solid orange;
