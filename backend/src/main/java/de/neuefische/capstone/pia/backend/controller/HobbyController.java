@@ -7,10 +7,12 @@ import de.neuefische.capstone.pia.backend.model.HobbyWithoutID;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/hobbies")
@@ -77,6 +79,26 @@ public class HobbyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteActivity(@PathVariable String hobbyId, @PathVariable String activityId) {
         hobbyService.deleteActivity(hobbyId, activityId);
+    }
+
+    @GetMapping("/statistics/activity-counts")
+    public Map<String, Long> getActivityCounts() {
+        return hobbyService.getActivityCounts();
+    }
+
+    @GetMapping("/statistics/most-added-activity")
+    public ResponseEntity<String> getMostAddedActivity() {
+        String mostAddedActivityName = hobbyService.getMostAddedActivityName();
+
+        if (mostAddedActivityName != null) {
+            return ResponseEntity.ok(mostAddedActivityName);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/statistics/activity-days")
+    public Map<String, Long> getActivityDays() {
+        return hobbyService.getActivityDays();
     }
 
 }

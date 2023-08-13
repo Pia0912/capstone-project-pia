@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class HobbyService {
@@ -122,6 +123,39 @@ public class HobbyService {
 
 
         return activitiesWithColor;
+    }
+
+    public Map<String, Long> getActivityCounts() {
+        List<Activity> allActivities = hobbyRepo.findAll().stream()
+                .flatMap(hobby -> hobby.getActivities().stream())
+                .toList();
+
+        return allActivities.stream()
+                .collect(Collectors.groupingBy(Activity::getName, Collectors.counting()));
+    }
+
+    public String getMostAddedActivityName() {
+        List<Activity> allActivities = hobbyRepo.findAll().stream()
+                .flatMap(hobby -> hobby.getActivities().stream())
+                .toList();
+
+        Map<String, Long> activityCounts = allActivities.stream()
+                .collect(Collectors.groupingBy(Activity::getName, Collectors.counting()));
+
+        return activityCounts.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+    }
+
+    public Map<String, Long> getActivityDays() {
+        List<Activity> allActivities = hobbyRepo.findAll().stream()
+                .flatMap(hobby -> hobby.getActivities().stream())
+                .toList();
+
+        return allActivities.stream()
+                .collect(Collectors.groupingBy(activity ->
+                        activity.getActivityDate().getDayOfWeek().name(), Collectors.counting()));
     }
 }
 

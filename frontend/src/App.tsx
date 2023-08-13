@@ -10,17 +10,12 @@ import HobbyDetail from "./components/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
 import InAppPurchase from "./components/InAppPurchase.tsx";
 import InfoTab from "./components/ProfilePage/InfoTab.tsx";
 import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
-import GoalsTab from "./components/ProfilePage/GoalsTab.tsx";
-import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
-import BadgesTab from "./components/ProfilePage/BadgesTab.tsx";
-import FriendsTab from "./components/ProfilePage/FriendsTab.tsx";
 import Calendar from "./components/Calendar.tsx";
 
 export default function App() {
@@ -59,10 +54,6 @@ export default function App() {
         navigate("/profile/info");
     };
 
-    const handleSearchIconClick = () => {
-        navigate("/app");
-    };
-
     const handleListIconClick = () => {
         navigate("/");
     };
@@ -74,10 +65,6 @@ export default function App() {
                 <Routes>
                     <Route path="/profile/info" element={<InfoTab />} />
                     <Route path="/profile/stats" element={<StatisticTab />} />
-                    <Route path="/profile/goals" element={<GoalsTab />} />
-                    <Route path="/profile/settings" element={<SettingsTab />} />
-                    <Route path="/profile/badges" element={<BadgesTab />} />
-                    <Route path="/profile/friends" element={<FriendsTab />} />
                     <Route path="/profile/*" element={<InfoTab />} />
 
                     <Route path="/app" element={<InAppPurchase/>}/>
@@ -88,7 +75,7 @@ export default function App() {
                     />
                     <Route
                         path="/:hobbyId/activities/add"
-                        element={<ActivityAddForm onAddActivity={handleAddActivity} color={selectedHobby?.color || colors[0]}/>}
+                        element={<ActivityAddForm onAddActivity={handleAddActivity} color={selectedHobby?.color ?? colors[0]}/>}
                     />
                     <Route
                         path="/:hobbyId/activities/:activityId"
@@ -131,7 +118,6 @@ export default function App() {
                     }}
                 >
                     <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
-                    <StyledBottomNavigationAction label="Upgrade" icon={<AppShortcutIcon/>} onClick={handleSearchIconClick}/>
                     <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>}
                                             onClick={handleProfileIconClick}/>
                 </StyledBottomNavigation>

@@ -1,14 +1,78 @@
-import ProfilePage from "./ProfilePage.tsx";
-import LoadingPage from "./LoadingPage.tsx";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import ProfilePage from './ProfilePage.tsx';
 
-export default function StatsTab() {
+interface ActivityCounts {
+    [key: string]: number;
+}
+
+interface ActivityDays {
+    [key: string]: number;
+}
+
+interface MostAddedActivity {
+    name: string;
+}
+
+export default function StatisticTab() {
+    const [activityCounts, setActivityCounts] = useState<ActivityCounts>({});
+    const [mostAddedActivity, setMostAddedActivity] = useState<MostAddedActivity | null>(null);
+    const [activityDays, setActivityDays] = useState<ActivityDays>({});
+
+    useEffect(() => {
+        axios.get<ActivityCounts>('/api/hobbies/statistics/activity-counts')
+            .then(response => setActivityCounts(response.data))
+            .catch(error => console.error(error));
+
+        axios.get<string>('/api/hobbies/statistics/most-added-activity')
+            .then(response => setMostAddedActivity({ name: response.data }))
+            .catch(error => console.error(error));
+
+        axios.get<ActivityDays>('/api/hobbies/statistics/activity-days')
+            .then(response => setActivityDays(response.data))
+            .catch(error => console.error(error));
+    }, []);
+
+    const formatData = (data: Record<string, number>) => {
+        return Object.keys(data)
+            .map(key => `${key}: ${data[key]}`)
+            .join('\n');
+    };
+
     return (
         <div className="div-statisticTab">
-            <ProfilePage />
-        <div id="stats" className="tabContent">
-            <h2 className="tabTitle">Account Statistic</h2>
-            <LoadingPage />
-        </div>
+            <ProfilePage/>
+            <div id="stats" className="tabContent">
+                <h2 className="tabTitle">Account Statistic</h2>
+                <table className="statistic-table">
+                    <thead>
+                    <tr>
+                        <th>Statistics</th>
+                        <th>Data</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td className="statistic-subheader">Days you added activities</td>
+                        <td>
+                            <pre className="statistic-pre">{formatData(activityDays)}</pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="statistic-subheader">Most Added Activity</td>
+                        <td>
+                            <pre className="statistic-pre">{mostAddedActivity?.name ?? 'N/A'}</pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="statistic-subheader">Activity Counts</td>
+                        <td>
+                            <pre className="statistic-pre">{formatData(activityCounts)}</pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
