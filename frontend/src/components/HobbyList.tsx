@@ -4,7 +4,7 @@ import {Snackbar} from "@mui/material";
 import React from "react";
 import HobbyItem from "./HobbyItem";
 import styled from "@emotion/styled";
-import {useSuccessMessage} from "./SuccessMessages.tsx";
+import {useSuccessMessage} from "../hooks/useSuccessMessage.tsx";
 
 type Props = {
     hobbies: Hobby[];

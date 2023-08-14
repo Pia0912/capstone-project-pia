@@ -4,11 +4,8 @@ import Button from '@mui/material/Button';
 import { ActivityWithoutID, Hobby } from '../../models';
 import { Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import styled from '@emotion/styled';
-import {useSuccessMessage} from "../SuccessMessages.tsx";
+import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 import useActivities from "../../hooks/useActivities.ts";
-
-
-
 
 type Props = {
     hobbies: Hobby[];

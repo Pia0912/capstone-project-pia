@@ -20,9 +20,11 @@ public class CalendarService {
     public List<Activity> getActivitiesByMonth(LocalDate month) {
         List<Activity> activitiesWithColor = new ArrayList<>();
         List<Hobby> hobbies = hobbyService.getHobbies();
-        try {
-            for (Hobby hobby : hobbies) {
-                for (Activity activity : hobby.getActivities()) {
+
+        for (Hobby hobby : hobbies) {
+            List<Activity> hobbyActivities = hobby.getActivities();
+            if (hobbyActivities != null) {
+                for (Activity activity : hobbyActivities) {
                     LocalDate activityDate = activity.getActivityDate();
                     if (activityDate.getMonth() == month.getMonth() && activityDate.getYear() == month.getYear()) {
                         Activity activityWithColor = new Activity();
@@ -36,8 +38,6 @@ public class CalendarService {
                     }
                 }
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
 
         return activitiesWithColor;

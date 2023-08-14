@@ -5,7 +5,7 @@ import useActivities from "../../hooks/useActivities.ts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ActivityList from "./ActivityList.tsx";
-import {useSuccessMessage} from "../SuccessMessages.tsx";
+import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 
 type Props = {
     colors: string[];

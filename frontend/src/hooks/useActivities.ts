@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Activity, ActivityWithoutID, Hobby } from "../models.ts";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useSuccessMessage } from "../components/SuccessMessages.tsx";
+import {useSuccessMessage} from "./useSuccessMessage.tsx";
 
 type ActivitiesData = { hobby: Hobby; activities: Activity[] };
 const api = axios.create({

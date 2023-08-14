@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import {createContext, useMemo, useState} from 'react';
 
-const SuccessMessageContext = createContext<{
+export const SuccessMessageContext = createContext<{
     successMessage: string | null;
     showSuccessMessage: (message: string) => void;
     clearSuccessMessage: () => void;
@@ -17,17 +17,15 @@ export function SuccessMessage({ children }: { children: React.ReactNode }) {
         setSuccessMessage(null);
     };
 
+    const contextValue = useMemo(() => ({
+        successMessage,
+        showSuccessMessage,
+        clearSuccessMessage,
+    }), [successMessage]);
+
     return (
-        <SuccessMessageContext.Provider value={{ successMessage, showSuccessMessage, clearSuccessMessage }}>
+        <SuccessMessageContext.Provider value={contextValue}>
             {children}
         </SuccessMessageContext.Provider>
     );
-}
-
-export function useSuccessMessage() {
-    const context = useContext(SuccessMessageContext);
-    if (context === undefined) {
-        throw new Error('useSuccessMessage must be used within a SuccessMessageProvider');
-    }
-    return context;
 }

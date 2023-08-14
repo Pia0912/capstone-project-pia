@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {Hobby, HobbyWithoutID} from "../models.ts";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import {useSuccessMessage} from "../components/SuccessMessages.tsx";
+import {useSuccessMessage} from "./useSuccessMessage.tsx";
 
 const api = axios.create({
     baseURL: '/api'

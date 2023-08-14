@@ -15,14 +15,12 @@ import static org.mockito.Mockito.*;
 
 class CalendarServiceTest {
 
-    HobbyService hobbyService;
-    CalendarService calendarService;
-    HobbyRepo hobbyRepo;
+    private HobbyService hobbyService;
+    private CalendarService calendarService;
 
     @BeforeEach
     public void setup() {
         hobbyService = mock(HobbyService.class);
-        hobbyRepo = mock(HobbyRepo.class);
         calendarService = new CalendarService(hobbyService);
     }
 
@@ -39,23 +37,21 @@ class CalendarServiceTest {
         });
     }
 
-
     @Test
     void testGetActivitiesByMonth_ReturnsEmptyList_WhenNoHobbies() {
-        // Arrange
+       //WHEN
         when(hobbyService.getHobbies()).thenReturn(new ArrayList<>());
 
-        // Act
+        // THEN
         List<Activity> activities = calendarService.getActivitiesByMonth(LocalDate.of(2023, 8, 1));
 
-        // Assert
         assertTrue(activities.isEmpty());
         verify(hobbyService, times(1)).getHobbies();
     }
 
     @Test
     void testGetActivitiesByMonth_ReturnsActivitiesWithColor_WhenMatchingMonthAndYear() {
-        // Arrange
+        // GIVEN
         List<Hobby> hobbies = new ArrayList<>();
         Hobby hobby = new Hobby();
         hobby.setHobbyId("hobbyId");
@@ -68,12 +64,12 @@ class CalendarServiceTest {
         hobby.setActivities(List.of(activity));
         hobbies.add(hobby);
 
+        //WHEN
         when(hobbyService.getHobbies()).thenReturn(hobbies);
 
-        // Act
         List<Activity> activities = calendarService.getActivitiesByMonth(LocalDate.of(2023, 8, 1));
 
-        // Assert
+        // THEN
         assertFalse(activities.isEmpty());
         assertEquals(1, activities.size());
         assertEquals("activityId", activities.get(0).getActivityId());
@@ -87,7 +83,7 @@ class CalendarServiceTest {
 
     @Test
     void testGetActivitiesByMonth_ReturnsEmptyList_WhenNoMatchingActivities() {
-        // Arrange
+        // GIVEN
         List<Hobby> hobbies = new ArrayList<>();
         Hobby hobby = new Hobby();
         hobby.setHobbyId("hobbyId");
@@ -100,12 +96,12 @@ class CalendarServiceTest {
         hobby.setActivities(List.of(activity));
         hobbies.add(hobby);
 
+        // WHEN
         when(hobbyService.getHobbies()).thenReturn(hobbies);
 
-        // Act
+        // THEN
         List<Activity> activities = calendarService.getActivitiesByMonth(LocalDate.of(2023, 7, 1));
 
-        // Assert
         assertTrue(activities.isEmpty());
         verify(hobbyService, times(1)).getHobbies();
     }
