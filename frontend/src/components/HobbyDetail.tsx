@@ -1,31 +1,31 @@
-import { Grid, Button } from "@mui/material";
+import {Grid, Button, Snackbar} from "@mui/material";
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import styled from "@emotion/styled";
 import useActivities from "../hooks/useActivities.ts";
-
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import ActivityList from "./Activity/ActivityList.tsx";
 import useHobbies from "../hooks/useHobbies.ts";
-import CachedIcon from '@mui/icons-material/Cached';
+import {useSuccessMessage} from "./SuccessMessages.tsx";
 
 type Props = {
     colors: string[];
 };
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
     const { handleEditActivity, handleDeleteActivity } = useHobbies();
     const data = useActivities();
-
+    const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
     if (!data?.hobby) {
         return <div>Loading...</div>;
     }
 
     const { hobby, activities } = data;
-
-    const handleReload = () => {
-        window.location.href = window.location.pathname + "?timestamp=" + Date.now();
-    };
 
 
     return (
@@ -41,13 +41,6 @@ export default function HobbyDetail(props: Props) {
             >
                 Back
             </StyledButtonBack>
-                <StyledButtonReload
-                    variant="contained"
-                    disableElevation
-                    onClick={handleReload}
-                >
-                   <CachedIcon/>
-                </StyledButtonReload>
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
@@ -56,6 +49,11 @@ export default function HobbyDetail(props: Props) {
                 +
             </StyledButtonAdd>
             </div>
+            <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={clearSuccessMessage}>
+            <StyledAlert onClose={clearSuccessMessage} severity="success">
+                {successMessage}
+            </StyledAlert>
+        </Snackbar>
             <StyledGrid container spacing={2}>
                 <ActivityList
                     activities={activities}
@@ -82,12 +80,10 @@ const StyledButtonAdd = styled(Button)`
   font-size: 25px;
 `;
 
-const StyledButtonReload = styled(Button)`
-  height: 3rem;
-  width: 3rem;
-  background-color: black;
-  color: white;
-  font-size: 25px;
+const StyledAlert = styled(Alert)`
+  background-color: darkorange;
+  color: black;
+  width: 100%;
 `;
 
 const StyledGrid = styled(Grid)`

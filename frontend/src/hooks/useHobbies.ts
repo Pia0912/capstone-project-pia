@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {Activity, ActivityWithoutID, Hobby, HobbyWithoutID} from "../models.ts";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import {useSuccessMessage} from "../components/SuccessMessages.tsx";
 
 const api = axios.create({
     baseURL: '/api'
@@ -12,6 +13,7 @@ export default function useHobbies() {
     const [activities, setActivities] = useState<ActivityWithoutID[]>([]);
 
     const navigate = useNavigate();
+    const { showSuccessMessage } = useSuccessMessage();
 
     useEffect(() => {
         api.get('/hobbies')
@@ -29,6 +31,7 @@ export default function useHobbies() {
             })
             .then((data) => {
                 setHobbies((prevHobbies) => [...prevHobbies, data]);
+                showSuccessMessage("Hobby added successfully!");
                 navigate('/');
             });
     }
@@ -47,6 +50,7 @@ export default function useHobbies() {
                     return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
                 });
                 console.log("Updated hobby state:", hobbies);
+                showSuccessMessage("Hobby name edited successfully!");
             });
         navigate('/');
     }
@@ -71,6 +75,7 @@ export default function useHobbies() {
             .delete(`hobbies/${id}`)
             .catch(console.error);
         setHobbies(hobbies.filter(hobby => hobby.id !== id))
+        showSuccessMessage("Hobby deleted successfully!");
         navigate("/")
     }
 
@@ -94,6 +99,7 @@ export default function useHobbies() {
                 );
 
                 setActivities((prevActivities) => [...prevActivities, activity]);
+                showSuccessMessage("Activity added successfully!");
                 navigate(`/${hobbyId}/activities`);
             });
     }
@@ -132,6 +138,7 @@ export default function useHobbies() {
                             : hobby
                     )
                 );
+                showSuccessMessage("Activity edited successfully!");
                 navigate(`/${hobbyId}/activities`);
             });
     }
@@ -151,6 +158,7 @@ export default function useHobbies() {
                         return hobby;
                     })
                 );
+                showSuccessMessage("Activity deleted successfully!");
                 navigate(`/${hobbyId}/activities`);
             });
     }

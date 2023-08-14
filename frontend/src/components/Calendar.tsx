@@ -5,10 +5,12 @@ import Button from "@mui/material/Button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useCalendar from "../hooks/useCalendar.ts";
 import styled from "@emotion/styled";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Calendar() {
     const today = new Date();
+    const navigate = useNavigate();
 
     const {
         currentDate,
@@ -24,7 +26,6 @@ export default function Calendar() {
         handleMenuItemClick,
         handleGradient
     } = useCalendar();
-
 
     return (
         <div className="calendar-container">
@@ -81,14 +82,14 @@ export default function Calendar() {
                                 onClick={() => setSelectedDay(dayInfo.day)}
                             >
                                 <div className="day-circle" style={{background: backgroundColor}}>{day}</div>
-                                <React.Fragment>
+                                <StyledReactFragment>
                                     <StyledButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
                                             <Button
                                                 size="small"
                                                 style={{
                                                     backgroundColor: 'transparent',
                                                     color: 'black',
-                                                    paddingTop: '3rem'
+                                                    paddingTop: '2.7rem',
                                                 }}
                                                 aria-controls={open ? 'split-button-menu' : undefined}
                                                 aria-expanded={open ? 'true' : undefined}
@@ -126,6 +127,9 @@ export default function Calendar() {
                                                             id="split-button-menu"
                                                             autoFocusItem
                                                         >
+                                                            <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/calendar/add')}>
+                                                                + add activity
+                                                            </StyledButtonAdd>
                                                             {selectedDayActivities.map(
                                                                 (activity, index) => (
                                                                     <MenuItem
@@ -133,16 +137,16 @@ export default function Calendar() {
                                                                         disabled={index === 2}
                                                                         selected={index === selectedIndex}
                                                                         onClick={() => handleMenuItemClick(index)}
-                                                                        style={{
-                                                                            backgroundColor: activity.color,
-                                                                            width: '350px',
-                                                                            margin: 0,
-                                                                            padding: 0
-                                                                        }}
+                                                                        style={{ backgroundColor: activity.color, width: '350px', margin: 0, padding: 0 }}
                                                                     >
                                                                         {activity.name}
                                                                     </MenuItem>
                                                                 )
+                                                            )}
+                                                            {selectedDayActivities.length === 0 && (
+                                                                <MenuItem style={{ width: '350px', margin: 0, padding: 0 }}>
+                                                                    No activities
+                                                                </MenuItem>
                                                             )}
                                                         </MenuList>
                                                     </ClickAwayListener>
@@ -150,8 +154,7 @@ export default function Calendar() {
                                             </Grow>
                                         )}
                                     </Popper>
-                                </React.Fragment>
-
+                                </StyledReactFragment>
                             </li>
                         );
                     })}
@@ -177,4 +180,15 @@ const StyledButtonGroup = styled(ButtonGroup)`
   width: 3rem;
   height: 4.5rem;
   
+`;
+
+const StyledButtonAdd = styled(Button)`
+  background-color: black;
+  font-size: 12px;
+  margin-bottom: 2px;
+`;
+
+
+const StyledReactFragment = styled(React.Fragment)`
+  background-color: black;
 `;

@@ -17,6 +17,7 @@ import InAppPurchase from "./components/InAppPurchase.tsx";
 import InfoTab from "./components/ProfilePage/InfoTab.tsx";
 import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
 import Calendar from "./components/Calendar.tsx";
+import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
 
 export default function App() {
     const navigate = useNavigate();
@@ -69,6 +70,8 @@ export default function App() {
 
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
+
+                    <Route path="/calendar/add" element={<CalendarActivityAddForm onAddActivity={handleAddActivity} hobbies={hobbies}/>} />
                     <Route
                         path="/:id/activities"
                         element={<HobbyDetail colors={colors}/>}
@@ -97,10 +100,12 @@ export default function App() {
                         element={(
                             <>
                                 <Calendar />
+
                                 <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +
                                 </StyledButtonAdd>
+
                                 <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
                                            onEditHobbyColor={handleEditHobbyColor}
                                            onDeleteHobby={handleDeleteHobby}/>
@@ -128,15 +133,16 @@ export default function App() {
 
 const StyledH2 = styled.h2`
   margin-top: 0;
+  margin-right: 3.5rem;
   padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   border-top: 4px solid black;
   border-radius: 5%;
-  width: calc(100% - 8px);
+  width: 550px;
 `;
 
 const StyledButtonAdd = styled(Button)`
-  margin: 0.25rem 20% -6rem 75%;
+  margin: -3.5rem 0.25rem -5rem 60%;
   background-color: black;
   font-size: 25px;
 `;

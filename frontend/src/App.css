@@ -270,7 +270,7 @@ input {
 }
 
 .div-statisticTab {
-    padding: 3rem 5rem 21rem;
+    padding: 3rem 5rem 24rem;
     background-color: tomato;
 }
 
@@ -280,7 +280,7 @@ input {
 }
 
 .div-infoTab {
-    padding: 3rem 3rem 25rem;
+    padding: 3rem 3rem 29rem;
     background-color: lightgreen;
 }
 
@@ -316,7 +316,7 @@ input {
 
 .statistic-table {
     border-collapse: collapse;
-    width: 360px;
+    width: 300px;
     margin-left: 1.6rem;
     margin-top: 20px;
     border-radius: 20px;
