@@ -5,7 +5,6 @@ import useActivities from "../../hooks/useActivities.ts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ActivityList from "./ActivityList.tsx";
-import useHobbies from "../../hooks/useHobbies.ts";
 import {useSuccessMessage} from "../SuccessMessages.tsx";
 
 type Props = {
@@ -17,21 +16,17 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const { handleEditActivity, handleDeleteActivity } = useHobbies();
-    const data = useActivities();
+    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities();
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
-    if (!data?.hobby) {
+    if (!data) {
         return <div>Loading...</div>;
     }
 
-    const { hobby, activities } = data;
-
-
     return (
         <>
-            <div className="div-header" style={{ backgroundColor: hobby.color }}>
-                {hobby.name}
+            <div className="div-header" style={{ backgroundColor: data.hobby.color }}>
+                {data.hobby.name}
             </div>
             <div className="div-hobbyDetail-buttons">
             <StyledButtonBack
@@ -44,7 +39,7 @@ export default function HobbyDetail(props: Props) {
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
-                onClick={() => navigate(`/${hobby.hobbyId}/activities/add`)}
+                onClick={() => navigate(`/${data.hobby.hobbyId}/activities/add`)}
             >
                 +
             </StyledButtonAdd>
@@ -57,7 +52,7 @@ export default function HobbyDetail(props: Props) {
             <StyledGrid container spacing={2}>
                 <ActivityList
                     activities={activities}
-                    hobby={hobby}
+                    hobby={data.hobby}
                     colors={props.colors}
                     onEditActivity={handleEditActivity}
                     onDeleteActivity={handleDeleteActivity}
@@ -81,8 +76,6 @@ const StyledButtonAdd = styled(Button)`
 `;
 
 const StyledAlert = styled(Alert)`
-  background-color: darkorange;
-  color: black;
   width: 100%;
 `;
 

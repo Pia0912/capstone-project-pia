@@ -49,7 +49,5 @@ export default function HobbyList(props: Props) {
 }
 
 const StyledAlert = styled(Alert)`
-  background-color: darkorange;
-  color: black;
   width: 100%;
 `;

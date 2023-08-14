@@ -18,6 +18,7 @@ import InfoTab from "./components/ProfilePage/InfoTab.tsx";
 import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
 import Calendar from "./components/Calendar/Calendar.tsx";
 import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
+import useActivities from "./hooks/useActivities.ts";
 
 export default function App() {
     const navigate = useNavigate();
@@ -25,16 +26,9 @@ export default function App() {
     const [value, setValue] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
 
-    const {
-        hobbies,
-        handleAddHobby,
-        handleEditHobbyName,
-        handleEditHobbyColor,
-        handleDeleteHobby,
-        handleAddActivity,
-        handleEditActivity,
-        handleDeleteActivity
-    } = useHobbies();
+    const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
+
     const {hobbyId, activityId} = useParams();
 
     useEffect(() => {
@@ -71,14 +65,14 @@ export default function App() {
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
 
-                    <Route path="/calendar/add" element={<CalendarActivityAddForm onAddActivity={handleAddActivity} hobbies={hobbies}/>} />
+                    <Route path="/calendar/add" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies}/>} />
                     <Route
                         path="/:id/activities"
                         element={<HobbyDetail colors={colors}/>}
                     />
                     <Route
                         path="/:hobbyId/activities/add"
-                        element={<ActivityAddForm onAddActivity={handleAddActivity} color={selectedHobby?.color ?? colors[0]}/>}
+                        element={<ActivityAddForm onAddActivity={handleAddActivityToHobby} color={selectedHobby?.color ?? colors[0]}/>}
                     />
                     <Route
                         path="/:hobbyId/activities/:activityId"

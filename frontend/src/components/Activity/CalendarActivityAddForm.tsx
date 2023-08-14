@@ -4,9 +4,8 @@ import Button from '@mui/material/Button';
 import { ActivityWithoutID, Hobby } from '../../models';
 import { Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import styled from '@emotion/styled';
-
-import useHobbies from "../../hooks/useHobbies.ts";
 import {useSuccessMessage} from "../SuccessMessages.tsx";
+import useActivities from "../../hooks/useActivities.ts";
 
 
 
@@ -24,7 +23,7 @@ export default function CalendarActivityAddForm(props: Props) {
 
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
-    const { handleAddActivity } = useHobbies();
+    const { handleAddActivityToHobby } = useActivities();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -41,7 +40,7 @@ export default function CalendarActivityAddForm(props: Props) {
             color: '',
         };
 
-        handleAddActivity(selectedHobbyId, newActivity);
+        handleAddActivityToHobby(selectedHobbyId, newActivity);
         setName('');
         setDate('');
         setRating(5);
