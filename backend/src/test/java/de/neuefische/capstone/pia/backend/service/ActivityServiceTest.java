@@ -37,13 +37,13 @@ class ActivityServiceTest {
         // GIVEN
         String hobbyId = "existingHobbyId";
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        when(hobbyService.getHobbyById(hobbyId)).thenReturn(existingHobby);
 
         // WHEN
         List<Activity> activities = activityService.getActivitiesByHobbyId(hobbyId);
 
         // THEN
-        verify(hobbyRepo).findById(hobbyId);
+        verify(hobbyService).getHobbyById(hobbyId);
         assertEquals(new ArrayList<Activity>(), activities);
     }
 

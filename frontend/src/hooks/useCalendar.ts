@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Activity, ActivityWithColor, Hobby} from "../models.ts";
 import axios from "axios";
+import {Activity, ActivityWithColor, Hobby} from "../models.ts";
 
-
+const api = axios.create({
+    baseURL: "/api",
+});
 
 export default function useCalendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -42,8 +44,8 @@ export default function useCalendar() {
             setDaysArray(newDaysArray);
         }
 
-        axios
-            .get<Array<ActivityWithColor>>(`/api/hobbies/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
+        api
+            .get<Array<ActivityWithColor>>(`/hobbies/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
             .then((response) => {
                 const activitiesWithColors = response.data.map((activity) => ({
                     ...activity,

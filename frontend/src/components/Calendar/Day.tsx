@@ -78,10 +78,7 @@ export default function Day(props: Props) {
                     </Button>
                 </ButtonGroup>
 
-                <Popper
-                    sx={{
-                        zIndex: 1,
-                    }}
+                <StyledPopper
                     open={props.open}
                     anchorEl={props.popperRef.current}
                     role={undefined}
@@ -98,7 +95,7 @@ export default function Day(props: Props) {
                                         : 'center bottom',
                             }}
                         >
-                            <Paper style={{ backgroundColor: 'white', color: 'black', width: '350px' }}>
+                            <StyledPaper>
                                 <ClickAwayListener onClickAway={props.handleClose}>
                                     <MenuList
                                         id="split-button-menu"
@@ -109,15 +106,15 @@ export default function Day(props: Props) {
                                         </StyledButtonAdd>
                                         {props.selectedDayActivities.map(
                                             (activity, index) => (
-                                                <MenuItem
+                                                <StyledMenuItem
                                                     key={activity.activityId}
                                                     disabled={index === 2}
                                                     selected={index === props.selectedIndex}
                                                     onClick={() => props.handleMenuItemClick(index)}
-                                                    sx={{ backgroundColor: activity.color, width: '350px', margin: 0, padding: 0 }}
+                                                    sx={{ backgroundColor: activity.color}}
                                                 >
                                                     {activity.name}
-                                                </MenuItem>
+                                                </StyledMenuItem>
                                             )
                                         )}
                                         {props.selectedDayActivities.length === 0 && (
@@ -127,10 +124,10 @@ export default function Day(props: Props) {
                                         )}
                                     </MenuList>
                                 </ClickAwayListener>
-                            </Paper>
+                            </StyledPaper>
                         </Grow>
                     )}
-                </Popper>
+                </StyledPopper>
             </React.Fragment>
         </li>
     );
@@ -142,3 +139,18 @@ const StyledButtonAdd = styled(Button)`
   margin-bottom: 2px;
 `;
 
+const StyledPopper = styled(Popper)`
+  z-index: 3;
+`;
+
+const StyledPaper = styled(Paper)`
+  background-color: white;
+  color: black;
+  width: 350px;
+  margin-top: -0.8rem;
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  padding-left: 10.5rem;
+  padding-right: 10.5rem;
+`;

@@ -178,7 +178,7 @@ class IntegrationTest {
         String hobbyId = addedHobby.getHobbyId();
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
 
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
@@ -190,7 +190,7 @@ class IntegrationTest {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/{hobbyId}/activities", hobbyId)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/hobby/{hobbyId}/activities", hobbyId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                         {
@@ -201,7 +201,7 @@ class IntegrationTest {
                         }
                         """));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/{hobbyId}/activities", hobbyId)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/hobby/{hobbyId}/activities", hobbyId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                         {
@@ -212,16 +212,16 @@ class IntegrationTest {
                         }
                         """));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].activityId").isNotEmpty()) // Check that activityId is not empty
+                .andExpect(jsonPath("$[0].activityId").isNotEmpty())
                 .andExpect(jsonPath("$[0].name").value("Watering Plants"))
                 .andExpect(jsonPath("$[0].activityDate").value("2023-08-01"))
                 .andExpect(jsonPath("$[0].hobbyId").value(hobbyId))
                 .andExpect(jsonPath("$[0].rating").value(5))
                 .andExpect(jsonPath("$[0].color").value("green"))
-                .andExpect(jsonPath("$[1].activityId").isNotEmpty()) // Check that activityId is not empty
+                .andExpect(jsonPath("$[1].activityId").isNotEmpty())
                 .andExpect(jsonPath("$[1].name").value("Pruning"))
                 .andExpect(jsonPath("$[1].activityDate").value("2023-08-05"))
                 .andExpect(jsonPath("$[1].hobbyId").value(hobbyId))
@@ -238,7 +238,7 @@ class IntegrationTest {
         String hobbyId = hobby.getHobbyId();
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/{hobbyId}/activities", hobbyId)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/hobby/{hobbyId}/activities", hobbyId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
@@ -253,7 +253,7 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         // ALSO
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
@@ -294,7 +294,7 @@ class IntegrationTest {
     """.formatted(activityId, hobbyId);
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{hobbyId}/activities/{activityId}", hobbyId, activityId)
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(actual))
 
@@ -320,7 +320,7 @@ class IntegrationTest {
     """;
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{hobbyId}/activities/{activityId}", hobbyId, activityId)
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(actual))
 
@@ -341,11 +341,11 @@ class IntegrationTest {
         String activityId = addedActivity.getActivityId();
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/{hobbyId}/activities/{activityId}", hobbyId, activityId))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().json("[]"));
