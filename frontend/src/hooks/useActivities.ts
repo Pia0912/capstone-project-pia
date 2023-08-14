@@ -19,20 +19,20 @@ export default function useActivities(): ActivitiesData | null {
             .get(`/hobbies/${params.id}`)
             .then((response) => {
                 const hobbyData = response.data;
-                api
-                    .get(`/hobbies/${hobbyData.id}/activities`)
-                    .then((activitiesResponse) => {
-                        if (isMounted) {
-                            setData({ hobby: hobbyData, activities: activitiesResponse.data });
+                const hobbyId = params.id
+
+                if (isMounted) {
+                    api.get(`/hobbies/${hobbyId}/activities`)
+                        .then((activitiesResponse) => {
+                            const activities = activitiesResponse.data;
+                            setData({ hobby: hobbyData, activities });
                             setLoading(false);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        if (isMounted) {
+                        })
+                        .catch((error) => {
+                            console.error(error);
                             setLoading(false);
-                        }
-                    });
+                        });
+                }
             })
             .catch((error) => {
                 console.error(error);

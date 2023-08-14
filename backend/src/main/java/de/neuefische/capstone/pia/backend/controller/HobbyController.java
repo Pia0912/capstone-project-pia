@@ -28,7 +28,6 @@ public class HobbyController {
         this.activityService = activityService;
         this.calendarService = calendarService;
     }
-
     @GetMapping
     public List<Hobby> getHobbies() {
         return hobbyService.getHobbies();
@@ -61,8 +60,13 @@ public class HobbyController {
         hobbyService.deleteHobby(hobbyId);
     }
 
+    @GetMapping("/{hobbyId}")
+    public Hobby getHobbyById(@PathVariable String hobbyId) {
+        return hobbyService.getHobbyById(hobbyId);
+    }
+
     @GetMapping("/{hobbyId}/activities")
-    public List<Activity> getHobbyById(@PathVariable String hobbyId) {
+    public List<Activity> getHobbyByIdListActivities(@PathVariable String hobbyId) {
         return activityService.getActivitiesByHobbyId(hobbyId);
     }
 

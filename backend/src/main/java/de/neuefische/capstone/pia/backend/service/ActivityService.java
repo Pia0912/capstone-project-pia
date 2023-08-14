@@ -29,10 +29,13 @@ public class ActivityService {
     }
 
     public List<Activity> getActivitiesByHobbyId(String hobbyId) {
-        Optional<Hobby> hobbyOptional = hobbyRepo.findById(hobbyId);
-        Hobby hobby = hobbyOptional.orElseThrow(() -> new NoSuchHobbyException(hobbyId));
+        Hobby hobby = hobbyService.getHobbyById(hobbyId);
+        List<Activity> activities = hobby.getActivities();
 
-        return hobby.getActivities();
+        String hobbyColor = hobby.getColor();
+        activities.forEach(activity -> activity.setColor(hobbyColor));
+
+        return activities;
     }
 
     public Activity getActivityByHobbyId(String hobbyId, String activityId) {
@@ -125,3 +128,4 @@ public class ActivityService {
     }
 
 }
+
