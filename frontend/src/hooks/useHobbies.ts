@@ -47,7 +47,7 @@ export default function useHobbies() {
             .catch(error => console.error(error))
             .then(data => {
                 setHobbies(prevHobbies => {
-                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                    return prevHobbies.map(hobby => (hobby.hobbyId === id ? data : hobby));
                 });
                 console.log("Updated hobby state:", hobbies);
                 showSuccessMessage("Hobby name edited successfully!");
@@ -64,7 +64,7 @@ export default function useHobbies() {
             .catch(error => console.error(error))
             .then(data => {
                 setHobbies(prevHobbies => {
-                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                    return prevHobbies.map(hobby => (hobby.hobbyId === id ? data : hobby));
                 });
                 console.log("Updated hobby state:", hobbies);
             });
@@ -74,7 +74,7 @@ export default function useHobbies() {
         api
             .delete(`hobbies/${id}`)
             .catch(console.error);
-        setHobbies(hobbies.filter(hobby => hobby.id !== id))
+        setHobbies(hobbies.filter(hobby => hobby.hobbyId !== id))
         showSuccessMessage("Hobby deleted successfully!");
         navigate("/")
     }
@@ -91,7 +91,7 @@ export default function useHobbies() {
 
                 setHobbies((prevHobbies) =>
                     prevHobbies.map((hobby) => {
-                        if (hobby.id === hobbyId) {
+                        if (hobby.hobbyId=== hobbyId) {
                             return { ...hobby, activities: [...hobby.activities, newActivity] };
                         }
                         return hobby;
@@ -128,7 +128,7 @@ export default function useHobbies() {
 
                 setHobbies((prevHobbies) =>
                     prevHobbies.map((hobby) =>
-                        hobby.id === hobbyId
+                        hobby.hobbyId === hobbyId
                             ? {
                                 ...hobby,
                                 activities: hobby.activities.map((activity) =>
@@ -149,7 +149,7 @@ export default function useHobbies() {
             .then(() => {
                 setHobbies((prevHobbies) =>
                     prevHobbies.map((hobby) => {
-                        if (hobby.id === hobbyId) {
+                        if (hobby.hobbyId === hobbyId) {
                             return {
                                 ...hobby,
                                 activities: hobby.activities.filter((activity) => activity.activityId !== activityId),

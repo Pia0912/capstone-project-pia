@@ -70,7 +70,7 @@ export default function CalendarActivityAddForm(props: Props) {
                                 + Add New Hobby
                             </StyledMenuItem>
                             {props.hobbies.map((hobby) => (
-                                <MenuItem key={hobby.id} value={hobby.id}>
+                                <MenuItem key={hobby.hobbyId} value={hobby.hobbyId}>
                                     {hobby.name}
                                 </MenuItem>
                             ))}

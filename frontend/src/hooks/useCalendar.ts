@@ -150,9 +150,7 @@ export default function useCalendar() {
 
 
     const handleToggle = () => {
-        if (activityNames.length > 0) {
             setOpen((prevOpen) => !prevOpen);
-        }
     };
 
     const handleGradient = () => {
@@ -194,6 +192,6 @@ export default function useCalendar() {
         handleClose,
         handleMenuItemClick,
         dayActivityCounts,
-    handleGradient}
+        handleGradient}
 
 }

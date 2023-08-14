@@ -1,12 +1,12 @@
 import {Grid, Button, Snackbar} from "@mui/material";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import styled from "@emotion/styled";
-import useActivities from "../hooks/useActivities.ts";
+import useActivities from "../../hooks/useActivities.ts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ActivityList from "./Activity/ActivityList.tsx";
-import useHobbies from "../hooks/useHobbies.ts";
-import {useSuccessMessage} from "./SuccessMessages.tsx";
+import ActivityList from "./ActivityList.tsx";
+import useHobbies from "../../hooks/useHobbies.ts";
+import {useSuccessMessage} from "../SuccessMessages.tsx";
 
 type Props = {
     colors: string[];
@@ -44,7 +44,7 @@ export default function HobbyDetail(props: Props) {
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
-                onClick={() => navigate(`/${hobby.id}/activities/add`)}
+                onClick={() => navigate(`/${hobby.hobbyId}/activities/add`)}
             >
                 +
             </StyledButtonAdd>

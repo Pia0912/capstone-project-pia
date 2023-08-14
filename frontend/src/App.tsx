@@ -6,7 +6,7 @@ import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import AddForm from "./components/AddForm";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
-import HobbyDetail from "./components/HobbyDetail.tsx";
+import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -16,7 +16,7 @@ import {useEffect, useRef, useState} from "react";
 import InAppPurchase from "./components/InAppPurchase.tsx";
 import InfoTab from "./components/ProfilePage/InfoTab.tsx";
 import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
-import Calendar from "./components/Calendar.tsx";
+import Calendar from "./components/Calendar/Calendar.tsx";
 import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
 
 export default function App() {
@@ -48,7 +48,7 @@ export default function App() {
         return <div>Loading hobbies...</div>;
     }
 
-    const selectedHobby = hobbies.find((hobby) => hobby.id === hobbyId);
+    const selectedHobby = hobbies.find((hobby) => hobby.hobbyId === hobbyId);
     const selectedActivity = selectedHobby ? selectedHobby.activities.find((activity) => activity.activityId === activityId) : undefined;
 
     const handleProfileIconClick = () => {

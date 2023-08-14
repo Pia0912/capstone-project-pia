@@ -35,7 +35,7 @@ export default function HobbyList(props: Props) {
         <div className="div-hobbyList">
             {props.hobbies.map((hobby) => (
                 <HobbyItem
-                    key={hobby.id}
+                    key={hobby.hobbyId}
                     hobby={hobby}
                     colors={props.colors}
                     onEditHobbyName={props.onEditHobbyName}
