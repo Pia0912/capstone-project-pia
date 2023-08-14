@@ -39,7 +39,7 @@ export default function HobbyDetail(props: Props) {
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
-                onClick={() => navigate(`/${data.hobby.hobbyId}/activities/add`)}
+                onClick={() => navigate(`/hobby/${data.hobby.hobbyId}/activities/add`)}
             >
                 +
             </StyledButtonAdd>

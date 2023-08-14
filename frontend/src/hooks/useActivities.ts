@@ -20,14 +20,13 @@ export default function useActivities(){
 
     useEffect(() => {
         let isMounted = true;
+        const hobbyId = params.hobbyId
         api
-            .get(`/hobbies/${params.id}`)
+            .get(`/hobbies/hobby/${hobbyId}`)
             .then((response) => {
                 const hobbyData = response.data;
-                const hobbyId = params.id
-
                 if (isMounted) {
-                    api.get(`/hobbies/${hobbyId}/activities`)
+                    api.get(`/hobbies/hobby/${hobbyId}/activities`)
                         .then((activitiesResponse) => {
                             const activitiesData = activitiesResponse.data;
                             setActivities(activitiesData);
@@ -51,10 +50,10 @@ export default function useActivities(){
         return () => {
             isMounted = false;
         };
-    }, [params.id]);
+    }, [params.hobbyId]);
 
     function handleAddActivityToHobby (hobbyId: string, activityData: ActivityWithoutID) {
-        api.post(`/hobbies/${hobbyId}/activities`, activityData)
+        api.post(`/hobbies/hobby/${hobbyId}/activities`, activityData)
             .then((response) => {
                 const newActivity: Activity = { ...response.data, hobbyId };
                 setActivities((prevActivities) => [...prevActivities, newActivity]);
@@ -65,7 +64,7 @@ export default function useActivities(){
                 } : prevData);
 
                 showSuccessMessage("Activity added successfully!");
-                navigate(`/${hobbyId}/activities`);
+                navigate(`hobby/${hobbyId}/activities`);
             })
             .catch((error) => {
                 console.error(error);
@@ -80,7 +79,7 @@ export default function useActivities(){
             hobbyId: hobbyId,
             color: color,
         }
-        api.put(`/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
+        api.put(`/hobbies/hobby/${hobbyId}/activities/${activityId}`, updatedActivity)
             .then((response) => {
                 const updatedActivity: Activity = { ...response.data, hobbyId };
 
@@ -90,9 +89,7 @@ export default function useActivities(){
                     )
                 );
 
-
                 showSuccessMessage("Activity edited successfully!");
-                navigate(`/${hobbyId}/activities`);
             })
             .catch((error) => {
                 console.error(error);
@@ -100,17 +97,13 @@ export default function useActivities(){
     }
 
     function handleDeleteActivity (hobbyId: string, activityId: string)  {
-        api.delete(`/hobbies/${hobbyId}/activities/${activityId}`)
+        api.delete(`/hobbies/hobby/${hobbyId}/activities/${activityId}`)
             .then(() => {
+
                 setActivities((prevActivities) => prevActivities.filter((activity) => activity.activityId !== activityId));
 
-                setData((prevData) => prevData ? {
-                    ...prevData,
-                    activities: prevData.activities.filter((activity) => activity.activityId !== activityId),
-                } : prevData);
-
                 showSuccessMessage("Activity deleted successfully!");
-                navigate(`/${hobbyId}/activities`);
+                navigate(`/hobby/${hobbyId}/activities`);
             })
             .catch((error) => {
                 console.error(error);
@@ -126,5 +119,3 @@ export default function useActivities(){
         handleDeleteActivity,
     };
 }
-
-

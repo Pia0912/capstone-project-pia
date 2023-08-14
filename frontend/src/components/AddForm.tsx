@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { HobbyWithoutID } from '../models';
@@ -12,7 +12,7 @@ type Props = {
 
 export default function AddForm(props: Props) {
     const [name, setName] = useState<string>("");
-    const [color, setColor] = useState<string>(""); // State for color selection
+    const [color, setColor] = useState<string>("");
 
     const navigate = useNavigate();
 

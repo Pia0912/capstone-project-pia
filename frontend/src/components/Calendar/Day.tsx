@@ -39,7 +39,7 @@ export default function Day(props: Props) {
     const currentMonth = props.currentDate.getMonth();
     const currentYear = props.currentDate.getFullYear();
     const isActive =
-        currentDay === day && currentMonth === props.today.getMonth() && currentYear === props.today.getFullYear();
+        currentDay === day && currentMonth === props.currentDate.getMonth() && currentYear === props.currentDate.getFullYear();
 
     const activityIsDone = props.dayInfo.day === day;
     const activityCount = props.dayActivityCounts[day] || 0;
@@ -48,6 +48,13 @@ export default function Day(props: Props) {
     if (activityCount > 1) {
         backgroundColor = props.handleGradient();
     }
+
+    const handleAddActivity = () => {
+        const formattedDate = `${currentYear}-${currentMonth + 1}-${day}`;
+        navigate(`/calendar/add?date=${formattedDate}`);
+    };
+
+
 
     return (
         <li
@@ -97,7 +104,7 @@ export default function Day(props: Props) {
                                         id="split-button-menu"
                                         autoFocusItem
                                     >
-                                        <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/calendar/add')}>
+                                        <StyledButtonAdd variant="contained" disableElevation onClick={handleAddActivity}>
                                             + add activity
                                         </StyledButtonAdd>
                                         {props.selectedDayActivities.map(

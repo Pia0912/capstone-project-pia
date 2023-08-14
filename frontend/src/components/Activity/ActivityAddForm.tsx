@@ -38,6 +38,8 @@ export default function ActivityAddForm(props: Props) {
         setName("");
         setDate("");
         setRating(5);
+
+        navigate(`/hobby/${hobbyId}/activities`);
     }
 
     return (
@@ -72,7 +74,7 @@ export default function ActivityAddForm(props: Props) {
                     Submit
                 </StyledButton>
             </form>
-            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate(`/${hobbyId}/activities`)} >
+            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate(`/hobby/${hobbyId}/activities`)} >
                 Back to Activities
             </StyledButtonBack>
         </StyledContainer>

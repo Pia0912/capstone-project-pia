@@ -60,27 +60,27 @@ public class HobbyController {
         hobbyService.deleteHobby(hobbyId);
     }
 
-    @GetMapping("/{hobbyId}")
+    @GetMapping("/hobby/{hobbyId}")
     public Hobby getHobbyById(@PathVariable String hobbyId) {
         return hobbyService.getHobbyById(hobbyId);
     }
 
-    @GetMapping("/{hobbyId}/activities")
+    @GetMapping("/hobby/{hobbyId}/activities")
     public List<Activity> getHobbyByIdListActivities(@PathVariable String hobbyId) {
         return activityService.getActivitiesByHobbyId(hobbyId);
     }
 
-    @PostMapping("/{hobbyId}/activities")
+    @PostMapping("/hobby/{hobbyId}/activities")
     public void addActivityToHobby(@PathVariable String hobbyId, @RequestBody ActivityWithoutID activityWithoutID) {
         activityService.addActivityToHobby(hobbyId, activityWithoutID, activityWithoutID.getColor());
     }
 
-    @PutMapping("/{hobbyId}/activities/{activityId}")
+    @PutMapping("/hobby/{hobbyId}/activities/{activityId}")
     public Activity updateActivity(@PathVariable String hobbyId, @PathVariable String activityId, @RequestBody ActivityWithoutID updatedActivity) {
         return activityService.updateActivity(hobbyId, activityId, updatedActivity);
     }
 
-    @DeleteMapping("/{hobbyId}/activities/{activityId}")
+    @DeleteMapping("/hobby/{hobbyId}/activities/{activityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteActivity(@PathVariable String hobbyId, @PathVariable String activityId) {
         activityService.deleteActivity(hobbyId, activityId);
