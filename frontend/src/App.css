@@ -270,7 +270,7 @@ input {
 }
 
 .div-statisticTab {
-    padding: 3rem 5rem 21rem;
+    padding: 3rem 5rem 24rem;
     background-color: tomato;
 }
 
@@ -280,7 +280,7 @@ input {
 }
 
 .div-infoTab {
-    padding: 3rem 3rem 25rem;
+    padding: 3rem 3rem 29rem;
     background-color: lightgreen;
 }
 
@@ -305,4 +305,37 @@ input {
 
 .noActivities{
     margin-top: 2rem;
+}
+
+.statistic-table th, .statistic-table td {
+    border: 2px solid #ccc;
+    padding: 2px;
+    text-align: left;
+    font-size: 12px;
+}
+
+.statistic-table {
+    border-collapse: collapse;
+    width: 300px;
+    margin-left: 1.6rem;
+    margin-top: 20px;
+    border-radius: 20px;
+    box-shadow: 5px 5px black;
+}
+
+.statistic-table th {
+    background-color: black;
+    color: white;
+    height: 2rem;
+    font-size: 16px;
+    text-align: center;
+}
+
+.statistic-pre {
+    white-space: pre-wrap;
+    padding: 4px;
+    font-size: 12px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
 }

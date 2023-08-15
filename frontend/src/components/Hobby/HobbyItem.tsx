@@ -1,5 +1,5 @@
 import {ChangeEvent, ChangeEventHandler, useState} from "react";
-import {Hobby} from "../models";
+import {Hobby} from "../../models.ts";
 import {Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -31,14 +31,14 @@ export default function HobbyItem(props: Props) {
     };
 
     const handleSaveClick = () => {
-        props.onEditHobbyName(props.hobby.id, editedName);
+        props.onEditHobbyName(props.hobby.hobbyId, editedName);
         setIsEditing(false);
     };
 
     const handleColorChange: ChangeEventHandler<HTMLSelectElement> = (event: ChangeEvent<HTMLSelectElement>) => {
         const newColor = event.target.value;
         setColor(newColor);
-        props.onEditHobbyColor(props.hobby.id, newColor);
+        props.onEditHobbyColor(props.hobby.hobbyId, newColor);
     };
 
     const handleEditBack = () => {
@@ -50,7 +50,7 @@ export default function HobbyItem(props: Props) {
     };
 
     const handleDeleteClick = () => {
-        props.onDeleteHobby(props.hobby.id);
+        props.onDeleteHobby(props.hobby.hobbyId);
     };
 
     const handleClickOpen = () => {
@@ -100,7 +100,7 @@ export default function HobbyItem(props: Props) {
                                 <StyledIconButton
                                     aria-label="show activities"
                                     onClick={() =>
-                                        navigate(`/${props.hobby.id}/activities`, { state: { color: props.hobby.color } })
+                                        navigate(`/hobby/${props.hobby.hobbyId}/activities`, { state: { color: props.hobby.color } })
                                     }
                                 >
                                     <InfoIcon fontSize="small" />

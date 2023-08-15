@@ -5,7 +5,7 @@ export default function InfoTab() {
     const { hobbies } = useHobbies();
 
     function countActivitiesForHobby(hobbyId: string) {
-        const hobby = hobbies.find((hobby) => hobby.id === hobbyId);
+        const hobby = hobbies.find((hobby) => hobby.hobbyId === hobbyId);
         if (!hobby) {
             return 0;
         }
@@ -22,8 +22,8 @@ export default function InfoTab() {
                 </SettingsBar1>
                 <SettingsBar>
                     {hobbies.map((hobby) => (
-                        <h6 key={hobby.id}>
-                            Activities for {hobby.name}: {countActivitiesForHobby(hobby.id)}
+                        <h6 key={hobby.hobbyId}>
+                            Activities for {hobby.name}: {countActivitiesForHobby(hobby.hobbyId)}
                         </h6>
                     ))}
                 </SettingsBar>

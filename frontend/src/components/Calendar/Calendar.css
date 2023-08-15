@@ -52,9 +52,9 @@
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    font-size: 16px;
+    font-size: 14px;
     margin: 0;
-    padding: 10px 0;
+    padding: 7px 0;
     background: black;
     color: white;
     width: 350px;
@@ -83,10 +83,11 @@
     align-items: center;
     justify-content: center;
     width: 25px;
-    height: 25px;
+    height: 15px;
     list-style-type: none;
     margin-bottom: 5px;
     margin-left: 10px;
+    margin-top: 0;
     font-size: 12px;
     cursor: pointer;
     position: relative;

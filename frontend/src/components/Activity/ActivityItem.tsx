@@ -36,7 +36,7 @@ export default function ActivityItem(props: Props) {
     const activityId = props.activity?.activityId as string;
 
     const handleDeleteActivity = () => {
-        props.onDeleteActivity(props.hobby.id, activityId);
+        props.onDeleteActivity(props.hobby.hobbyId, activityId);
         handleClose();
     };
 
@@ -57,7 +57,7 @@ export default function ActivityItem(props: Props) {
 
     const handleSaveClick = () => {
         props.onEditActivity(
-            props.hobby?.id || "",
+            props.hobby?.hobbyId || "",
             activityId || "",
             editedActivity.name,
             editedActivity.date,

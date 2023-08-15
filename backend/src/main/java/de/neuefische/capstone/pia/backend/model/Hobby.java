@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Hobby {
     @Id
-    private String id;
+    private String hobbyId;
     private String name;
     private String color;
     private List<Activity> activities = new ArrayList<>();

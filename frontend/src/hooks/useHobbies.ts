@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import {Activity, ActivityWithoutID, Hobby, HobbyWithoutID} from "../models.ts";
+import {Hobby, HobbyWithoutID} from "../models.ts";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import {useSuccessMessage} from "./useSuccessMessage.tsx";
 
 const api = axios.create({
     baseURL: '/api'
@@ -9,9 +10,8 @@ const api = axios.create({
 
 export default function useHobbies() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
-    const [activities, setActivities] = useState<ActivityWithoutID[]>([]);
-
     const navigate = useNavigate();
+    const { showSuccessMessage } = useSuccessMessage();
 
     useEffect(() => {
         api.get('/hobbies')
@@ -29,6 +29,7 @@ export default function useHobbies() {
             })
             .then((data) => {
                 setHobbies((prevHobbies) => [...prevHobbies, data]);
+                showSuccessMessage("Hobby added successfully!");
                 navigate('/');
             });
     }
@@ -44,9 +45,10 @@ export default function useHobbies() {
             .catch(error => console.error(error))
             .then(data => {
                 setHobbies(prevHobbies => {
-                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                    return prevHobbies.map(hobby => (hobby.hobbyId === id ? data : hobby));
                 });
                 console.log("Updated hobby state:", hobbies);
+                showSuccessMessage("Hobby name edited successfully!");
             });
         navigate('/');
     }
@@ -60,7 +62,7 @@ export default function useHobbies() {
             .catch(error => console.error(error))
             .then(data => {
                 setHobbies(prevHobbies => {
-                    return prevHobbies.map(hobby => (hobby.id === id ? data : hobby));
+                    return prevHobbies.map(hobby => (hobby.hobbyId === id ? data : hobby));
                 });
                 console.log("Updated hobby state:", hobbies);
             });
@@ -70,90 +72,12 @@ export default function useHobbies() {
         api
             .delete(`hobbies/${id}`)
             .catch(console.error);
-        setHobbies(hobbies.filter(hobby => hobby.id !== id))
+        setHobbies(hobbies.filter(hobby => hobby.hobbyId !== id))
+        showSuccessMessage("Hobby deleted successfully!");
         navigate("/")
     }
 
-    function handleAddActivity(hobbyId: string, activity: ActivityWithoutID) {
-        api
-            .post(`/hobbies/${hobbyId}/activities`, activity)
-            .then((response) => response.data)
-            .catch((error) => {
-                console.error(error);
-            })
-            .then((data) => {
-                const newActivity: Activity = { ...data, hobbyId };
 
-                setHobbies((prevHobbies) =>
-                    prevHobbies.map((hobby) => {
-                        if (hobby.id === hobbyId) {
-                            return { ...hobby, activities: [...hobby.activities, newActivity] };
-                        }
-                        return hobby;
-                    })
-                );
 
-                setActivities((prevActivities) => [...prevActivities, activity]);
-                navigate(`/${hobbyId}/activities`);
-            });
-    }
-
-    function handleEditActivity(hobbyId: string, activityId: string, newName: string, newDate: string, newRating: number, color: string) {
-        const updatedActivity: ActivityWithoutID = {
-            name: newName,
-            activityDate: newDate,
-            rating: newRating,
-            hobbyId: hobbyId,
-            color: color,
-        };
-
-        api.put(`/hobbies/${hobbyId}/activities/${activityId}`, updatedActivity)
-            .then((response) => response.data)
-            .catch(error => console.error(error))
-            .then((data) => {
-                setActivities(
-                    activities.map((activity) => {
-                        if (activity.activityId === activityId)
-                            {return data;
-                            }
-                        return activity;
-                    })
-                );
-
-                setHobbies((prevHobbies) =>
-                    prevHobbies.map((hobby) =>
-                        hobby.id === hobbyId
-                            ? {
-                                ...hobby,
-                                activities: hobby.activities.map((activity) =>
-                                    activity.activityId === activityId ? { ...data, hobbyId } : activity
-                                ),
-                            }
-                            : hobby
-                    )
-                );
-                navigate(`/${hobbyId}/activities`);
-            });
-    }
-
-    function handleDeleteActivity(hobbyId: string, activityId: string) {
-        api.delete(`/hobbies/${hobbyId}/activities/${activityId}`)
-            .catch(console.error)
-            .then(() => {
-                setHobbies((prevHobbies) =>
-                    prevHobbies.map((hobby) => {
-                        if (hobby.id === hobbyId) {
-                            return {
-                                ...hobby,
-                                activities: hobby.activities.filter((activity) => activity.activityId !== activityId),
-                            };
-                        }
-                        return hobby;
-                    })
-                );
-                navigate(`/${hobbyId}/activities`);
-            });
-    }
-
-    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, handleAddActivity, handleEditActivity, handleDeleteActivity, activities };
+    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby };
 }

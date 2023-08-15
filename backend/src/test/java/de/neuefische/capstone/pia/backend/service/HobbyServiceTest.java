@@ -1,20 +1,14 @@
 package de.neuefische.capstone.pia.backend.service;
 
-import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
 import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class HobbyServiceTest {
@@ -42,7 +36,7 @@ class HobbyServiceTest {
     }
 
     @Test
-    void expectListOfAllParties_whenGettingTheList() {
+    void expectListOfAllHobbies_whenGettingTheList() {
         //GIVEN
         Hobby newHobby = new Hobby(null, "Gardening", "green", new ArrayList<>());
         List<Hobby> expected = new ArrayList<>(List.of(newHobby));
@@ -60,7 +54,7 @@ class HobbyServiceTest {
     @Test
     void expectId_whenAddedHobby() {
         // GIVEN
-        HobbyWithoutID newHobbyNoId = new HobbyWithoutID("gardening", "green");
+        HobbyAddModel newHobbyNoId = new HobbyAddModel("gardening", "green");
         Hobby expected = new Hobby("abc", "gardening", "green", new ArrayList<>());
 
         // WHEN
@@ -81,18 +75,18 @@ class HobbyServiceTest {
         String hobbyId = "existingHobbyId";
         String newHobbyName = "Updated Gardening";
 
-        HobbyWithoutID updatedHobby = new HobbyWithoutID(newHobbyName, null);
+        HobbyAddModel updatedHobby = new HobbyAddModel(newHobbyName, "newColorValue");
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
 
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN
-        Hobby result = hobbyService.updateHobby(hobbyId, updatedHobby, null);
+        Hobby result = hobbyService.updateHobby(hobbyId, updatedHobby, "newColorValue");
 
         // THEN
         assertEquals(newHobbyName, result.getName());
-        assertEquals(existingHobby.getColor(), result.getColor()); // Check that color remains unchanged
+        assertEquals(existingHobby.getColor(), result.getColor());
         verify(hobbyRepo).findById(hobbyId);
         verify(hobbyRepo).save(existingHobby);
     }
@@ -153,116 +147,4 @@ class HobbyServiceTest {
         assertThrows(NoSuchHobbyException.class, () -> hobbyService.getHobbyById(nonExistentActivityId));
     }
 
-
-    @Test
-    void expectActivitiesToBeAddedToHobby_whenAddingActivityToHobby() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        LocalDate activityDate = LocalDate.parse("2023-07-31");
-        String generatedActivityId = "someActivityId";
-        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5, "green");
-
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-        when(uuidService.getRandomId()).thenReturn(generatedActivityId);
-        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // WHEN
-        Activity addedActivity = hobbyService.addActivityToHobby(hobbyId, newActivity, "green");
-
-        // THEN
-        verify(hobbyRepo).findById(hobbyId);
-        verify(hobbyRepo).save(existingHobby);
-
-        // ALSO
-        assertEquals(new Activity(generatedActivityId, "New Activity", activityDate, hobbyId, 5, "green"), addedActivity);
-    }
-
-    @Test
-    void expectNoSuchActivityException_whenActivityIdNotFound() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        String nonExistentActivityId = "abc";
-        LocalDate activityDate = LocalDate.parse("2023-07-31");
-        ActivityWithoutID newActivity = new ActivityWithoutID("New Activity", activityDate, hobbyId, 5, "green");
-
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // WHEN & THEN
-        NoSuchActivityException exception = assertThrows(NoSuchActivityException.class, () -> hobbyService.updateActivity(hobbyId, nonExistentActivityId, newActivity));
-        assertEquals("Activity not found for ID: " + nonExistentActivityId, exception.getMessage());
-    }
-
-    @Test
-    void expectDeleteActivityFromHobby_whenDeletingActivity() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        String activityId = "existingActivityId";
-        Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
-
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // WHEN
-        hobbyService.deleteActivity(hobbyId, activityId);
-
-        // THEN
-        verify(hobbyRepo).findById(hobbyId);
-        verify(hobbyRepo).save(existingHobby);
-        assertEquals(0, existingHobby.getActivities().size());
-    }
-
-    @Test
-    void expectNoSuchHobbyException_whenHobbyIdNotFoundInDeleteActivity() {
-        // GIVEN
-        String nonExistentHobbyId = "abc";
-        String existingActivityId = "existingActivityId";
-        when(hobbyRepo.findById(nonExistentHobbyId)).thenReturn(Optional.empty());
-
-        // WHEN & THEN
-        assertThrows(NoSuchHobbyException.class, () -> hobbyService.deleteActivity(nonExistentHobbyId, existingActivityId));
-    }
-
-    @Test
-    void expectNoSuchActivityException_whenActivityIdNotFoundInDeleteActivity() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        String nonExistentActivityId = "abc";
-        Activity existingActivity = new Activity("existingActivityId", "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
-
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
-        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
-        when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // WHEN & THEN
-        assertThrows(NoSuchActivityException.class, () -> hobbyService.deleteActivity(hobbyId, nonExistentActivityId));
-    }
-
-    @Test
-    void getActivitiesByMonth_ShouldReturnActivitiesWithColor() {
-        // GIVEN
-        String hobbyId = "existingHobbyId";
-        LocalDate activityDate = LocalDate.of(2023, 7, 31);
-        Activity activity = new Activity("activityId", "Planting Flowers", activityDate, hobbyId, 4, "green");
-
-        List<Activity> activities = List.of(activity);
-
-        when(hobbyRepo.findAll()).thenReturn(Collections.singletonList(new Hobby(hobbyId, "Gardening", "green", activities)));
-
-        // WHEN
-        List<Activity> actualActivities = hobbyService.getActivitiesByMonth(LocalDate.of(2023, 7, 1));
-
-        // THEN
-        assertEquals(1, actualActivities.size());
-        assertEquals("activityId", actualActivities.get(0).getActivityId());
-        assertEquals(activityDate, actualActivities.get(0).getActivityDate());
-        assertEquals("green", actualActivities.get(0).getColor());
-        assertEquals("existingHobbyId", actualActivities.get(0).getHobbyId());
-        assertEquals(4, actualActivities.get(0).getRating());
-        assertEquals("Planting Flowers", actualActivities.get(0).getName());
-
-    }
 }

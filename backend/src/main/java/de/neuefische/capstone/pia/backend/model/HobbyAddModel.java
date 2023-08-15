@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HobbyWithoutID {
+public class HobbyAddModel {
     private String name;
     private String color;
 }

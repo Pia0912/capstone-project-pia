@@ -1,66 +1,44 @@
 import "./App.css";
-import HobbyList from "./components/HobbyList";
+import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Header from "./components/Header";
 import Button from "@mui/material/Button";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import AddForm from "./components/AddForm";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
-import HobbyDetail from "./components/HobbyDetail.tsx";
+import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
-import {useEffect, useRef, useState} from "react";
+import { useState} from "react";
 import InAppPurchase from "./components/InAppPurchase.tsx";
 import InfoTab from "./components/ProfilePage/InfoTab.tsx";
 import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
-import GoalsTab from "./components/ProfilePage/GoalsTab.tsx";
-import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
-import BadgesTab from "./components/ProfilePage/BadgesTab.tsx";
-import FriendsTab from "./components/ProfilePage/FriendsTab.tsx";
-import Calendar from "./components/Calendar.tsx";
+import Calendar from "./components/Calendar/Calendar.tsx";
+import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
+import useActivities from "./hooks/useActivities.ts";
 
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
-    const ref = useRef<HTMLDivElement>(null);
 
-    const {
-        hobbies,
-        handleAddHobby,
-        handleEditHobbyName,
-        handleEditHobbyColor,
-        handleDeleteHobby,
-        handleAddActivity,
-        handleEditActivity,
-        handleDeleteActivity
-    } = useHobbies();
+    const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
     const {hobbyId, activityId} = useParams();
-
-    useEffect(() => {
-        if (ref.current) {
-            ref.current.ownerDocument.body.scrollTop = 0;
-        }
-    }, [value]);
 
 
     if (!Array.isArray(hobbies)) {
         return <div>Loading hobbies...</div>;
     }
 
-    const selectedHobby = hobbies.find((hobby) => hobby.id === hobbyId);
+    const selectedHobby = hobbies.find((hobby) => hobby.hobbyId === hobbyId);
     const selectedActivity = selectedHobby ? selectedHobby.activities.find((activity) => activity.activityId === activityId) : undefined;
 
     const handleProfileIconClick = () => {
         navigate("/profile/info");
-    };
-
-    const handleSearchIconClick = () => {
-        navigate("/app");
     };
 
     const handleListIconClick = () => {
@@ -74,24 +52,22 @@ export default function App() {
                 <Routes>
                     <Route path="/profile/info" element={<InfoTab />} />
                     <Route path="/profile/stats" element={<StatisticTab />} />
-                    <Route path="/profile/goals" element={<GoalsTab />} />
-                    <Route path="/profile/settings" element={<SettingsTab />} />
-                    <Route path="/profile/badges" element={<BadgesTab />} />
-                    <Route path="/profile/friends" element={<FriendsTab />} />
                     <Route path="/profile/*" element={<InfoTab />} />
 
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
+
+                    <Route path="/calendar/add/" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies}/>} />
                     <Route
-                        path="/:id/activities"
+                        path="/hobby/:hobbyId/activities"
                         element={<HobbyDetail colors={colors}/>}
                     />
                     <Route
-                        path="/:hobbyId/activities/add"
-                        element={<ActivityAddForm onAddActivity={handleAddActivity} color={selectedHobby?.color || colors[0]}/>}
+                        path="/hobby/:hobbyId/activities/add"
+                        element={<ActivityAddForm onAddActivity={handleAddActivityToHobby} color={selectedHobby?.color ?? colors[0]}/>}
                     />
                     <Route
-                        path="/:hobbyId/activities/:activityId"
+                        path="/hobby/:hobbyId/activities/:activityId"
                         element={
                             selectedHobby && selectedActivity ? (
                                 <ActivityItem
@@ -110,10 +86,12 @@ export default function App() {
                         element={(
                             <>
                                 <Calendar />
+
                                 <StyledH2>Hobby List</StyledH2>
                                 <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                     +
                                 </StyledButtonAdd>
+
                                 <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
                                            onEditHobbyColor={handleEditHobbyColor}
                                            onDeleteHobby={handleDeleteHobby}/>
@@ -131,7 +109,6 @@ export default function App() {
                     }}
                 >
                     <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
-                    <StyledBottomNavigationAction label="Upgrade" icon={<AppShortcutIcon/>} onClick={handleSearchIconClick}/>
                     <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>}
                                             onClick={handleProfileIconClick}/>
                 </StyledBottomNavigation>
@@ -142,15 +119,16 @@ export default function App() {
 
 const StyledH2 = styled.h2`
   margin-top: 0;
+  margin-right: 3.5rem;
   padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   border-top: 4px solid black;
   border-radius: 5%;
-  width: calc(100% - 8px);
+  width: 550px;
 `;
 
 const StyledButtonAdd = styled(Button)`
-  margin: 0.25rem 20% -6rem 75%;
+  margin: -3.5rem 0.25rem -5rem 60%;
   background-color: black;
   font-size: 25px;
 `;

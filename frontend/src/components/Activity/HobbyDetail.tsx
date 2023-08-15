@@ -1,37 +1,32 @@
-import { Grid, Button } from "@mui/material";
+import {Grid, Button, Snackbar} from "@mui/material";
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import styled from "@emotion/styled";
-import useActivities from "../hooks/useActivities.ts";
-
+import useActivities from "../../hooks/useActivities.ts";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import ActivityList from "./Activity/ActivityList.tsx";
-import useHobbies from "../hooks/useHobbies.ts";
-import CachedIcon from '@mui/icons-material/Cached';
+import ActivityList from "./ActivityList.tsx";
+import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 
 type Props = {
     colors: string[];
 };
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const { handleEditActivity, handleDeleteActivity } = useHobbies();
-    const data = useActivities();
+    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities();
+    const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
-
-    if (!data?.hobby) {
+    if (!data) {
         return <div>Loading...</div>;
     }
 
-    const { hobby, activities } = data;
-
-    const handleReload = () => {
-        window.location.href = window.location.pathname + "?timestamp=" + Date.now();
-    };
-
-
     return (
         <>
-            <div className="div-header" style={{ backgroundColor: hobby.color }}>
-                {hobby.name}
+            <div className="div-header" style={{ backgroundColor: data.hobby.color }}>
+                {data.hobby.name}
             </div>
             <div className="div-hobbyDetail-buttons">
             <StyledButtonBack
@@ -41,25 +36,23 @@ export default function HobbyDetail(props: Props) {
             >
                 Back
             </StyledButtonBack>
-                <StyledButtonReload
-                    variant="contained"
-                    disableElevation
-                    onClick={handleReload}
-                >
-                   <CachedIcon/>
-                </StyledButtonReload>
             <StyledButtonAdd
                 variant="contained"
                 disableElevation
-                onClick={() => navigate(`/${hobby.id}/activities/add`)}
+                onClick={() => navigate(`/hobby/${data.hobby.hobbyId}/activities/add`)}
             >
                 +
             </StyledButtonAdd>
             </div>
+            <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={clearSuccessMessage}>
+            <StyledAlert onClose={clearSuccessMessage} severity="success">
+                {successMessage}
+            </StyledAlert>
+        </Snackbar>
             <StyledGrid container spacing={2}>
                 <ActivityList
                     activities={activities}
-                    hobby={hobby}
+                    hobby={data.hobby}
                     colors={props.colors}
                     onEditActivity={handleEditActivity}
                     onDeleteActivity={handleDeleteActivity}
@@ -82,12 +75,8 @@ const StyledButtonAdd = styled(Button)`
   font-size: 25px;
 `;
 
-const StyledButtonReload = styled(Button)`
-  height: 3rem;
-  width: 3rem;
-  background-color: black;
-  color: white;
-  font-size: 25px;
+const StyledAlert = styled(Alert)`
+  width: 100%;
 `;
 
 const StyledGrid = styled(Grid)`
