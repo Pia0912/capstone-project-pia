@@ -1,5 +1,5 @@
 import "./App.css";
-import HobbyList from "./components/HobbyList";
+import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Header from "./components/Header";
 import Button from "@mui/material/Button";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
