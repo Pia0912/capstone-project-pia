@@ -19,6 +19,10 @@ import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
 import Calendar from "./components/Calendar/Calendar.tsx";
 import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
 import useActivities from "./hooks/useActivities.ts";
+import LoginForm from "./components/User/LoginForm.tsx";
+import useUser from "./hooks/useUser.ts";
+import RegisterForm from "./components/User/RegisterForm.tsx";
+import HomePage from "./components/HomePage.tsx";
 
 export default function App() {
     const navigate = useNavigate();
@@ -28,7 +32,7 @@ export default function App() {
     const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
     const {hobbyId, activityId} = useParams();
-
+    const {handleLogin, handleRegister} = useUser();
 
     if (!Array.isArray(hobbies)) {
         return <div>Loading hobbies...</div>;
@@ -50,6 +54,9 @@ export default function App() {
             <Header/>
             <main>
                 <Routes>
+                    <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
+                    <Route path="/register" element={<RegisterForm onRegister={handleRegister} />} />
+
                     <Route path="/profile/info" element={<InfoTab />} />
                     <Route path="/profile/stats" element={<StatisticTab />} />
                     <Route path="/profile/*" element={<InfoTab />} />
@@ -81,8 +88,7 @@ export default function App() {
                                 <div>Invalid hobby or activity ID.</div>
                             )
                         }/>
-                    <Route
-                        path="/"
+                    <Route path="/hobbies"
                         element={(
                             <>
                                 <Calendar />
@@ -98,6 +104,7 @@ export default function App() {
                             </>
                         )}
                     />
+                    <Route path="/" element={<HomePage />}/>
                 </Routes>
             </main>
             <StyledPaper elevation={10}>

@@ -45,7 +45,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/hobbies/hobby/**").authenticated()
                                 .requestMatchers("/api/calendar/**").authenticated()
                                 .anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults())
                 .build();
     }
 
