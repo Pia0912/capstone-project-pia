@@ -30,7 +30,7 @@ public class MongoUserController {
     }
 
     @GetMapping("/me")
-    public String getMe() {
+    public String getUserInfo() {
         return SecurityContextHolder
                 .getContext()
                 .getAuthentication()

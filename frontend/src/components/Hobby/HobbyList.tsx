@@ -1,10 +1,10 @@
-import { Hobby } from "../models";
+import { Hobby } from "../../models.ts";
 import MuiAlert, {AlertProps} from "@mui/material/Alert";
 import {Snackbar} from "@mui/material";
 import React from "react";
-import HobbyItem from "./HobbyItem";
+import HobbyItem from "./HobbyItem.tsx";
 import styled from "@emotion/styled";
-import {useSuccessMessage} from "../hooks/useSuccessMessage.tsx";
+import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 
 type Props = {
     hobbies: Hobby[];

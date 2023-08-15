@@ -18,6 +18,10 @@ export default function ProfilePage() {
         navigate("/profile/stats");
     };
 
+    const handleSettingsClick = () => {
+        navigate("/profile/settings");
+    };
+
 
     return (
 
@@ -31,7 +35,9 @@ export default function ProfilePage() {
                 >
                     <StyledSideNavigationAction label="Info" onClick={handleInfoClick} icon={<InfoIcon />}/>
                     <StyledSideNavigationAction label="Stats" onClick={handleStatsClick} icon={<InsightsIcon />}/>
-                    </StyledSideNavigation>
+                    <StyledSideNavigationAction label="Settings" onClick={handleSettingsClick} icon={<InsightsIcon />}/>
+
+                </StyledSideNavigation>
             </StyledSidePaper>
     );
 }

@@ -1,5 +1,5 @@
 import "./App.css";
-import HobbyList from "./components/HobbyList";
+import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Header from "./components/Header";
 import Button from "@mui/material/Button";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
@@ -23,6 +23,7 @@ import LoginForm from "./components/User/LoginForm.tsx";
 import useUser from "./hooks/useUser.ts";
 import RegisterForm from "./components/User/RegisterForm.tsx";
 import HomePage from "./components/HomePage.tsx";
+import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 
 export default function App() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function App() {
     const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
     const {hobbyId, activityId} = useParams();
-    const {handleLogin, handleRegister} = useUser();
+    const {user, handleLogin, handleRegister} = useUser();
 
     if (!Array.isArray(hobbies)) {
         return <div>Loading hobbies...</div>;
@@ -59,6 +60,7 @@ export default function App() {
 
                     <Route path="/profile/info" element={<InfoTab />} />
                     <Route path="/profile/stats" element={<StatisticTab />} />
+                    <Route path="/profile/settings" element={<SettingsTab user={user}/>} />
                     <Route path="/profile/*" element={<InfoTab />} />
 
                     <Route path="/app" element={<InAppPurchase/>}/>
