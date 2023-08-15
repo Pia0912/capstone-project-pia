@@ -3,6 +3,7 @@ import React, {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput,} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import styled from "@emotion/styled";
 
 
 type Props = {
@@ -58,28 +59,30 @@ export default function RegisterForm(props: Props) {
     };
 
     return (<>
-            <form onSubmit={handleSubmit}>
-                <fieldset>
-                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Register</legend>
-                    <div style={{display: 'flex', flexDirection: 'column', margin: 0,}}>
-
-                        <FormControl sx={{width: '100%', margin: "0px",}} variant="outlined"
+            <Message>
+            <h3>Hello and welcome!</h3>
+            <h3>Get ready for an incredible journey with us. </h3>
+            </Message>
+                <form onSubmit={handleSubmit}>
+                <fieldset style={{marginTop: '3rem'}}>
+                    <legend style={{marginLeft: '-0.25rem', textAlign: 'center'}}>Please register here:</legend>
+                    <div style={{display: 'flex', flexDirection: 'column', margin: 0, width: '300px'}}>
+                        <FormControl variant="outlined"
                                      error={errorUsername.length > 0}>
                             <InputLabel htmlFor="username">Username</InputLabel>
-                            <OutlinedInput
+                            <StyledOutlinedInput
                                 type="text"
                                 value={username}
                                 id="username"
                                 onChange={changeUsername}
                                 label="Username"
-                                sx={{width: '100%', margin: "auto"}}
-                            />
+                                />
                             {errorUsername && <FormHelperText error>{errorUsername}</FormHelperText>}
                         </FormControl>
-                        <FormControl sx={{width: '100%', marginTop: "30px",}} variant="outlined"
+                        <FormControl style={{marginTop: "30px"}} variant="outlined"
                                      error={errorPassword.length > 0}>
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                            <OutlinedInput
+                            <StyledOutlinedInput
                                 id="outlined-adornment-password"
                                 type={showPassword ? "text" : "password"}
                                 value={password}
@@ -90,30 +93,68 @@ export default function RegisterForm(props: Props) {
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
-                                            edge="end"
+                                            style={{marginTop: '-4.3rem', marginLeft: '10em'}}
                                         >
                                             {showPassword ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
                                 label="Password"
-                                sx={{width: '100%', margin: "auto"}}
-                            />
+                                />
                             {errorPassword && <FormHelperText error>{errorPassword}</FormHelperText>}
                         </FormControl>
                     </div>
-                    <div style={{margin: 0,}}>
-                        <Button
+                    <div style={{display:'flex', flexDirection:'row', gap: '1.5rem', justifyContent: 'space-between'}}>
+                        <CancelButton
                             variant="outlined" disableElevation
-                            onClick={() => navigate("/")}> Cancel</Button>
-
-                        <Button type="submit" variant="contained"
-                                className="button-right">
+                            onClick={() => navigate("/")}>
+                            Cancel
+                        </CancelButton>
+                        <RegisterButton type="submit" variant="contained">
                             Sign up
-                        </Button>
+                        </RegisterButton>
                     </div>
                 </fieldset>
             </form>
         </>
     )
 }
+
+const Message = styled.div`
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: orange;
+  box-shadow: 3px 3px black;
+  font-size: 14px;
+  border-radius: 10px;
+`;
+
+const StyledOutlinedInput = styled(OutlinedInput)`
+  border-color: black;
+  color: black;
+  height: 70px;
+  box-shadow: 3px 3px black;
+`;
+
+const RegisterButton = styled(Button)`
+  padding: 1.5rem;
+  background-color: orange;
+  border: 3px solid orange;
+  color: white;
+  height: 40px;
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 3px 3px black;
+  align-self: center;
+`;
+
+const CancelButton = styled(Button)`
+  padding: 1.5rem;
+  border: 3px solid orange;
+  color: black;
+  height: 40px;
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 3px 3px black;
+  align-self: center;
+`;

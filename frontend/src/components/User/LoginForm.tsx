@@ -3,6 +3,7 @@ import React, {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import styled from "@emotion/styled";
 
 
 type Props = {
@@ -34,24 +35,27 @@ export default function LoginForm(props: Props) {
     };
 
     return (<>
+            <Message>
+                <h3>Greetings, returning friend!</h3>
+                <h3>It's wonderful to have you here again!</h3>
+            </Message>
             <form onSubmit={handleSubmit}>
-                <fieldset>
-                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Login</legend>
-                    <div style={{display: 'flex', flexDirection: 'column', margin: 0,}}>
-                        <FormControl sx={{width: '100%', margin: "0px",}} variant="outlined">
+                <fieldset style={{marginTop: '3rem'}}>
+                    <legend style={{marginLeft: '-0.25rem', textAlign: 'center'}}>Please login here:</legend>
+                    <div style={{display: 'flex', flexDirection: 'column', margin: 0, width: '300px'}}>
+                        <FormControl variant="outlined">
                             <InputLabel htmlFor="username">Username</InputLabel>
-                            <OutlinedInput
+                            <StyledOutlinedInput
                                 id="username"
                                 type="text"
                                 value={username}
                                 onChange={(event) => setUsername(event.target.value)}
                                 label="Username"
-                                sx={{width: '100%', margin: "auto"}}
-                            />
+                                />
                         </FormControl>
-                        <FormControl sx={{width: '100%', marginTop: "30px",}} variant="outlined">
+                        <FormControl style={{marginTop: "30px"}} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                            <OutlinedInput
+                            <StyledOutlinedInput
                                 id="outlined-adornment-password"
                                 type={showPassword ? "text" : "password"}
                                 value={password}
@@ -62,27 +66,65 @@ export default function LoginForm(props: Props) {
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
-                                            edge="end"
+                                            style={{marginTop: '-4.3rem', marginLeft: '10em'}}
                                         >
                                             {showPassword ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
                                 label="Password"
-                                sx={{width: '100%', margin: "auto"}}
-                            />
+                                />
                         </FormControl>
                     </div>
-                    <div style={{margin: 0,}}>
-                        <Button variant="outlined" disableElevation onClick={() => navigate("/")}>
+                    <div style={{display:'flex', flexDirection:'row', gap: '1.5rem', justifyContent: 'space-between'}}>
+                        <CancelButton variant="outlined" disableElevation onClick={() => navigate("/")}>
                             Cancel
-                        </Button>
-                        <Button type="submit" variant="contained">
+                        </CancelButton>
+                        <LoginButton type="submit" variant="contained">
                             Login
-                        </Button>
+                        </LoginButton>
                     </div>
                 </fieldset>
             </form>
         </>
     )
 }
+
+const Message = styled.div`
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: orange;
+  box-shadow: 3px 3px black;
+  font-size: 14px;
+  border-radius: 10px;
+`;
+
+const StyledOutlinedInput = styled(OutlinedInput)`
+  border-color: black;
+  color: black;
+  height: 70px;
+  box-shadow: 3px 3px black;
+`;
+
+const LoginButton = styled(Button)`
+  padding: 1.5rem;
+  background-color: orange;
+  border: 3px solid orange;
+  color: white;
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  box-shadow: 3px 3px black;
+  align-self: center;
+`;
+
+const CancelButton = styled(Button)`
+  padding: 1.5rem;
+  border: 3px solid orange;
+  color: black;
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  box-shadow: 3px 3px black;
+  align-self: center;
+`;
