@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/user/logout").permitAll()
-                                .requestMatchers("/api/user/**").permitAll()
+                                .requestMatchers("/api/profile/settings").permitAll()
 
                                 .requestMatchers(HttpMethod.POST,"/api/user/register").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/user/login").permitAll()
@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/hobbies/**").authenticated()
                                 .requestMatchers("/api/hobbies/hobby/**").authenticated()
                                 .requestMatchers("/api/calendar/**").authenticated()
+                                .requestMatchers("/api/hobbies/statistics/**").authenticated()
                                 .anyRequest().permitAll())
                 .build();
     }

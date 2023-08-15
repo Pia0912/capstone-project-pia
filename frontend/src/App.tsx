@@ -24,6 +24,7 @@ import useUser from "./hooks/useUser.ts";
 import RegisterForm from "./components/User/RegisterForm.tsx";
 import HomePage from "./components/HomePage.tsx";
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
+import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 
 export default function App() {
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function App() {
     const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
     const {hobbyId, activityId} = useParams();
-    const {user, handleLogin, handleRegister} = useUser();
+    const {user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
     if (!Array.isArray(hobbies)) {
         return <div>Loading hobbies...</div>;
@@ -47,7 +48,7 @@ export default function App() {
     };
 
     const handleListIconClick = () => {
-        navigate("/");
+        navigate("/hobbies");
     };
 
     return (
@@ -58,10 +59,13 @@ export default function App() {
                     <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
                     <Route path="/register" element={<RegisterForm onRegister={handleRegister} />} />
 
-                    <Route path="/profile/info" element={<InfoTab />} />
-                    <Route path="/profile/stats" element={<StatisticTab />} />
-                    <Route path="/profile/settings" element={<SettingsTab user={user}/>} />
-                    <Route path="/profile/*" element={<InfoTab />} />
+
+                    <Route element={<ProtectedRoutes user={user} />}>
+                    <Route path="profile/info" element={<InfoTab />} />
+                    <Route path="profile/stats" element={<StatisticTab />} />
+                        <Route path="/profile/settings" element={<SettingsTab user={user} userId={userId} onLogout={handleLogout}/>} />
+
+                        <Route path="profile/*" element={<InfoTab />} />
 
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
@@ -106,6 +110,7 @@ export default function App() {
                             </>
                         )}
                     />
+                    </Route>
                     <Route path="/" element={<HomePage />}/>
                 </Routes>
             </main>

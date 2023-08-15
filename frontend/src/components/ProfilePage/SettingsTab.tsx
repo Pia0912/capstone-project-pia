@@ -1,30 +1,45 @@
 import styled from "@emotion/styled";
-import Button from "@mui/material/Button";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ProfilePage from "./ProfilePage.tsx";
 import PasswordIcon from '@mui/icons-material/Password';
 import IconButton from "@mui/material/IconButton";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 type Props = {
     user: string | undefined;
+    userId: string | undefined;
+    onLogout: () => void;
 }
 
 export default function SettingsTab(props: Props) {
 
+    const handleLogout = () => {
+        props.onLogout();
+    };
 
     return (
         <div className="div-settingsTab">
             <ProfilePage />
             <div id="settings" >
                 <h2 className="tabTitle">Account Settings</h2>
-                <div className="tabContent1">
+                <div className="tabContent">
                     <SettingLabel>Username</SettingLabel>
-                    <SettingButton>{props.user}</SettingButton>
+                    <StyledIconButton>
+                        <AccountCircleIcon />
+                        {props.user}
+                    </StyledIconButton>
                 </div>
-
                 <div className="tabContent">
                     <SettingLabel>Password</SettingLabel>
                     <StyledIconButton>
                         <PasswordIcon />
+                    </StyledIconButton>
+                </div>
+
+                <div className="tabContent">
+                    <SettingLabel>Logout</SettingLabel>
+                    <StyledIconButton onClick={handleLogout}>
+                        <LogoutIcon />
                     </StyledIconButton>
                 </div>
             </div>
@@ -36,23 +51,7 @@ const SettingLabel = styled.div`
   align-self: center;
   font-size: 1rem;
   margin-top: 1rem;
-`;
-
-
-const SettingButton = styled(Button)`
-  background-color: orange;
-  align-self: center;
-  width: 10rem;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  &:hover {
-    background-color: tomato;
-  }
+  margin-bottom: -0.5rem;
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -61,7 +60,8 @@ const StyledIconButton = styled(IconButton)`
   width: 10rem;
   color: black;
   border: 2px solid orange;
-  border-radius: 5%; 
+  border-radius: 5px;
+  box-shadow: 3px 3px black;
   padding: 8px;
   &:hover {
     background-color: tomato;

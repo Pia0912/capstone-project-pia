@@ -22,7 +22,6 @@ export default function RegisterForm(props: Props) {
     function handleSubmit(event: FormEvent) {
         event.preventDefault()
         props.onRegister(username, password)
-        navigate("/")
     }
 
     function changeUsername(event: React.ChangeEvent<HTMLInputElement>) {

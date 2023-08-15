@@ -50,7 +50,7 @@ export default function useUser(){
         api.post("/user/register", {username: username, password: password})
             .catch(console.error)
         showSuccessMessage("Account register was successful!");
-        navigate('/api/user/login')
+        navigate('/login')
     }
 
     return {me, user, userId, handleLogin, handleLogout, handleRegister}
