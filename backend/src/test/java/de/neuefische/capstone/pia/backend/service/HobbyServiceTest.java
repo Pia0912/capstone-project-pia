@@ -3,8 +3,13 @@ package de.neuefische.capstone.pia.backend.service;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
 import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import de.neuefische.capstone.pia.backend.security.MongoUser;
+import de.neuefische.capstone.pia.backend.security.MongoUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.*;
 
@@ -16,57 +21,94 @@ class HobbyServiceTest {
     HobbyRepo hobbyRepo;
     UUIDService uuidService;
     HobbyService hobbyService;
+    MongoUserService mongoUserService;
+    SecurityContext securityContext;
+
+    Authentication authentication;
+
+
     @BeforeEach
     public void setup() {
         hobbyRepo = mock(HobbyRepo.class);
         uuidService = mock(UUIDService.class);
-        hobbyService = new HobbyService(hobbyRepo, uuidService);
+        mongoUserService = mock(MongoUserService.class);
+        securityContext = mock(SecurityContext.class);
+        authentication = mock(Authentication.class);
+        hobbyService = new HobbyService(hobbyRepo, uuidService, mongoUserService);
     }
     @Test
     void expectEmptyList_whenNoHobbiesExist() {
         // GIVEN
-        when(hobbyRepo.findAll()).thenReturn(Collections.emptyList());
+        String username = "username";
+        String userId = "1";
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(authentication.getName()).thenReturn(username);
+        when(mongoUserService.findUserByUsername(username)).thenReturn(new MongoUser("1", username, "Password123")); // Mock the mongoUserService to return a non-null user
+
+        when(hobbyRepo.findAllByAuthorId(userId)).thenReturn(Collections.emptyList());
 
         // WHEN
         List<Hobby> actual = hobbyService.getHobbies();
 
         // THEN
         assertEquals(Collections.emptyList(), actual);
-        verify(hobbyRepo).findAll();
+        verify(hobbyRepo).findAllByAuthorId(userId);
     }
 
     @Test
-    void expectListOfAllHobbies_whenGettingTheList() {
-        //GIVEN
-        Hobby newHobby = new Hobby(null, "Gardening", "green", new ArrayList<>());
-        List<Hobby> expected = new ArrayList<>(List.of(newHobby));
-
-        //WHEN
-        when(hobbyRepo.findAll()).thenReturn(expected);
-        List<Hobby> actual = hobbyService.getHobbies();
-
-        //THEN
-        assertEquals(expected, actual);
-        verify(hobbyRepo).findAll();
-    }
-
-
-    @Test
-    void expectId_whenAddedHobby() {
+    void expectListOfUserHobbies_whenGettingHobbies() {
         // GIVEN
-        HobbyAddModel newHobbyNoId = new HobbyAddModel("gardening", "green");
-        Hobby expected = new Hobby("abc", "gardening", "green", new ArrayList<>());
+        String username = "username";
+        String userId = "1";
+        List<Hobby> userHobbies = new ArrayList<>();
+        userHobbies.add(new Hobby("123", "Home", "green", new ArrayList<>(), userId));
+
+        when(authentication.getName()).thenReturn(username);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        MongoUser user = new MongoUser(userId, username, "Password123");
+        when(mongoUserService.findUserByUsername(username)).thenReturn(user);
+
+        when(hobbyRepo.findAllByAuthorId(userId)).thenReturn(userHobbies);
 
         // WHEN
-        when(uuidService.getRandomId()).thenReturn("abc");
-        when(hobbyRepo.insert(any(Hobby.class))).thenReturn(expected);
+        List<Hobby> actualHobbies = hobbyService.getHobbies();
 
-        Hobby actual = hobbyService.addHobby(newHobbyNoId);
+        // THEN
+        assertEquals(userHobbies, actualHobbies);
+        verify(mongoUserService).findUserByUsername(username);
+        verify(hobbyRepo).findAllByAuthorId(userId);
+    }
+
+
+    @Test
+    void expectNewHobby_whenAddHobby() {
+        // GIVEN
+        String username = "username";
+        MongoUser user = new MongoUser("1", username, "Password123");
+        HobbyAddModel newHobby = new HobbyAddModel("Home", "red");
+        Hobby expected = new Hobby("123", "Home", "green", new ArrayList<>(), user.id());
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(authentication.getName()).thenReturn(username);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(uuidService.getRandomId()).thenReturn("123"); // Use the actual ID you expect
+        when(hobbyRepo.insert(any(Hobby.class))).thenReturn(expected);
+        when(mongoUserService.findUserByUsername(username)).thenReturn(user);
+
+        // WHEN
+        Hobby actual = hobbyService.addHobby(newHobby);
 
         // THEN
         assertEquals(expected, actual);
         verify(uuidService).getRandomId();
         verify(hobbyRepo).insert(any(Hobby.class));
+        verify(mongoUserService).findUserByUsername(username);
     }
 
     @Test
@@ -76,7 +118,7 @@ class HobbyServiceTest {
         String newHobbyName = "Updated Gardening";
 
         HobbyAddModel updatedHobby = new HobbyAddModel(newHobbyName, "newColorValue");
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
 
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -96,7 +138,7 @@ class HobbyServiceTest {
         // GIVEN
         String hobbyId = "existingHobbyId";
         String newColor = "blue";
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
 
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -124,12 +166,12 @@ class HobbyServiceTest {
     void getDetails_ExistingHobby_ShouldReturnHobby() {
         // GIVEN
         String hobbyId = "existingHobbyId";
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", null);
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", null, "user1");
 
         HobbyRepo hobbyRepo = mock(HobbyRepo.class);
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
 
-        HobbyService hobbyService = new HobbyService(hobbyRepo, null);
+        HobbyService hobbyService = new HobbyService(hobbyRepo, null, mongoUserService);
 
         // WHEN
         Hobby result = hobbyService.getHobbyById(hobbyId);

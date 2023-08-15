@@ -5,7 +5,9 @@ import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyAddModel;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import de.neuefische.capstone.pia.backend.security.MongoUser;
 import de.neuefische.capstone.pia.backend.security.MongoUserDetailsService;
+import de.neuefische.capstone.pia.backend.security.MongoUserRepository;
 import de.neuefische.capstone.pia.backend.service.ActivityService;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
 import org.junit.jupiter.api.Test;
@@ -47,18 +49,26 @@ class IntegrationTest {
     @Autowired
     private MongoUserDetailsService mongoUserDetailsService;
 
+    @Autowired
+    private MongoUserRepository mongoUserRepository;
+
     private Hobby hobby;
     @BeforeEach
-    public void setup() {
-        hobby = new Hobby("123", "Gardening", "green", new ArrayList<>());
+    public void setupHobby() {
+        hobby = new Hobby("123", "Gardening", "green", new ArrayList<>(), "1");
         hobbyRepo.save(hobby);
+    }
+    @BeforeEach
+    void setUpUsers() {
+        MongoUser user = new MongoUser("1", "username", "Password123");
+        mongoUserRepository.save(user);
     }
 
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
-    void expectHobbyList_whenGettingAllHobbies() throws Exception {
+    @WithMockUser(username = "username", password = "Password123")
+    void expectHobbyListForUser_whenGetAllHobbies() throws Exception {
 
         // WHEN & THEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
@@ -80,7 +90,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectNewHobby_whenPostingHobby() throws Exception {
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies")
@@ -103,7 +113,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedHobbyName_whenPuttingHobby() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -139,7 +149,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedHobbyColor_whenPuttingHobbyColor() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -177,7 +187,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectNoHobby_whenDeletingHobby() throws Exception {
         //GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -195,7 +205,7 @@ class IntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectHobby_whenGetHobbyById() throws Exception {
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/123").with(csrf()))
@@ -209,7 +219,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectEmptyActivitiesList_whenListActivitiesWithNoActivities() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -225,7 +235,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectHobbyByIdWithActivities_whenGetHobbyById() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -275,7 +285,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "Password123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityAddedToHobby_whenAddActivityToHobby() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -309,7 +319,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedActivity_whenPuttingActivity() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -351,7 +361,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedActivityNotFound_whenPuttingActivityWithInvalidIds() throws Exception {
         // GIVEN
         String hobbyId = "invalidHobbyId";
@@ -379,7 +389,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityDeleted_whenDeletingActivity() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -403,7 +413,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityColor_whenGetActivityByMonth() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -426,7 +436,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityCounts_whenGettingActivityCounts() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -454,7 +464,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectMostAddedActivity_whenGettingMostAddedActivity() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -482,19 +492,16 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectNoMostAddedActivity_whenGettingMostAddedActivity() throws Exception {
         // WHEN & THEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/statistics/most-added-activity"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-
-
-
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia", password = "123")
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityDays_whenGettingActivityDays() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -519,19 +526,17 @@ class IntegrationTest {
                 .andExpect(jsonPath("$.SUNDAY").value(1));
     }
 
-
     @Test
     @DirtiesContext
     void expectNull_whenNotLoggedIn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string(""));
-
     }
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "Pia")
+    @WithMockUser(username = "username", password = "Password123")
     void expectAUser_whenLoggedIn() throws Exception {
-        String expected = "Pia";
+        String expected = "username";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

@@ -30,7 +30,7 @@ export default function useHobbies() {
             .then((data) => {
                 setHobbies((prevHobbies) => [...prevHobbies, data]);
                 showSuccessMessage("Hobby added successfully!");
-                navigate('/');
+                navigate('/hobbies');
             });
     }
 
@@ -50,7 +50,7 @@ export default function useHobbies() {
                 console.log("Updated hobby state:", hobbies);
                 showSuccessMessage("Hobby name edited successfully!");
             });
-        navigate('/');
+        navigate('/hobbies');
     }
 
     function handleEditHobbyColor(id: string, newColor: string) {
@@ -74,7 +74,7 @@ export default function useHobbies() {
             .catch(console.error);
         setHobbies(hobbies.filter(hobby => hobby.hobbyId !== id))
         showSuccessMessage("Hobby deleted successfully!");
-        navigate("/")
+        navigate("/hobbies")
     }
 
 

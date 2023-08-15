@@ -28,7 +28,7 @@ class CalendarServiceTest {
     void testGetActivitiesByMonthWithNullPointerException() {
         // GIVEN
         HobbyRepo hobbyRepo = mock(HobbyRepo.class);
-        Hobby hobbyWithNullActivities = new Hobby("h1", "Hobby 1", "green", null);
+        Hobby hobbyWithNullActivities = new Hobby("h1", "Hobby 1", "green", null, "user1");
         when(hobbyRepo.findAll()).thenReturn(Collections.singletonList(hobbyWithNullActivities));
 
         // WHEN & THEN

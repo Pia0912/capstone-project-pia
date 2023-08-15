@@ -19,6 +19,7 @@ public class Hobby {
     private String name;
     private String color;
     private List<Activity> activities = new ArrayList<>();
+    private String authorId;
 
     public void addActivity(Activity activity) {
         activities.add(activity);

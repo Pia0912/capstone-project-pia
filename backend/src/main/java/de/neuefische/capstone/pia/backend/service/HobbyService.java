@@ -3,6 +3,9 @@ package de.neuefische.capstone.pia.backend.service;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
 import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import de.neuefische.capstone.pia.backend.security.MongoUser;
+import de.neuefische.capstone.pia.backend.security.MongoUserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -12,18 +15,27 @@ public class HobbyService {
     private final HobbyRepo hobbyRepo;
     private final UUIDService uuidService;
 
-    public HobbyService(HobbyRepo hobbyRepo, UUIDService uuidService) {
+    private final MongoUserService mongoUserService;
+
+    public HobbyService(HobbyRepo hobbyRepo, UUIDService uuidService, MongoUserService mongoUserService) {
         this.hobbyRepo = hobbyRepo;
         this.uuidService = uuidService;
+        this.mongoUserService = mongoUserService;
     }
 
     public List<Hobby> getHobbies() {
-        return hobbyRepo.findAll();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        MongoUser user = mongoUserService.findUserByUsername(username);
+
+        return hobbyRepo.findAllByAuthorId(user.id());
     }
 
     public Hobby addHobby(HobbyAddModel newHobby) {
         String id = uuidService.getRandomId();
-        Hobby hobby = new Hobby(id, newHobby.getName(), newHobby.getColor(), new ArrayList<>());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        MongoUser user = mongoUserService.findUserByUsername(username);
+
+        Hobby hobby = new Hobby(id, newHobby.getName(), newHobby.getColor(), new ArrayList<>(), user.id());
         return hobbyRepo.insert(hobby);
     }
 

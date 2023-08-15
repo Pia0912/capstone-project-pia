@@ -36,7 +36,7 @@ class ActivityServiceTest {
     void expectEmptyList_whenNoActivitiesExist() {
         // GIVEN
         String hobbyId = "existingHobbyId";
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
         when(hobbyService.getHobbyById(hobbyId)).thenReturn(existingHobby);
 
         // WHEN
@@ -54,7 +54,7 @@ class ActivityServiceTest {
         String activityId = "existingActivityId";
         Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
 
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)), "user1");
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
 
         // WHEN
@@ -75,7 +75,7 @@ class ActivityServiceTest {
         String activityId2 = "existingActivityId2";
         Activity existingActivity2 = new Activity(activityId2, "Existing Activity 2", LocalDate.parse("2023-08-15"), hobbyId, 4, "blue");
 
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity1, existingActivity2)));
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity1, existingActivity2)), "user1");
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
 
         // WHEN
@@ -93,7 +93,7 @@ class ActivityServiceTest {
     void expectActivitiesToBeAddedToHobby_whenAddingActivityToHobby() {
         // GIVEN
         String hobbyId = "existingHobbyId";
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
 
         String color = existingHobby.getColor();
         LocalDate activityDate = LocalDate.parse("2023-07-31");
@@ -120,7 +120,7 @@ class ActivityServiceTest {
     void testUpdateActivity() {
         // GIVEN
         String hobbyId = "existingHobbyId";
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
 
         String activityId = "existingActivityId";
         String updatedActivityName = "Updated Activity";
@@ -154,7 +154,7 @@ class ActivityServiceTest {
         String hobbyId = "existingHobbyId";
         String nonExistentActivityId = "abc";
 
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>());
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
 
         // WHEN & THEN
@@ -172,7 +172,7 @@ class ActivityServiceTest {
         String activityId = "existingActivityId";
         Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
 
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)), "user1");
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -203,7 +203,7 @@ class ActivityServiceTest {
         String nonExistentActivityId = "abc";
         Activity existingActivity = new Activity("existingActivityId", "Existing Activity", LocalDate.parse("2023-07-31"), hobbyId, 5, "green");
 
-        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)));
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)), "user1");
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -218,8 +218,8 @@ class ActivityServiceTest {
         Activity activity2 = new Activity("2", "Activity B", LocalDate.parse("2023-07-09"), "222", 5, "green");
         Activity activity3 = new Activity("3", "Activity A", LocalDate.parse("2023-07-31"), "333", 3, "blue");
         List<Hobby> hobbies = Arrays.asList(
-                new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2)),
-                new Hobby("h2", "Hobby 2", "blue", List.of(activity3))
+                new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
+                new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")
         );
         when(hobbyRepo.findAll()).thenReturn(hobbies);
 
@@ -240,8 +240,8 @@ class ActivityServiceTest {
         Activity activity2 = new Activity("2", "Activity B", LocalDate.parse("2023-07-09"), "222", 5, "green");
         Activity activity3 = new Activity("3", "Activity A", LocalDate.parse("2023-07-31"), "333", 3, "blue");
         List<Hobby> hobbies = Arrays.asList(
-                new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2)),
-                new Hobby("h2", "Hobby 2", "blue", List.of(activity3))
+                new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
+                new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")
         );
         when(hobbyRepo.findAll()).thenReturn(hobbies);
 
@@ -259,8 +259,8 @@ class ActivityServiceTest {
         Activity activity2 = new Activity("2", "Activity B", LocalDate.parse("2023-07-09"), "222", 5, "green");
         Activity activity3 = new Activity("3", "Activity A", LocalDate.parse("2023-08-14"), "333", 3, "blue");
         List<Hobby> hobbies = Arrays.asList(
-                new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2)),
-                new Hobby("h2", "Hobby 2", "blue", List.of(activity3))
+                new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
+                new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")
         );
         when(hobbyRepo.findAll()).thenReturn(hobbies);
 
