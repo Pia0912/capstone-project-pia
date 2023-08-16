@@ -3,7 +3,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import styled from "@emotion/styled";
 import useActivities from "../../hooks/useActivities.ts";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ActivityList from "./ActivityList.tsx";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 import {Hobby} from "../../models.ts";
@@ -18,8 +18,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities();
+    const { hobbyId } = useParams();
+    const { data, activities, handleEditActivity, handleDeleteActivity, fetchActivitiesData} = useActivities();
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
+
+    React.useEffect(() => {
+        if (hobbyId) {
+            fetchActivitiesData(hobbyId);
+        }
+    }, [fetchActivitiesData, hobbyId]);
 
     if (!data) {
         return <div>Loading...</div>;
