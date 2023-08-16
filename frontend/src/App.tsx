@@ -27,15 +27,13 @@ import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
-import Activities from "./components/Activity/Activities.tsx";
-
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
 
     const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
-    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activityList} = useActivities();
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
     const {hobbyId, activityId} = useParams();
     const {user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
@@ -92,8 +90,6 @@ export default function App() {
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
 
                     <Route path="/calendar/add/" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies}/>} />
-                        <Route path="/activities" element={<Activities activities={activityList}/>} />
-
                         <Route
                         path="/hobby/:hobbyId/activities"
                         element={<HobbyDetail colors={colors}/>}

@@ -13,7 +13,6 @@ export default function useActivities(){
     const [data, setData] = useState<ActivitiesData | null>(null);
     const [loading, setLoading] = useState(true);
     const [activities, setActivities] = useState<Activity[]>([]);
-    const [activityList, setActivityList] = useState<Activity[]>([]);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -111,13 +110,6 @@ export default function useActivities(){
             });
     }
 
-    useEffect(() => {
-        api.get('hobbies/allActivities')
-            .then((response) => response.data)
-            .catch(console.error)
-            .then((data) => setActivityList(data));
-    }, []);
-
 
     return {
         loading,
@@ -126,6 +118,5 @@ export default function useActivities(){
         handleAddActivityToHobby,
         handleEditActivity,
         handleDeleteActivity,
-        activityList
     };
 }

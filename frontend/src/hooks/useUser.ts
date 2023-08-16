@@ -45,7 +45,6 @@ export default function useUser() {
             .then((data) => {
                 setUserName(data);
                 getUserId();
-                console.log("Get UserID 2", userId);
                 me();
                 showSuccessMessage("Welcome " + username + " !");
                 navigate("/hobbies");
@@ -62,11 +61,6 @@ export default function useUser() {
                 console.error("Logout error:", error);
             });
     }
-
-    useEffect(() => {
-        console.log("userid logout, useEffect", userId);
-        console.log("userName logout, useEffect", userName);
-    }, [userId, userName]);
 
     function handleRegister(username: string, password: string) {
         api.post("/user/register", { username: username, password: password })
