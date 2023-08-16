@@ -32,7 +32,7 @@ export default function HobbyDetail(props: Props) {
             <StyledButtonBack
                 variant="contained"
                 disableElevation
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/hobbies")}
             >
                 Back
             </StyledButtonBack>
@@ -44,7 +44,7 @@ export default function HobbyDetail(props: Props) {
                 +
             </StyledButtonAdd>
             </div>
-            <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={clearSuccessMessage}>
+            <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
             <StyledAlert onClose={clearSuccessMessage} severity="success">
                 {successMessage}
             </StyledAlert>
@@ -66,6 +66,9 @@ const StyledButtonBack = styled(Button)`
   height: 3rem;
   width: 3rem;
   background-color: black;
+  &:hover {
+    background-color: darkred;
+  }
 `;
 
 const StyledButtonAdd = styled(Button)`
@@ -73,10 +76,13 @@ const StyledButtonAdd = styled(Button)`
   width: 3rem;
   background-color: black;
   font-size: 25px;
+  &:hover {
+    background-color: darkorange;
+  }
 `;
 
 const StyledAlert = styled(Alert)`
-  width: 100%;
+  width: 360px;
 `;
 
 const StyledGrid = styled(Grid)`

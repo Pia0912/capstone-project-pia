@@ -14,13 +14,15 @@ export default function HomePage() {
                 </Welcome>
             </CircleHeading>
 
+            <Text>If you don't have an account yet, please click REGISTER:</Text>
+            <div style={{display:'flex', flexDirection:'row', gap: '1.5rem', justifyContent: 'space-between'}}>
                 <Login variant="contained" onClick={() => navigate(`/login` )}>
                     Login
                 </Login>
-            <Text>If you don't have an account yet, click the button below to register:</Text>
-                <Register variant="outlined" onClick={() => navigate(`/register` )}>
+           <Register variant="outlined" onClick={() => navigate(`/register` )}>
                     Register
                 </Register>
+            </div>
         </>
     )
 }
@@ -33,7 +35,7 @@ const CircleHeading = styled.div`
   font-size: 30px;
   border-radius: 50%;
   width: 250px;
-  height: 250px;
+  height: 220px;
   display: flex;
   text-align: center;
   align-items: center;
@@ -48,8 +50,8 @@ const Welcome = styled.h1`
 `;
 
 const Text = styled.p`
-  font-size: 10px;
-  width: 200px;
+  font-size: 13px;
+  width: 250px;
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: -0.5rem;
@@ -67,6 +69,9 @@ const Login = styled(Button)`
   box-shadow: 3px 3px black;
   align-items: center;
   justify-content: center;
+  &:hover {
+    background-color: darkorange;
+  }
 `;
 
 const Register = styled(Button)`
@@ -79,4 +84,7 @@ const Register = styled(Button)`
   box-shadow: 3px 3px black;
   align-items: center;
   justify-content: center;
+  &:hover {
+    border-color: darkorange;
+  }
 `;

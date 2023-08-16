@@ -146,6 +146,9 @@ const RegisterButton = styled(Button)`
   border-radius: 5px;
   box-shadow: 3px 3px black;
   align-self: center;
+  &:hover {
+    background-color: darkorange;
+  }
 `;
 
 const CancelButton = styled(Button)`
@@ -157,4 +160,7 @@ const CancelButton = styled(Button)`
   border-radius: 5px;
   box-shadow: 3px 3px black;
   align-self: center;
+  &:hover {
+    border-color: darkorange;
+  }
 `;

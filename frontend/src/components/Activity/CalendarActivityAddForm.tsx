@@ -43,7 +43,7 @@ export default function CalendarActivityAddForm(props: Props) {
         setRating(5);
         setSelectedHobbyId('');
         showSuccessMessage('Activity added successfully!');
-        navigate('/');
+        navigate('/hobbies');
     };
 
     const handleAddNewHobby = () => {
@@ -123,6 +123,10 @@ const StyledSelect= styled(Select)`
 const StyledButtonSubmit = styled(Button)`
   width: 9rem;
   background-color: black;
+  &:hover {
+    background-color: limegreen;
+    border-color: limegreen;
+  }
 `;
 
 const StyledButtonBack = styled(Button)`
@@ -130,6 +134,10 @@ const StyledButtonBack = styled(Button)`
   width: 9rem;
   border: 1px solid black;
   color: black;
+  &:hover {
+    border-color: darkred;
+    color: darkred;
+  }
 `;
 
 const StyledMenuItem = styled(MenuItem)`

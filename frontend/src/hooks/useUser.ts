@@ -34,9 +34,11 @@ export default function useUser(){
             .catch(error => {
                 console.error("Login error:", error);
             })
-            .then(data => setUser(data))
-        showSuccessMessage("Welcome " + username + " !");
-        navigate("/api/hobbies");
+            .then((data) => {
+                setUser(data)
+                showSuccessMessage("Welcome " + username + " !");
+                navigate("/hobbies");
+            })
     }
 
 
@@ -44,6 +46,7 @@ export default function useUser(){
         api.post("/user/logout")
             .catch(console.error)
         setUser(undefined)
+        setUserId(undefined)
     }
 
     function handleRegister(username: string, password: string) {

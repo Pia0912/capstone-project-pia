@@ -3,7 +3,7 @@ import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Header from "./components/Header";
 import Button from "@mui/material/Button";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
-import AddForm from "./components/AddForm";
+import AddForm from "./components/Hobby/AddForm.tsx";
 import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
 import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
@@ -20,11 +20,13 @@ import Calendar from "./components/Calendar/Calendar.tsx";
 import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
 import useActivities from "./hooks/useActivities.ts";
 import LoginForm from "./components/User/LoginForm.tsx";
-import useUser from "./hooks/useUser.ts";
+
 import RegisterForm from "./components/User/RegisterForm.tsx";
-import HomePage from "./components/HomePage.tsx";
+
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
+import HomePage from "./components/HomePage.tsx";
+import useUser from "./hooks/useUser.ts";
 
 export default function App() {
     const navigate = useNavigate();
@@ -148,6 +150,9 @@ const StyledButtonAdd = styled(Button)`
   margin: -3.5rem 0.25rem -5rem 60%;
   background-color: black;
   font-size: 25px;
+  &:hover {
+    background-color: darkorange;
+  }
 `;
 
 const StyledPaper = styled(Paper)`

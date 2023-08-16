@@ -1,14 +1,20 @@
 import Button from "@mui/material/Button";
 import React, {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
+import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Snackbar} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import styled from "@emotion/styled";
+import MuiAlert, {AlertProps} from "@mui/material/Alert";
+import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 
 
 type Props = {
     onLogin: (username: string, password: string) => void
 }
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function LoginForm(props: Props) {
 
@@ -16,6 +22,7 @@ export default function LoginForm(props: Props) {
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
+    const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
 
     const navigate = useNavigate()
@@ -86,6 +93,11 @@ export default function LoginForm(props: Props) {
                     </div>
                 </fieldset>
             </form>
+            <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
+                <StyledAlert onClose={clearSuccessMessage} severity="success">
+                    {successMessage}
+                </StyledAlert>
+            </Snackbar>
         </>
     )
 }
@@ -116,6 +128,9 @@ const LoginButton = styled(Button)`
   border-radius: 5px;
   box-shadow: 3px 3px black;
   align-self: center;
+  &:hover {
+    background-color: darkorange;
+  }
 `;
 
 const CancelButton = styled(Button)`
@@ -127,4 +142,11 @@ const CancelButton = styled(Button)`
   border-radius: 5px;
   box-shadow: 3px 3px black;
   align-self: center;
+  &:hover {
+    border-color: darkorange;
+  }
+`;
+
+const StyledAlert = styled(Alert)`
+  width: 360px;
 `;

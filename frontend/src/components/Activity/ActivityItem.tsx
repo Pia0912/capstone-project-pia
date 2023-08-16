@@ -192,6 +192,10 @@ const StyledButton = styled(Button)`
   color: black;
   margin: 3px;
   width: 5rem;
+  &:hover {
+    border-color: limegreen;
+    color: limegreen;
+  }
 `;
 
 const StyledButtonBack = styled(Button)`
@@ -199,6 +203,10 @@ const StyledButtonBack = styled(Button)`
   width: 5rem;
   background-color: black;
   color: white;
+  &:hover {
+    background-color: darkred;
+    border-color: darkred;
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`

@@ -92,10 +92,18 @@ const StyledButton = styled(Button)`
   width: 9rem;
   border-color: black;
   color: black;
+  &:hover {
+    border-color: limegreen;
+    color: lime;
+  }
 `;
 
 const StyledButtonBack = styled(Button)`
   margin-top: 1rem;
   width: 9rem;
   background-color: black;
+  &:hover {
+    border-color: darkred;
+    background-color: darkred;
+  }
 `;
