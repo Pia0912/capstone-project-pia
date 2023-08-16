@@ -27,6 +27,7 @@ import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
+import Activities from "./components/Activity/Activities.tsx";
 
 export default function App() {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function App() {
     const [value, setValue] = useState(0);
 
     const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
-    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activityList} = useActivities();
     const {hobbyId, activityId} = useParams();
     const {user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
@@ -69,7 +70,7 @@ export default function App() {
                                    <>
                                        <Calendar />
 
-                                       <StyledH2>Hobby List</StyledH2>
+                                       <StyledH2>{user}s Hobby List</StyledH2>
                                        <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                            +
                                        </StyledButtonAdd>
@@ -91,7 +92,9 @@ export default function App() {
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
 
                     <Route path="/calendar/add/" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies}/>} />
-                    <Route
+                        <Route path="/activities" element={<Activities activities={activityList}/>} />
+
+                        <Route
                         path="/hobby/:hobbyId/activities"
                         element={<HobbyDetail colors={colors}/>}
                     />
@@ -119,19 +122,20 @@ export default function App() {
 
                 </Routes>
             </main>
-            <StyledPaper elevation={10}>
-                <StyledBottomNavigation
-                    showLabels
-                    value={value}
-                    onChange={(_, newValue) => {
-                        setValue(newValue);
-                    }}
-                >
-                    <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
-                    <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>}
-                                            onClick={handleProfileIconClick}/>
-                </StyledBottomNavigation>
-            </StyledPaper>
+            {location.pathname !== "/" && location.pathname !== "/login" && location.pathname !== "/register" && (
+                <StyledPaper elevation={10}>
+                    <StyledBottomNavigation
+                        showLabels
+                        value={value}
+                        onChange={(_, newValue) => {
+                            setValue(newValue);
+                        }}
+                    >
+                        <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
+                        <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>} onClick={handleProfileIconClick}/>
+                    </StyledBottomNavigation>
+                </StyledPaper>
+            )}
         </>
     );
 }

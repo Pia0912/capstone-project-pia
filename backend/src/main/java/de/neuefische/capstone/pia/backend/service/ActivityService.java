@@ -38,6 +38,12 @@ public class ActivityService {
         return activities;
     }
 
+    public List<Activity> getAllActivities() {
+        return hobbyRepo.findAll().stream()
+                .flatMap(hobby -> hobby.getActivities().stream())
+                .toList();
+    }
+
     public Activity getActivityByHobbyId(String hobbyId, String activityId) {
         Optional<Hobby> hobbyOptional = hobbyRepo.findById(hobbyId);
         Hobby hobby = hobbyOptional.orElseThrow(() -> new NoSuchHobbyException(hobbyId));

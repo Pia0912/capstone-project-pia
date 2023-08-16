@@ -29,6 +29,15 @@ export default function SettingsTab(props: Props) {
                         {props.user}
                     </StyledIconButton>
                 </div>
+
+                <div className="tabContent">
+                    <SettingLabel>user Id:</SettingLabel>
+                    <StyledIconButton>
+                        <AccountCircleIcon />
+                        <p>{props.userId}</p>
+                    </StyledIconButton>
+                </div>
+
                 <div className="tabContent">
                     <SettingLabel>Password</SettingLabel>
                     <StyledIconButton>

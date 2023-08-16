@@ -14,7 +14,7 @@ export default function HomePage() {
                 </Welcome>
             </CircleHeading>
 
-            <Text>If you don't have an account yet, please click REGISTER:</Text>
+            <Text>If you already have an account, please click LOGIN - if not please click REGISTER:</Text>
             <div style={{display:'flex', flexDirection:'row', gap: '1.5rem', justifyContent: 'space-between'}}>
                 <Login variant="contained" onClick={() => navigate(`/login` )}>
                     Login
@@ -50,8 +50,8 @@ const Welcome = styled.h1`
 `;
 
 const Text = styled.p`
-  font-size: 13px;
-  width: 250px;
+  font-size: 14px;
+  width: 350px;
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: -0.5rem;

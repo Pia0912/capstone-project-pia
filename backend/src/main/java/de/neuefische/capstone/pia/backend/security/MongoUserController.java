@@ -55,6 +55,4 @@ public class MongoUserController {
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(request, response, authentication);
     }
-
-
 }
