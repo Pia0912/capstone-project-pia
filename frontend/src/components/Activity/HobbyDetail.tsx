@@ -18,7 +18,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities(props.hobby?.hobbyId);
+    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities();
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
     if (!data) {

@@ -95,7 +95,8 @@ public class ActivityService {
     }
 
     public Map<String, Long> getActivityCounts() {
-        List<Activity> allActivities = hobbyRepo.findAll().stream()
+        List<Hobby> userHobbies = hobbyService.getHobbies();
+        List<Activity> allActivities = userHobbies.stream()
                 .flatMap(hobby -> hobby.getActivities().stream())
                 .toList();
 
@@ -104,7 +105,8 @@ public class ActivityService {
     }
 
     public String getMostAddedActivityName() {
-        List<Activity> allActivities = hobbyRepo.findAll().stream()
+        List<Hobby> userHobbies = hobbyService.getHobbies();
+        List<Activity> allActivities = userHobbies.stream()
                 .flatMap(hobby -> hobby.getActivities().stream())
                 .toList();
 
@@ -118,7 +120,8 @@ public class ActivityService {
     }
 
     public Map<String, Long> getActivityDays() {
-        List<Activity> allActivities = hobbyRepo.findAll().stream()
+        List<Hobby> userHobbies = hobbyService.getHobbies();
+        List<Activity> allActivities = userHobbies.stream()
                 .flatMap(hobby -> hobby.getActivities().stream())
                 .toList();
 

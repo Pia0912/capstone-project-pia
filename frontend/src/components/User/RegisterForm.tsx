@@ -125,8 +125,9 @@ const Message = styled.div`
   padding: 2rem;
   background-color: orange;
   box-shadow: 3px 3px black;
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 10px;
+  width: 270px;
 `;
 
 const StyledOutlinedInput = styled(OutlinedInput)`

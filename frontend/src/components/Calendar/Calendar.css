@@ -10,9 +10,11 @@
 }
 
 .month {
+    margin-top: 1rem;
     padding: 10px 10px;
-    width: 100%;
+    width: 330px;
     background: black;
+    border: 1px solid white;
     text-align: center;
     justify-content: center;
     display: flex;
@@ -53,7 +55,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     font-size: 14px;
-    margin: 0;
+    margin: -2rem 0 0;
     padding: 7px 0;
     background: black;
     color: white;

@@ -34,7 +34,7 @@ export default function App() {
 
     const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, hobby} = useHobbies();
     const hobbyId= hobby?.hobbyId;
-    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities(hobbyId);
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
 
 
     const { activityId} = useParams();
@@ -88,7 +88,7 @@ export default function App() {
                     <Route path="/app" element={<InAppPurchase/>}/>
                     <Route path="/add" element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
 
-                    <Route path="/calendar/add/" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies}/>} />
+                    <Route path="/calendar/add/" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies} hobby={hobby}/>} />
                         <Route
                         path="/hobby/:hobbyId/activities"
                         element={<HobbyDetail colors={colors} hobby={hobby}/>}
@@ -135,18 +135,17 @@ export default function App() {
     );
 }
 
-const StyledH2 = styled.h2`
+const StyledH2 = styled.h3`
   margin-top: 0;
-  margin-right: 3.5rem;
+  margin-right: 5rem;
   padding-top: 1rem;
   padding-bottom: 0.5rem;
   border-top: 4px solid black;
-  border-radius: 5%;
-  width: 550px;
+  width: 120%;
 `;
 
 const StyledButtonAdd = styled(Button)`
-  margin: -3.5rem 0.25rem -5rem 60%;
+  margin: -3rem 0.2rem -6rem 60%;
   background-color: black;
   font-size: 25px;
   &:hover {

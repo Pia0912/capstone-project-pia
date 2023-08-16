@@ -6,10 +6,12 @@ import { Container, Select, MenuItem, InputLabel, FormControl } from '@mui/mater
 import styled from '@emotion/styled';
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 import useActivities from "../../hooks/useActivities.ts";
+import StarRating from "./StarRating.tsx";
 
 type Props = {
     hobbies: Hobby[];
     onAddActivity: (hobbyId: string, activity: ActivityWithoutID) => void;
+    hobby: Hobby | undefined;
 };
 
 export default function CalendarActivityAddForm(props: Props) {
@@ -56,7 +58,7 @@ export default function CalendarActivityAddForm(props: Props) {
                 <fieldset>
                     <legend>Add new Activity</legend>
                     <FormControl>
-                        <InputLabel>Select a hobby</InputLabel>
+                        <InputLabel style={{color: 'white', fontSize:'17px'}}>Select a hobby</InputLabel>
                         <StyledSelect
                             value={selectedHobbyId}
                             onChange={(event) => setSelectedHobbyId(event.target.value as string)}
@@ -72,7 +74,7 @@ export default function CalendarActivityAddForm(props: Props) {
                             ))}
                         </StyledSelect>
                     </FormControl>
-                    <label htmlFor="name">Name: </label>
+                    <label htmlFor="name">Activity name: </label>
                     <input
                         onChange={(event) => setName(event.target.value)}
                         value={name}
@@ -82,7 +84,7 @@ export default function CalendarActivityAddForm(props: Props) {
                         required
                         className="input-add"
                     />
-                    <label htmlFor="name">Date: </label>
+                    <label htmlFor="name">Activity date: </label>
                     <input
                         onChange={(event) => setDate(event.target.value)}
                         value={date}
@@ -92,12 +94,14 @@ export default function CalendarActivityAddForm(props: Props) {
                         required
                         className="input-add"
                     />
+                    <label htmlFor="rating">Rating:</label>
+                    <StarRating initialRating={rating} onChange={setRating} activityId="new-activity" />
                 </fieldset>
                 <StyledButtonSubmit type="submit" variant="contained">
                     Submit
                 </StyledButtonSubmit>
             </form>
-            <StyledButtonBack variant="outlined" disableElevation onClick={() => navigate(`/`)} >
+            <StyledButtonBack variant="outlined" disableElevation onClick={() => navigate(`/hobbies`)} >
                 Back to Calendar
             </StyledButtonBack>
         </StyledContainer>
@@ -114,10 +118,13 @@ const StyledContainer = styled(Container)`
 `;
 
 const StyledSelect= styled(Select)`
-  width: 350px;
-  height: 90px;
+  width: 370px;
+  height: 60px;
   border: 1px solid black;
   justify-content: center;
+  background-color: black;
+  color: white;
+  border-radius: 15px;
 `;
 
 const StyledButtonSubmit = styled(Button)`
@@ -144,3 +151,4 @@ const StyledMenuItem = styled(MenuItem)`
   background-color: black;
   color: white;
 `;
+
