@@ -89,7 +89,7 @@ class HobbyServiceTest {
         String username = "username";
         MongoUser user = new MongoUser("1", username, "Password123");
         HobbyAddModel newHobby = new HobbyAddModel("Home", "red");
-        Hobby expected = new Hobby("123", "Home", "green", new ArrayList<>(), user.id());
+        Hobby expected = new Hobby("123", "Home", "green", new ArrayList<>(), user.userId());
 
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);

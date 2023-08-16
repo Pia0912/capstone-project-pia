@@ -27,7 +27,7 @@ public class HobbyService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = mongoUserService.findUserByUsername(username);
 
-        return hobbyRepo.findAllByAuthorId(user.id());
+        return hobbyRepo.findAllByAuthorId(user.userId());
     }
 
     public Hobby addHobby(HobbyAddModel newHobby) {
@@ -35,7 +35,7 @@ public class HobbyService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = mongoUserService.findUserByUsername(username);
 
-        Hobby hobby = new Hobby(id, newHobby.getName(), newHobby.getColor(), new ArrayList<>(), user.id());
+        Hobby hobby = new Hobby(id, newHobby.getName(), newHobby.getColor(), new ArrayList<>(), user.userId());
         return hobbyRepo.insert(hobby);
     }
 

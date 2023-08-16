@@ -41,10 +41,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/user/logout").permitAll()
-                                .requestMatchers("/api/profile/settings").permitAll()
-
-                                .requestMatchers(HttpMethod.POST,"/api/user/register").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/user/login").permitAll()
 
                                 .requestMatchers("/api/hobbies/**").authenticated()
                                 .requestMatchers("/api/hobbies/hobby/**").authenticated()

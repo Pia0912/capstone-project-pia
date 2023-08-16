@@ -43,6 +43,6 @@ public class MongoUserDetailsService implements UserDetailsService {
         MongoUser mongoUser = mongoUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
 
-        return new UserWithoutPassword(mongoUser.id(), mongoUser.username());
+        return new UserWithoutPassword(mongoUser.userId(), mongoUser.username());
     }
 }

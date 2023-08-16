@@ -56,11 +56,29 @@ export default function App() {
             <Header/>
             <main>
                 <Routes>
+                    <Route path="/" element={<HomePage />}/>
                     <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
                     <Route path="/register" element={<RegisterForm onRegister={handleRegister} />} />
 
 
                     <Route element={<ProtectedRoutes user={user} />}>
+                        <Route path="/hobbies"
+                               element={(
+                                   <>
+                                       <Calendar />
+
+                                       <StyledH2>Hobby List</StyledH2>
+                                       <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
+                                           +
+                                       </StyledButtonAdd>
+
+                                       <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
+                                                  onEditHobbyColor={handleEditHobbyColor}
+                                                  onDeleteHobby={handleDeleteHobby}/>
+                                   </>
+                               )}
+                        />
+
                     <Route path="profile/info" element={<InfoTab />} />
                     <Route path="profile/stats" element={<StatisticTab />} />
                         <Route path="/profile/settings" element={<SettingsTab user={user} userId={userId} onLogout={handleLogout}/>} />
@@ -94,24 +112,9 @@ export default function App() {
                                 <div>Invalid hobby or activity ID.</div>
                             )
                         }/>
-                    <Route path="/hobbies"
-                        element={(
-                            <>
-                                <Calendar />
 
-                                <StyledH2>Hobby List</StyledH2>
-                                <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
-                                    +
-                                </StyledButtonAdd>
-
-                                <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
-                                           onEditHobbyColor={handleEditHobbyColor}
-                                           onDeleteHobby={handleDeleteHobby}/>
-                            </>
-                        )}
-                    />
                     </Route>
-                    <Route path="/" element={<HomePage />}/>
+
                 </Routes>
             </main>
             <StyledPaper elevation={10}>

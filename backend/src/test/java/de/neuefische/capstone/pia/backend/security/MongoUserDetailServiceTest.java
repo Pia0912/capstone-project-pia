@@ -50,7 +50,7 @@ class MongoUserDetailServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(expected));
         UserWithoutPassword actual = userDetailService.getUserWithoutPassword(username);
         //THEN
-        assertEquals(expected.id(), actual.id());
+        assertEquals(expected.userId(), actual.userId());
         verify(userRepository).findByUsername(username);
     }
 

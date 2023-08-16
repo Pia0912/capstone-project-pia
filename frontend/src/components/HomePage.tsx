@@ -26,7 +26,7 @@ export default function HomePage() {
 }
 
 
-const CircleHeading = styled.h1`
+const CircleHeading = styled.div`
   margin: 3rem;
   background-color: orange;
   border: 50px solid darkorange;

@@ -24,7 +24,7 @@ public class MongoUserController {
                 .getName();
 
         if (!username.equals("anonymousUser")) {
-            return this.mongoUserDetailsService.getUserWithoutPassword(username).id();
+            return this.mongoUserDetailsService.getUserWithoutPassword(username).userId();
         }
         return null;
     }
