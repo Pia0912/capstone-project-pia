@@ -24,22 +24,21 @@ import LoginForm from "./components/User/LoginForm.tsx";
 import RegisterForm from "./components/User/RegisterForm.tsx";
 
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
-import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
+import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
 
-    const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby,} = useHobbies();
-    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities();
-    const {hobbyId, activityId} = useParams();
-    const {user, userId, handleLogin, handleRegister, handleLogout} = useUser();
+    const {hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, hobby} = useHobbies();
+    const hobbyId= hobby?.hobbyId;
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity} = useActivities(hobbyId);
 
-    if (!Array.isArray(hobbies)) {
-        return <div>Loading hobbies...</div>;
-    }
+
+    const { activityId} = useParams();
+    const {user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
     const selectedHobby = hobbies.find((hobby) => hobby.hobbyId === hobbyId);
     const selectedActivity = selectedHobby ? selectedHobby.activities.find((activity) => activity.activityId === activityId) : undefined;
@@ -92,7 +91,7 @@ export default function App() {
                     <Route path="/calendar/add/" element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies}/>} />
                         <Route
                         path="/hobby/:hobbyId/activities"
-                        element={<HobbyDetail colors={colors}/>}
+                        element={<HobbyDetail colors={colors} hobby={hobby}/>}
                     />
                     <Route
                         path="/hobby/:hobbyId/activities/add"

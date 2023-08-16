@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Activity, ActivityWithoutID, Hobby } from "../models.ts";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useSuccessMessage} from "./useSuccessMessage.tsx";
 
@@ -9,48 +9,50 @@ const api = axios.create({
     baseURL: "/api",
 });
 
-export default function useActivities(){
+export default function useActivities(hobbyId: string | undefined) {
     const [data, setData] = useState<ActivitiesData | null>(null);
     const [loading, setLoading] = useState(true);
     const [activities, setActivities] = useState<Activity[]>([]);
 
-    const params = useParams();
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
 
     useEffect(() => {
         let isMounted = true;
-        const hobbyId = params.hobbyId
-        api
-            .get(`/hobbies/hobby/${hobbyId}`)
-            .then((response) => {
-                const hobbyData = response.data;
-                if (isMounted) {
-                    api.get(`/hobbies/hobby/${hobbyId}/activities`)
-                        .then((activitiesResponse) => {
-                            const activitiesData = activitiesResponse.data;
-                            setActivities(activitiesData);
-                            setData({ hobby: hobbyData, activities: activitiesData.activities });
-                            setLoading(false);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                            setLoading(false);
-                        });
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                if (isMounted) {
-                    setData(null);
-                    setLoading(false);
-                }
-            });
+
+        if (hobbyId) {
+            api
+                .get(`/hobbies/hobby/${hobbyId}`)
+                .then((response) => {
+                    const hobbyData = response.data;
+                    if (isMounted) {
+                        api
+                            .get(`/hobbies/hobby/${hobbyId}/activities`)
+                            .then((activitiesResponse) => {
+                                const activitiesData = activitiesResponse.data;
+                                setActivities(activitiesData);
+                                setData({ hobby: hobbyData, activities: activitiesData.activities });
+                                setLoading(false);
+                            })
+                            .catch((error) => {
+                                console.error(error);
+                                setLoading(false);
+                            });
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    if (isMounted) {
+                        setData(null);
+                        setLoading(false);
+                    }
+                });
+        }
 
         return () => {
             isMounted = false;
         };
-    }, [params.hobbyId]);
+    }, [hobbyId]);
 
     function handleAddActivityToHobby (hobbyId: string, activityData: ActivityWithoutID) {
         api.post(`/hobbies/hobby/${hobbyId}/activities`, activityData)

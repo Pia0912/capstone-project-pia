@@ -10,6 +10,8 @@ const api = axios.create({
 
 export default function useHobbies() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
+    const [hobby, setHobby] = useState<Hobby>();
+
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
 
@@ -77,7 +79,16 @@ export default function useHobbies() {
         navigate("/hobbies")
     }
 
+    function getHobbyById(id: string) {
+        api.get(`hobbies/${id}`)
+            .then((response) => {
+                const hobbyData = response.data;
+                setHobby(hobbyData);
+            })
+            .catch(console.error);
+    }
 
 
-    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby };
+
+    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, getHobbyById, hobby };
 }

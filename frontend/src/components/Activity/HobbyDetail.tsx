@@ -6,9 +6,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ActivityList from "./ActivityList.tsx";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
+import {Hobby} from "../../models.ts";
 
 type Props = {
     colors: string[];
+    hobby: Hobby | undefined;
 };
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -16,7 +18,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 export default function HobbyDetail(props: Props) {
     const navigate = useNavigate();
-    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities();
+    const { data, activities, handleEditActivity, handleDeleteActivity,} = useActivities(props.hobby?.hobbyId);
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
     if (!data) {
