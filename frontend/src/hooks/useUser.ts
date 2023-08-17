@@ -56,6 +56,8 @@ export default function useUser() {
             .then(() => {
                 setUserName(undefined);
                 setUserId(undefined);
+                showSuccessMessage("Logout was successful!");
+                navigate('/');
             })
             .catch(error => {
                 console.error("Logout error:", error);

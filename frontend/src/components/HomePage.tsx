@@ -2,8 +2,11 @@ import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import styled from "@emotion/styled";
 import FiberPinIcon from "@mui/icons-material/FiberPin";
+import useUser from "../hooks/useUser.ts";
 
 export default function HomePage() {
+
+    const {user} = useUser();
 
     const navigate = useNavigate();
     return(
@@ -14,7 +17,7 @@ export default function HomePage() {
                 </Welcome>
             </CircleHeading>
 
-            <Text>If you already have an account, please click LOGIN - if not please click REGISTER:</Text>
+            <Text>Hello {user}. If you already have an account, please click LOGIN - if not please click REGISTER:</Text>
             <div style={{display:'flex', flexDirection:'row', gap: '1.5rem', justifyContent: 'space-between'}}>
                 <Login variant="contained" onClick={() => navigate(`/login` )}>
                     Login
