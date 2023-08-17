@@ -38,26 +38,26 @@ export default function HobbyDetail(props: Props) {
                 {data.hobby.name}
             </div>
             <div className="div-hobbyDetail-buttons">
-            <StyledButtonBack
-                variant="contained"
-                disableElevation
-                onClick={() => navigate("/hobbies")}
-            >
-                Back
-            </StyledButtonBack>
-            <StyledButtonAdd
-                variant="contained"
-                disableElevation
-                onClick={() => navigate(`/hobby/${data.hobby.hobbyId}/activities/add`)}
-            >
-                +
-            </StyledButtonAdd>
+                <StyledButtonBack
+                    variant="contained"
+                    disableElevation
+                    onClick={() => navigate("/hobbies")}
+                >
+                    Back
+                </StyledButtonBack>
+                <StyledButtonAdd
+                    variant="contained"
+                    disableElevation
+                    onClick={() => navigate(`/hobby/${data.hobby.hobbyId}/activities/add`)}
+                >
+                    +
+                </StyledButtonAdd>
             </div>
             <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
-            <StyledAlert onClose={clearSuccessMessage} severity="success">
-                {successMessage}
-            </StyledAlert>
-        </Snackbar>
+                <StyledAlert onClose={clearSuccessMessage} severity="success">
+                    {successMessage}
+                </StyledAlert>
+            </Snackbar>
             <StyledGrid container spacing={2}>
                 <ActivityList
                     activities={activities}

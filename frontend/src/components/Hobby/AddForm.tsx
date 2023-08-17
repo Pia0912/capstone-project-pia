@@ -78,6 +78,8 @@ const StyledContainer = styled(Container)`
   justify-content: center;
   align-items: center;
   padding-top: 3rem;
+  background-color: cornflowerblue;
+  padding-bottom: 17rem;
 `;
 
 const StyledButton = styled(Button)`

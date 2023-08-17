@@ -79,8 +79,8 @@ export default function useHobbies() {
         navigate("/hobbies")
     }
 
-    function getHobbyById(id: string) {
-        api.get(`hobbies/${id}`)
+    function getHobbyById(hobbyId: string) {
+        api.get(`hobbies/hobby/${hobbyId}`)
             .then((response) => {
                 const hobbyData = response.data;
                 setHobby(hobbyData);

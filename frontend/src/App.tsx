@@ -20,16 +20,22 @@ import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
-import Hobby_Routing from "./Hobby_Routing.tsx";
+import Calendar from "./components/Calendar/Calendar.tsx";
+import HobbyList from "./components/Hobby/HobbyList.tsx";
+import Button from "@mui/material/Button";
+import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
+import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
+import ActivityItem from "./components/Activity/ActivityItem.tsx";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
 
-    const {hobbies, hobby, handleAddHobby} = useHobbies();
-    const { handleAddActivityToHobby} = useActivities();
+    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies();
+    const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activity} = useActivities();
 
     const { user, userId, handleLogin, handleRegister, handleLogout} = useUser();
+
 
     const handleProfileIconClick = () => {
         navigate("/profile/info");
@@ -38,6 +44,8 @@ export default function App() {
     const handleListIconClick = () => {
         navigate("/hobbies");
     };
+
+
 
     return (
         <>
@@ -49,7 +57,39 @@ export default function App() {
                     <Route path="/register" element={<RegisterForm onRegister={handleRegister} />} />
 
                     <Route element={<ProtectedRoutes user={user} />}>
-                        <Route path={"/hobbies"} element={<Hobby_Routing/>} />
+
+                        <Route path={"/hobbies"}
+                               element={(
+                                   <>
+                                       <Calendar />
+                                       <StyledH2>{user}s Hobby List</StyledH2>
+                                       <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
+                                           +
+                                       </StyledButtonAdd>
+
+                                       <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
+                                                  onEditHobbyColor={handleEditHobbyColor}
+                                                  onDeleteHobby={handleDeleteHobby}/>
+                                   </>
+                               )}
+                        />
+
+                        <Route path={"/hobby/:hobbyId/activities"} element={<HobbyDetail colors={colors} hobby={hobby}/>}/>
+                        <Route path={"/hobby/:hobbyId/activities/add"} element={<ActivityAddForm onAddActivity={handleAddActivityToHobby} color={hobby?.color ?? colors[0]}/>}/>
+                        <Route path={"/hobby/:hobbyId/activities/:activityId"}
+                               element={
+                                   hobby && activity ? (
+                                       <ActivityItem
+                                           activity={activity}
+                                           hobby={hobby}
+                                           colors={colors}
+                                           onEditActivity={handleEditActivity}
+                                           onDeleteActivity={handleDeleteActivity}
+                                       />
+                                   ) : (
+                                       <div>Invalid hobby or activity ID.</div>
+                                   )
+                               }/>
 
                         <Route path={"profile/*"} element={<InfoTab />} />
                         <Route path={"profile/info"} element={<InfoTab />} />
@@ -108,3 +148,22 @@ const StyledBottomNavigation = styled(BottomNavigation)`
 const StyledBottomNavigationAction = styled(BottomNavigationAction)`
   color: white;
 `;
+
+const StyledH2 = styled.h3`
+  margin-top: 0;
+  margin-right: 5rem;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  border-top: 4px solid black;
+  width: 120%;
+`;
+
+const StyledButtonAdd = styled(Button)`
+  margin: -3rem 0.2rem -6rem 60%;
+  background-color: black;
+  font-size: 25px;
+  &:hover {
+    background-color: darkorange;
+  }
+`;
+

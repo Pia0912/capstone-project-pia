@@ -13,6 +13,7 @@ export default function useActivities(){
     const [data, setData] = useState<ActivitiesData | null>(null);
     const [loading, setLoading] = useState(true);
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [activity, setActivity] = useState<Activity>();
 
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
@@ -100,6 +101,16 @@ export default function useActivities(){
             });
     }
 
+
+    function getActivityById(hobbyId: string, activityId: string ) {
+        api.get(`/hobbies/hobby/${hobbyId}/activities/${activityId}`)
+            .then((response) => {
+                const activityData = response.data;
+                setActivity(activityData);
+            })
+            .catch(console.error);
+    }
+
     return {
         loading,
         data,
@@ -108,5 +119,7 @@ export default function useActivities(){
         handleEditActivity,
         handleDeleteActivity,
         fetchActivitiesData,
+        activity,
+        getActivityById
     };
 }

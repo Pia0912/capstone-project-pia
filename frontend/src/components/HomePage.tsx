@@ -3,9 +3,16 @@ import {useNavigate} from "react-router-dom";
 import styled from "@emotion/styled";
 import FiberPinIcon from "@mui/icons-material/FiberPin";
 import useUser from "../hooks/useUser.ts";
+import React from "react";
+import MuiAlert, {AlertProps} from "@mui/material/Alert";
+import {Snackbar} from "@mui/material";
+import {useSuccessMessage} from "../hooks/useSuccessMessage.tsx";
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 export default function HomePage() {
-
+    const { successMessage, clearSuccessMessage } = useSuccessMessage();
     const {user} = useUser();
 
     const navigate = useNavigate();
@@ -26,6 +33,11 @@ export default function HomePage() {
                     Register
                 </Register>
             </div>
+            <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
+                <StyledAlert onClose={clearSuccessMessage} severity="success">
+                    {successMessage}
+                </StyledAlert>
+            </Snackbar>
         </>
     )
 }
@@ -90,4 +102,8 @@ const Register = styled(Button)`
   &:hover {
     border-color: darkorange;
   }
+`;
+
+const StyledAlert = styled(Alert)`
+  width: 400px;
 `;
