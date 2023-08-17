@@ -96,7 +96,7 @@ const StyledAlert = styled(Alert)`
 
 const StyledGrid = styled(Grid)`
   padding: 0;
-  margin:0;
+  margin: 0;
   justify-content: center;
   align-items: flex-start;
 `;

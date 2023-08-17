@@ -31,8 +31,8 @@ class MongoUserDetailServiceTest {
     @Test
     void loadUserByUsername() {
         //GIVEN
-        MongoUser expected = new MongoUser("abc", "Henry", "p4ssw0rd");
-        String username = "Henry";
+        MongoUser expected = new MongoUser("abc", "testUser", "Password123");
+        String username = "testUser";
         //WHEN
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(expected));
         UserDetails actual = userDetailService.loadUserByUsername("Henry");
@@ -44,8 +44,8 @@ class MongoUserDetailServiceTest {
     @Test
     void expectUserWithoutPassword() {
         //GIVEN
-        MongoUser expected = new MongoUser("abc", "Henry", "p4ssw0rd");
-        String username = "Henry";
+        MongoUser expected = new MongoUser("abc", "testUser", "Password123");
+        String username = "testUser";
         //WHEN
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(expected));
         UserWithoutPassword actual = userDetailService.getUserWithoutPassword(username);
@@ -57,7 +57,7 @@ class MongoUserDetailServiceTest {
     @Test
     void registerNewUser_userAlreadyExists() {
         // GIVEN
-        UserWithoutId existingUser = new UserWithoutId("Henry", "p4ssw0rd");
+        UserWithoutId existingUser = new UserWithoutId("testUser", "Password123");
         when(userRepository.findByUsername(existingUser.username())).thenReturn(Optional.of(new MongoUser("abc", existingUser.username(), existingUser.password())));
 
         // WHEN & THEN
