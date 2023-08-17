@@ -221,7 +221,7 @@ class ActivityServiceTest {
                 new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
                 new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")
         );
-        when(hobbyRepo.findAll()).thenReturn(hobbies);
+        when(hobbyService.getHobbies()).thenReturn(hobbies);
 
         // WHEN
         Map<String, Long> result = activityService.getActivityCounts();
@@ -243,7 +243,7 @@ class ActivityServiceTest {
                 new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
                 new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")
         );
-        when(hobbyRepo.findAll()).thenReturn(hobbies);
+        when(hobbyService.getHobbies()).thenReturn(hobbies);
 
         // WHEN
         String result = activityService.getMostAddedActivityName();
@@ -262,7 +262,7 @@ class ActivityServiceTest {
                 new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
                 new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")
         );
-        when(hobbyRepo.findAll()).thenReturn(hobbies);
+        when(hobbyService.getHobbies()).thenReturn(hobbies);
 
         // WHEN
         Map<String, Long> result = activityService.getActivityDays();

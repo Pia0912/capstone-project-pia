@@ -10,3 +10,4 @@ import java.util.List;
 public interface HobbyRepo extends MongoRepository <Hobby, String> {
 List<Hobby> findAllByAuthorId(String authorId);
 }
+

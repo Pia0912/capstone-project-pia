@@ -67,18 +67,21 @@ public class ActivityService {
         Hobby hobby = hobbyService.getHobbyById(hobbyId);
         String activityColor = hobby.getColor();
 
-        Activity activityToUpdate = getActivityByHobbyId(hobbyId, activityId);
+        hobby.updateActivity(activityId, updatedActivity);
 
-        activityToUpdate.setName(updatedActivity.getName());
-        activityToUpdate.setActivityDate(updatedActivity.getActivityDate());
-        activityToUpdate.setRating(updatedActivity.getRating());
+        Activity updatedActivityInHobby = hobby.getActivities().stream()
+                .filter(activity -> activity.getActivityId().equals(activityId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchActivityException(activityId));
 
-        activityToUpdate.setColor(activityColor);
+        updatedActivityInHobby.setHobbyId(hobbyId);
+        updatedActivityInHobby.setColor(activityColor);
 
         hobbyRepo.save(hobby);
 
-        return activityToUpdate;
+        return updatedActivityInHobby;
     }
+
 
     public void deleteActivity(String hobbyId, String activityId) {
         Hobby hobby = hobbyRepo.findById(hobbyId)

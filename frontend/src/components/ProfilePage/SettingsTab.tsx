@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ProfilePage from "./ProfilePage.tsx";
-import PasswordIcon from '@mui/icons-material/Password';
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -21,7 +20,7 @@ export default function SettingsTab(props: Props) {
         <div className="div-settingsTab">
             <ProfilePage />
             <div id="settings" >
-                <h2 className="tabTitle">Account Settings</h2>
+                <h2 className="tabTitle">Account Infos</h2>
                 <div className="tabContent">
                     <SettingLabel>Username</SettingLabel>
                     <StyledIconButton>
@@ -31,20 +30,12 @@ export default function SettingsTab(props: Props) {
                 </div>
 
                 <div className="tabContent">
-                    <SettingLabel>user Id:</SettingLabel>
+                    <SettingLabel>User Id:</SettingLabel>
                     <StyledIconButton>
                         <AccountCircleIcon />
-                        <p>{props.userId}</p>
+                        <UserId>{props.userId}</UserId>
                     </StyledIconButton>
                 </div>
-
-                <div className="tabContent">
-                    <SettingLabel>Password</SettingLabel>
-                    <StyledIconButton>
-                        <PasswordIcon />
-                    </StyledIconButton>
-                </div>
-
                 <div className="tabContent">
                     <SettingLabel>Logout</SettingLabel>
                     <StyledIconButton onClick={handleLogout}>
@@ -76,4 +67,8 @@ const StyledIconButton = styled(IconButton)`
     background-color: tomato;
     border: 2px solid tomato;
   }
+`;
+
+const UserId = styled.p`
+  font-size: 10px;
 `;
