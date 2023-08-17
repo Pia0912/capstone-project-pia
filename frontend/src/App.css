@@ -261,12 +261,6 @@ input {
 .tabContent {
     margin-left: 2rem;
     margin-bottom: -2rem;
-    align-self: center;
-}
-
-.tabContent1 {
-    margin-top: 2rem;
-    margin-bottom: -2rem;
 }
 
 .div-statisticTab {
@@ -280,7 +274,7 @@ input {
 }
 
 .div-infoTab {
-    padding: 3rem 3rem 29rem;
+    padding: 3rem 3rem 26rem;
     background-color: lightgreen;
 }
 

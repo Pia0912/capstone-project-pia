@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { HobbyWithoutID } from '../models';
+import { HobbyWithoutID } from '../../models.ts';
 import { Container } from '@mui/material';
 import styled from "@emotion/styled";
 
@@ -25,7 +25,7 @@ export default function AddForm(props: Props) {
         props.onAddHobby(data);
         setName("");
         setColor("");
-        navigate("/");
+        navigate("/hobbies");
     }
 
     function handleColorChange(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -66,7 +66,7 @@ export default function AddForm(props: Props) {
                     Submit
                 </StyledButton>
             </form>
-            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate('/')} >
+            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate('/hobbies')} >
                 Back to List
             </StyledButtonBack>
         </StyledContainer>
@@ -78,16 +78,25 @@ const StyledContainer = styled(Container)`
   justify-content: center;
   align-items: center;
   padding-top: 3rem;
+  background-color: cornflowerblue;
+  padding-bottom: 17rem;
 `;
 
 const StyledButton = styled(Button)`
   width: 9rem;
   border-color: black;
   color: black;
+  &:hover {
+    border-color: limegreen;
+  }
 `;
 
 const StyledButtonBack = styled(Button)`
   margin-top: 1rem;
   width: 9rem;
   background-color: black;
+  &:hover {
+    border-color: darkred;
+    background-color: darkred;
+  }
 `;

@@ -10,6 +10,8 @@ const api = axios.create({
 
 export default function useHobbies() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
+    const [hobby, setHobby] = useState<Hobby>();
+
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
 
@@ -30,7 +32,7 @@ export default function useHobbies() {
             .then((data) => {
                 setHobbies((prevHobbies) => [...prevHobbies, data]);
                 showSuccessMessage("Hobby added successfully!");
-                navigate('/');
+                navigate('/hobbies');
             });
     }
 
@@ -50,7 +52,7 @@ export default function useHobbies() {
                 console.log("Updated hobby state:", hobbies);
                 showSuccessMessage("Hobby name edited successfully!");
             });
-        navigate('/');
+        navigate('/hobbies');
     }
 
     function handleEditHobbyColor(id: string, newColor: string) {
@@ -74,10 +76,17 @@ export default function useHobbies() {
             .catch(console.error);
         setHobbies(hobbies.filter(hobby => hobby.hobbyId !== id))
         showSuccessMessage("Hobby deleted successfully!");
-        navigate("/")
+        navigate("/hobbies")
     }
 
+    function getHobbyById(hobbyId: string) {
+        api.get(`hobbies/hobby/${hobbyId}`)
+            .then((response) => {
+                const hobbyData = response.data;
+                setHobby(hobbyData);
+            })
+            .catch(console.error);
+    }
 
-
-    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby };
+    return { hobbies, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, getHobbyById, hobby };
 }

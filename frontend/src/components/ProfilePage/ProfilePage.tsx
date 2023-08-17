@@ -4,7 +4,7 @@ import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import {useState} from "react";
 import InfoIcon from '@mui/icons-material/Info';
 import InsightsIcon from '@mui/icons-material/Insights';
-
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 export default function ProfilePage() {
 
     const navigate = useNavigate();
@@ -16,6 +16,10 @@ export default function ProfilePage() {
 
     const handleStatsClick = () => {
         navigate("/profile/stats");
+    };
+
+    const handleSettingsClick = () => {
+        navigate("/profile/settings");
     };
 
 
@@ -31,7 +35,9 @@ export default function ProfilePage() {
                 >
                     <StyledSideNavigationAction label="Info" onClick={handleInfoClick} icon={<InfoIcon />}/>
                     <StyledSideNavigationAction label="Stats" onClick={handleStatsClick} icon={<InsightsIcon />}/>
-                    </StyledSideNavigation>
+                    <StyledSideNavigationAction label="Settings" onClick={handleSettingsClick} icon={<ManageAccountsIcon />}/>
+
+                </StyledSideNavigation>
             </StyledSidePaper>
     );
 }

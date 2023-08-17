@@ -23,7 +23,7 @@ export default function ActivityList(props: Props) {
         newRating: number,
         color: string,
 
-) => {
+    ) => {
         props.onEditActivity(hobbyId, activityId, newName, newDate, newRating, color);
     };
 

@@ -11,7 +11,7 @@ class HobbyTest {
     @Test
     void addActivity_addsActivityToList() {
         // GIVEN
-        Hobby hobby = new Hobby("1", "Gardening", "green", new ArrayList<>());
+        Hobby hobby = new Hobby("1", "Gardening", "green", new ArrayList<>(), "user1");
         Activity activity = new Activity("activityId", "Planting Flowers", LocalDate.parse("2023-07-31"), "1", 5, "green");
 
         // WHEN
@@ -25,7 +25,7 @@ class HobbyTest {
     @Test
     void removeActivity_deletesActivityFromList() {
         // GIVEN
-        Hobby hobby = new Hobby("1", "Gardening", "green", new ArrayList<>());
+        Hobby hobby = new Hobby("1", "Gardening", "green", new ArrayList<>(), "user1");
         Activity activity1 = new Activity("activityId1", "Planting Flowers", LocalDate.parse("2023-07-31"), "1", 5, "green");
         Activity activity2 = new Activity("activityId2", "Watering Flowers", LocalDate.parse("2023-08-01"), "1", 4, "green");
         hobby.addActivity(activity1);
@@ -42,7 +42,7 @@ class HobbyTest {
     @Test
     void removeActivity_ShouldNotModifyListWhenActivityNotPresent() {
         // GIVEN
-        Hobby hobby = new Hobby("1", "Gardening", "green", new ArrayList<>());
+        Hobby hobby = new Hobby("1", "Gardening", "green", new ArrayList<>(), "user1");
         Activity activity1 = new Activity("activityId1", "Planting Flowers", LocalDate.parse("2023-07-31"), "1", 5, "green");
         Activity activity2 = new Activity("activityId2", "Watering Flowers", LocalDate.parse("2023-08-01"), "1", 4, "green");
         hobby.addActivity(activity1);

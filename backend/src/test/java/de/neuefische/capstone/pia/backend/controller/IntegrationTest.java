@@ -5,6 +5,9 @@ import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
 import de.neuefische.capstone.pia.backend.model.Hobby;
 import de.neuefische.capstone.pia.backend.model.HobbyAddModel;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
+import de.neuefische.capstone.pia.backend.security.MongoUser;
+import de.neuefische.capstone.pia.backend.security.MongoUserDetailsService;
+import de.neuefische.capstone.pia.backend.security.MongoUserRepository;
 import de.neuefische.capstone.pia.backend.service.ActivityService;
 import de.neuefische.capstone.pia.backend.service.HobbyService;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,6 +26,8 @@ import org.junit.jupiter.api.BeforeEach;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import static org.bson.assertions.Assertions.assertNotNull;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -39,16 +46,29 @@ class IntegrationTest {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private MongoUserDetailsService mongoUserDetailsService;
+
+    @Autowired
+    private MongoUserRepository mongoUserRepository;
 
     private Hobby hobby;
     @BeforeEach
-    public void setup() {
-        hobby = new Hobby("123", "Gardening", "green", new ArrayList<>());
+    public void setupHobby() {
+        hobby = new Hobby("123", "Gardening", "green", new ArrayList<>(), "1");
         hobbyRepo.save(hobby);
     }
+    @BeforeEach
+    void setUpUsers() {
+        MongoUser user = new MongoUser("1", "username", "Password123");
+        mongoUserRepository.save(user);
+    }
+
 
     @Test
-    void expectHobbyList_whenGettingAllHobbies() throws Exception {
+    @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
+    void expectHobbyListForUser_whenGetAllHobbies() throws Exception {
 
         // WHEN & THEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
@@ -59,10 +79,18 @@ class IntegrationTest {
                 .andExpect(jsonPath("$[0].activities").isArray());
     }
 
+    @Test
+    @DirtiesContext
+    void expectNoHobbyList_whenGettingAllHobbies_noLogin() throws Exception {
 
+        // WHEN & THEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectNewHobby_whenPostingHobby() throws Exception {
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies")
@@ -72,7 +100,9 @@ class IntegrationTest {
                             "name": "Home",
                             "color": "blue"
                         }
-                        """))
+                        """)
+                        .with(csrf()))
+
                 //THEN
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.hobbyId").isNotEmpty())
@@ -83,6 +113,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedHobbyName_whenPuttingHobby() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -107,6 +138,7 @@ class IntegrationTest {
 
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{hobbyId}", hobbyId)
+                        .with(csrf())
                         .content(updatedHobbyJson)
                         .contentType(MediaType.APPLICATION_JSON))
 
@@ -117,6 +149,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedHobbyColor_whenPuttingHobbyColor() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -140,6 +173,7 @@ class IntegrationTest {
 
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/{hobbyId}/color", hobbyId)
+                        .with(csrf())
                         .param("color", updatedColor)
                         .content(updatedHobbyJson)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -153,24 +187,39 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectNoHobby_whenDeletingHobby() throws Exception {
         //GIVEN
         String hobbyId = hobby.getHobbyId();
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/" + hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/" + hobbyId).with(csrf()))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies").with(csrf()))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().json("[]"));
     }
 
     @Test
+    @WithMockUser(username = "username", password = "Password123")
+    void expectHobby_whenGetHobbyById() throws Exception {
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/123").with(csrf()))
+
+                //THEN
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.hobbyId").isNotEmpty())
+                .andExpect(jsonPath("$.name").value("Gardening"))
+                .andExpect(jsonPath("$.color").value("green"));
+    }
+
+    @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectEmptyActivitiesList_whenListActivitiesWithNoActivities() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -178,7 +227,7 @@ class IntegrationTest {
         String hobbyId = addedHobby.getHobbyId();
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId).with(csrf()))
 
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
@@ -186,6 +235,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectHobbyByIdWithActivities_whenGetHobbyById() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -199,7 +249,8 @@ class IntegrationTest {
                             "rating": 5,
                             "color": "green"
                         }
-                        """));
+                        """)
+                .with(csrf()));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/hobbies/hobby/{hobbyId}/activities", hobbyId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -210,9 +261,10 @@ class IntegrationTest {
                             "rating": 2,
                             "color": "green"
                         }
-                        """));
+                        """)
+                .with(csrf()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId).with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].activityId").isNotEmpty())
@@ -233,6 +285,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityAddedToHobby_whenAddActivityToHobby() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -247,13 +300,14 @@ class IntegrationTest {
                             "rating": 5,
                             "color": "green"
                         }
-                        """))
+                        """)
+                        .with(csrf()))
 
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         // ALSO
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId).with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
@@ -265,6 +319,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedActivity_whenPuttingActivity() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -295,6 +350,7 @@ class IntegrationTest {
 
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId)
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(actual))
 
@@ -305,6 +361,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectUpdatedActivityNotFound_whenPuttingActivityWithInvalidIds() throws Exception {
         // GIVEN
         String hobbyId = "invalidHobbyId";
@@ -321,6 +378,7 @@ class IntegrationTest {
 
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.put("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId)
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(actual))
 
@@ -331,6 +389,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityDeleted_whenDeletingActivity() throws Exception {
         // GIVEN
         String hobbyId = hobby.getHobbyId();
@@ -341,11 +400,11 @@ class IntegrationTest {
         String activityId = addedActivity.getActivityId();
 
         // WHEN
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/hobbies/hobby/{hobbyId}/activities/{activityId}", hobbyId, activityId).with(csrf()))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId).with(csrf()))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().json("[]"));
@@ -354,6 +413,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityColor_whenGetActivityByMonth() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -366,6 +426,7 @@ class IntegrationTest {
 
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/calendar")
+                        .with(csrf())
                         .param("month", "2023-07-01")
                         .contentType(MediaType.APPLICATION_JSON))
                 // THEN
@@ -375,6 +436,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityCounts_whenGettingActivityCounts() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -402,6 +464,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectMostAddedActivity_whenGettingMostAddedActivity() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -427,9 +490,18 @@ class IntegrationTest {
     }
 
 
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
+    void expectNoMostAddedActivity_whenGettingMostAddedActivity() throws Exception {
+        // WHEN & THEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/statistics/most-added-activity"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
     void expectActivityDays_whenGettingActivityDays() throws Exception {
         // GIVEN
         HobbyAddModel newHobby = new HobbyAddModel("Gardening", "green");
@@ -453,5 +525,144 @@ class IntegrationTest {
                 .andExpect(jsonPath("$.MONDAY").value(3))
                 .andExpect(jsonPath("$.SUNDAY").value(1));
     }
+
+    @Test
+    @DirtiesContext
+    void expectUserIdIsNull_whenNotLoggedIn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string(""));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
+    void expectUserId_whenLoggedIn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("1"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
+    void expectAUser_whenLoggedIn() throws Exception {
+        String expected = "username";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void expectAnonymousUser_whenNotLoggedInOnMe() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void register_shouldRegisterNewUser() throws Exception {
+        // GIVEN
+        String requestBody = """
+            {
+                "username": "newUser",
+                "password": "newPassword"
+            }
+        """;
+
+        // WHEN & THEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        UserDetails userDetails = mongoUserDetailsService.loadUserByUsername("newUser");
+        assertNotNull(userDetails);
+    }
+
+    @Test
+    @DirtiesContext
+    void expectSuccessfulLogin_whenRegistered() throws Exception {
+        //GIVEN
+        String registerRequestBody = """
+        {
+            "username": "testUser",
+            "password": "testUserPassword"
+        }
+    """;
+
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register")
+                        .content(registerRequestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        //THEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(registerRequestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk());}
+
+
+    @Test
+    void login_shouldReturnAuthenticatedUser() throws Exception {
+        // GIVEN
+        String requestBody = """
+            {
+                "username": "testUser",
+                "password": "testPassword"
+            }
+        """;
+
+        // WHEN & THEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "testUser")
+    void logout_shouldLogoutUser() throws Exception {
+        // WHEN & THEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout").with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
+    @Test
+    @DirtiesContext
+    void expect405_whenRegisteringWithExistingUsername() throws Exception {
+        String actual = """
+                               
+                        {
+                            "username": "testUser",
+                            "password": "testUserPassword"
+                         }
+                    
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Pia", password = "123")
+    void expectAnonymous_whenGettingMeAfterLogout() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout").with(csrf()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
 
 }

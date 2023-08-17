@@ -100,6 +100,7 @@ export default function Day(props: Props) {
                                     <MenuList
                                         id="split-button-menu"
                                         autoFocusItem
+                                        style={{paddingLeft: '20px'}}
                                     >
                                         <StyledButtonAdd variant="contained" disableElevation onClick={handleAddActivity}>
                                             + add activity

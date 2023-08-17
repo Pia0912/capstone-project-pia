@@ -32,7 +32,6 @@ public class HobbyController {
     public List<Hobby> getHobbies() {
         return hobbyService.getHobbies();
     }
-
     @GetMapping("/calendar")
     public List<Activity> getActivitiesByMonth(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate month) {
