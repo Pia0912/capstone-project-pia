@@ -24,6 +24,7 @@ import Button from "@mui/material/Button";
 import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
+import Activities from "./components/Activity/Activities.tsx";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
@@ -41,6 +42,10 @@ export default function App() {
 
     const handleListIconClick = () => {
         navigate("/hobbies");
+    };
+
+    const handleSearchIconClick = () => {
+        navigate("/activities");
     };
 
 
@@ -96,6 +101,9 @@ export default function App() {
 
                         <Route path={"/add"} element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
                         <Route path={"/calendar/add/"} element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies} hobby={hobby}/>} />
+
+                        <Route path={"/activities"} element={<Activities/>}/>
+
                     </Route>
 
                 </Routes>
@@ -110,6 +118,7 @@ export default function App() {
                         }}
                     >
                         <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
+                        <StyledBottomNavigationAction label="Activities" icon={<CalendarMonthIcon/>} onClick={handleSearchIconClick}/>
                         <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>} onClick={handleProfileIconClick}/>
                     </StyledBottomNavigation>
                 </StyledPaper>

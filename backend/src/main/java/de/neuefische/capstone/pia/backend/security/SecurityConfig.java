@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/hobbies/**").authenticated()
                                 .requestMatchers("/api/hobbies/hobby/**").authenticated()
                                 .requestMatchers("/api/calendar/**").authenticated()
+                                .requestMatchers("/api/activities").authenticated()
                                 .anyRequest().permitAll())
                 .build();
     }

@@ -14,6 +14,7 @@ export default function useActivities(){
     const [loading, setLoading] = useState(true);
     const [activities, setActivities] = useState<Activity[]>([]);
     const [activity, setActivity] = useState<Activity>();
+    const [activityList, setActivityList] = useState<Activity[]>([]);
 
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
@@ -109,6 +110,41 @@ export default function useActivities(){
             .catch(console.error);
     }
 
+    function getActivityList() {
+        setLoading(true);
+
+        api.get(`/activities`)
+            .then((response) => {
+                const activitiesData = response.data;
+
+                const fetchHobbyPromises = activitiesData.map((activity: Activity) =>
+                    api.get(`/hobbies/hobby/${activity.hobbyId}`)
+                );
+
+                Promise.all(fetchHobbyPromises)
+                    .then((hobbyResponses) => {
+                        const activityListWithColors = activitiesData.map((activity: Activity, index: number) => ({
+                            ...activity,
+                            color: hobbyResponses[index].data.color,
+                        }));
+
+                        setActivityList(activityListWithColors);
+                        setLoading(false);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        setActivityList([]);
+                        setLoading(false);
+                    });
+            })
+            .catch((error) => {
+                console.error(error);
+                setActivityList([]);
+                setLoading(false);
+            });
+    }
+
+
     return {
         loading,
         data,
@@ -118,6 +154,8 @@ export default function useActivities(){
         handleDeleteActivity,
         fetchActivitiesData,
         activity,
-        getActivityById
+        getActivityById,
+        activityList,
+        getActivityList
     };
 }
