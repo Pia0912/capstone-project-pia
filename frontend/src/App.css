@@ -62,6 +62,12 @@ div {
     flex-direction: row;
 }
 
+.div-filter{
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom: -2rem;
+}
+
 .div-hobbyDetail-buttons {
     margin-right: 0.25rem;
     margin-bottom: -0.5rem;
@@ -97,6 +103,10 @@ div {
     padding: 1rem;
 }
 
+.input-filter{
+    width: 150px;
+    font-size: 14px;
+}
 
 
 select {

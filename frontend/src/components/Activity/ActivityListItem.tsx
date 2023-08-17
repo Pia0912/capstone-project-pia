@@ -25,7 +25,9 @@ export default function ActivityListItem(props: Props) {
         setIsFlipped((prev) => !prev);
     };
 
+
     return (
+        <>
         <StyledGrid item xs={6} sm={6} md={6} lg={6} container>
             <div className="flip-card" style={{ backgroundColor: color }}>
                 <div className={isFlipped ? "flip-card-inner flipped" : "flip-card-inner"}>
@@ -50,6 +52,7 @@ export default function ActivityListItem(props: Props) {
                 </div>
             </div>
         </StyledGrid>
+        </>
     );
 }
 

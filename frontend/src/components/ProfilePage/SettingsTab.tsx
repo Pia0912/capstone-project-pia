@@ -3,6 +3,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ProfilePage from "./ProfilePage.tsx";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from '@mui/icons-material/Logout';
+import {useState} from "react";
 
 type Props = {
     user: string | undefined;
@@ -11,10 +12,11 @@ type Props = {
 }
 
 export default function SettingsTab(props: Props) {
-
+    const [showUserId, setShowUserId] = useState(false);
     const handleLogout = () => {
         props.onLogout();
     };
+
 
     return (
         <div className="div-settingsTab">
@@ -28,14 +30,13 @@ export default function SettingsTab(props: Props) {
                         {props.user}
                     </StyledIconButton>
                 </div>
-
-                <div className="tabContent">
-                    <SettingLabel>User Id:</SettingLabel>
-                    <StyledIconButton>
-                        <AccountCircleIcon />
-                        <UserId>{props.userId}</UserId>
-                    </StyledIconButton>
-                </div>
+                    <div className="tabContent">
+                        <SettingLabel>User Id:</SettingLabel>
+                        <StyledIconButton onClick={() => setShowUserId(!showUserId)}>
+                            <AccountCircleIcon />
+                            {showUserId && <UserId>{props.userId}</UserId>}
+                        </StyledIconButton>
+                    </div>
                 <div className="tabContent">
                     <SettingLabel>Logout</SettingLabel>
                     <StyledIconButton onClick={handleLogout}>
@@ -70,5 +71,5 @@ const StyledIconButton = styled(IconButton)`
 `;
 
 const UserId = styled.p`
-  font-size: 10px;
+  font-size:10px;
 `;
