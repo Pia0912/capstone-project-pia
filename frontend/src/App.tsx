@@ -1,4 +1,5 @@
 import "./App.css";
+import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Header from "./components/Header";
 
 import {Route, Routes, useNavigate} from "react-router-dom";
