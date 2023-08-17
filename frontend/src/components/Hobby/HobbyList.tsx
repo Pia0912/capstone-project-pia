@@ -49,5 +49,8 @@ export default function HobbyList(props: Props) {
 }
 
 const StyledAlert = styled(Alert)`
-  width: 360px;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: 350px;
+  align-self: center;
 `;

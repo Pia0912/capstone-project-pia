@@ -104,7 +104,9 @@ div {
 }
 
 .input-filter{
-    width: 150px;
+    width: 120px;
+    justify-content: center;
+    gap: 10px;
     font-size: 14px;
 }
 

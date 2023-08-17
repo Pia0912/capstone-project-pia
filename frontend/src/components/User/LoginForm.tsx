@@ -149,5 +149,8 @@ const CancelButton = styled(Button)`
 `;
 
 const StyledAlert = styled(Alert)`
-  width: 360px;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: 350px;
+  align-self: center;
 `;

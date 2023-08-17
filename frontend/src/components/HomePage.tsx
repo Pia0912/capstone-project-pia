@@ -105,5 +105,8 @@ const Register = styled(Button)`
 `;
 
 const StyledAlert = styled(Alert)`
-  width: 400px;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: 350px;
+  align-self: center;
 `;

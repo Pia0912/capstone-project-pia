@@ -1,22 +1,16 @@
 import ActivityListItem from "./ActivityListItem.tsx";
-import React, {useState} from "react";
+import {useEffect, useState} from "react";
 import useActivities from "../../hooks/useActivities.ts";
 import ActivityFilter, {FilterData} from "./ActivityFilter.tsx";
 import {Activity} from "../../models.ts";
 
 export default function Activities() {
-
-    const {activityList, getActivityList} = useActivities();
+    const { activityList, getActivityList } = useActivities();
     const [filteredActivityList, setFilteredActivityList] = useState<Activity[]>([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         getActivityList();
-        setFilteredActivityList(activityList);
-    }, [activityList]);
-
-    if (!Array.isArray(activityList)) {
-        return <div>Loading activities...</div>;
-    }
+    }, []);
 
     const handleFilterChange = (filterData: FilterData) => {
         const filteredData = activityList.filter((activity) => {
@@ -36,16 +30,16 @@ export default function Activities() {
 
     return (
         <>
-        <ActivityFilter onFilterChange={handleFilterChange}/>
+            <ActivityFilter onFilterChange={handleFilterChange} />
 
-    <div className="div-activityList">
-            {filteredActivityList.map((activity) => (
-                <ActivityListItem
-                    key={activity.activityId}
-                    activity={activity}
-                />
-            ))}
-        </div>
+            <div className="div-activityList">
+                {filteredActivityList.map((activity) => (
+                    <ActivityListItem
+                        key={activity.activityId}
+                        activity={activity}
+                    />
+                ))}
+            </div>
         </>
     );
 }

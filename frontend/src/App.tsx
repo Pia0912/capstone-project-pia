@@ -7,6 +7,7 @@ import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import { useState} from "react";
 import InfoTab from "./components/ProfilePage/InfoTab.tsx";
@@ -117,8 +118,8 @@ export default function App() {
                             setValue(newValue);
                         }}
                     >
-                        <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
-                        <StyledBottomNavigationAction label="Activities" icon={<CalendarMonthIcon/>} onClick={handleSearchIconClick}/>
+                        <StyledBottomNavigationAction label="Hobbies" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
+                        <StyledBottomNavigationAction label="Activities" icon={<LocalActivityIcon/>} onClick={handleSearchIconClick}/>
                         <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>} onClick={handleProfileIconClick}/>
                     </StyledBottomNavigation>
                 </StyledPaper>
