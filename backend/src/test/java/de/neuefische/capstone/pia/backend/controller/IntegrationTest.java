@@ -528,8 +528,15 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    void expectNull_whenNotLoggedIn() throws Exception {
+    void expectUserIdIsNull_whenNotLoggedIn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string(""));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
+    void expectUserId_whenLoggedIn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("1"));
     }
 
     @Test

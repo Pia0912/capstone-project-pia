@@ -35,7 +35,7 @@ class MongoUserDetailServiceTest {
         String username = "testUser";
         //WHEN
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(expected));
-        UserDetails actual = userDetailService.loadUserByUsername("Henry");
+        UserDetails actual = userDetailService.loadUserByUsername("testUser");
         //THEN
         assertEquals(expected.username(), actual.getUsername());
         verify(userRepository).findByUsername(username);

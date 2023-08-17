@@ -1,7 +1,6 @@
 import "./App.css";
 import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Header from "./components/Header";
-
 import {Route, Routes, useNavigate} from "react-router-dom";
 import AddForm from "./components/Hobby/AddForm.tsx";
 import useHobbies from "./hooks/useHobbies.ts";
@@ -15,14 +14,12 @@ import StatisticTab from "./components/ProfilePage/StatisticTab.tsx";
 import CalendarActivityAddForm from "./components/Activity/CalendarActivityAddForm.tsx";
 import useActivities from "./hooks/useActivities.ts";
 import LoginForm from "./components/User/LoginForm.tsx";
-
 import RegisterForm from "./components/User/RegisterForm.tsx";
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import Calendar from "./components/Calendar/Calendar.tsx";
-import HobbyList from "./components/Hobby/HobbyList.tsx";
 import Button from "@mui/material/Button";
 import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
