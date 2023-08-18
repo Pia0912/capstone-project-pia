@@ -65,12 +65,6 @@ export default function Day(props: Props) {
         <li
             key={`day-${props.dayInfo.day}`}
             className={`calendar-day ${isActive ? "active" : ""}`}
-            onClick={() => {
-                if (props.dayInfo) {
-                    props.setSelectedDay(props.dayInfo.day);
-                    handleAddActivity();
-                }
-            }}
         >
         <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
             <React.Fragment>
@@ -112,7 +106,12 @@ export default function Day(props: Props) {
                                         autoFocusItem
                                         style={{paddingLeft: '20px'}}
                                     >
-                                        <StyledButtonAdd variant="contained" disableElevation onClick={handleAddActivity}>
+                                        <StyledButtonAdd variant="contained" disableElevation onClick={() => {
+                                            if (props.dayInfo) {
+                                                props.setSelectedDay(props.dayInfo.day);
+                                                handleAddActivity();
+                                            }
+                                        }}>
                                             + add activity
                                         </StyledButtonAdd>
                                         {props.selectedDayActivities.map(
