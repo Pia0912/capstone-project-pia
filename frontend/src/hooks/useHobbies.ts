@@ -9,7 +9,7 @@ const api = axios.create({
     baseURL: '/api'
 });
 
-export default function useHobbies(isLoggedIn: boolean) {
+export default function useHobbies(userId: string | undefined) {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [hobby, setHobby] = useState<Hobby>();
 
@@ -18,13 +18,17 @@ export default function useHobbies(isLoggedIn: boolean) {
     const { showErrorMessage } = useErrorMessage();
 
     useEffect(() => {
-        api.get('/hobbies')
-            .then((response) => response.data)
-            .catch(error => {
-                console.error("Error fetching Hobbies:", error);
-            })
-            .then((data) => setHobbies(data));
-    }, [isLoggedIn]);
+        if (userId)
+            api.get('/hobbies')
+                .then((response) => response.data)
+                .catch(error => {
+                    console.error("Error fetching Hobbies:", error);
+                })
+                .then((data) => {
+                    setHobbies(data)
+                    setHobby(undefined)
+                });
+    }, [userId]);
 
     function handleAddHobby(data: HobbyWithoutID) {
         api
@@ -95,6 +99,7 @@ export default function useHobbies(isLoggedIn: boolean) {
         api.get(`hobbies/hobby/${hobbyId}`)
             .then((response) => {
                 const hobbyData = response.data;
+                console.log(hobbyData)
                 setHobby(hobbyData);
             })
             .catch((error) => {

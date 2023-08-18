@@ -18,7 +18,7 @@ export default function useUser() {
 
     const navigate = useNavigate();
 
-    useEffect(me, []);
+    useEffect(me, [me]);
 
     function me() {
         api.get('/user/me')

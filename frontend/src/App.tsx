@@ -33,9 +33,7 @@ export default function App() {
 
     const { user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
-    const anonymousUser = user !== null && user === "anonymousUser";
-
-    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies(anonymousUser);
+    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies(userId);
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activity} = useActivities();
 
 
@@ -99,8 +97,8 @@ export default function App() {
                                    )
                                }/>
 
-                        <Route path={"profile/*"} element={<InfoTab />} />
-                        <Route path={"profile/info"} element={<InfoTab />} />
+                        <Route path={"profile/*"} element={<InfoTab hobbies={hobbies}/>} />
+                        <Route path={"profile/info"} element={<InfoTab hobbies={hobbies}/>} />
                         <Route path={"profile/stats"} element={<StatisticTab />} />
                         <Route path={"/profile/settings"} element={<SettingsTab user={user} userId={userId} onLogout={handleLogout}/>} />
 

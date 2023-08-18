@@ -1,11 +1,14 @@
 import styled from "@emotion/styled";
 import ProfilePage from "./ProfilePage.tsx";
-import useHobbies from "../../hooks/useHobbies.ts";
-export default function InfoTab() {
-    const { hobbies } = useHobbies();
+import {Hobby} from "../../models.ts";
+
+type Props ={
+    hobbies: Hobby[];
+}
+export default function InfoTab(props: Props) {
 
     function countActivitiesForHobby(hobbyId: string) {
-        const hobby = hobbies.find((hobby) => hobby.hobbyId === hobbyId);
+        const hobby = props.hobbies.find((hobby) => hobby.hobbyId === hobbyId);
         if (!hobby) {
             return 0;
         }
@@ -18,10 +21,10 @@ export default function InfoTab() {
             <div id="info" className="tabContent">
                 <h2 className="tabTitle">Info</h2>
                 <SettingsBar1>
-                    <h6>Number of Hobbies: {hobbies.length}</h6>
+                    <h6>Number of Hobbies: {props.hobbies.length}</h6>
                 </SettingsBar1>
                 <SettingsBar>
-                    {hobbies.map((hobby) => (
+                    {props.hobbies.map((hobby) => (
                         <h6 key={hobby.hobbyId}>
                             Activities for {hobby.name}: {countActivitiesForHobby(hobby.hobbyId)}
                         </h6>
