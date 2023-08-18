@@ -101,7 +101,7 @@ export default function App() {
                         <Route path={"/profile/settings"} element={<SettingsTab user={user} userId={userId} onLogout={handleLogout}/>} />
 
                         <Route path={"/add"} element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
-                        <Route path={"/calendar/add/"} element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies} hobby={hobby}/>} />
+                        <Route path={"/calendar/add/:dateFromUrl"} element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies} hobby={hobby}/>} />
 
                         <Route path={"/activities"} element={<Activities/>}/>
 

@@ -1,32 +1,37 @@
 import ActivityListItem from "./ActivityListItem.tsx";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import useActivities from "../../hooks/useActivities.ts";
-import ActivityFilter, {FilterData} from "./ActivityFilter.tsx";
-import {Activity} from "../../models.ts";
+import ActivityFilter, { FilterData } from "./ActivityFilter.tsx";
+import { Activity } from "../../models.ts";
 
 export default function Activities() {
     const { activityList, getActivityList } = useActivities();
     const [filteredActivityList, setFilteredActivityList] = useState<Activity[]>([]);
+    const [filter, setFilter] = useState<FilterData>({
+        date: "",
+        hobby: "",
+        search: "",
+    });
 
     useEffect(() => {
         getActivityList();
     }, []);
 
-    const handleFilterChange = (filterData: FilterData) => {
+    useEffect(() => {
         const filteredData = activityList.filter((activity) => {
-            const isDateFiltered = filterData.date && activity.activityDate !== filterData.date;
-            const isHobbyFiltered = filterData.hobby && activity.hobbyId !== filterData.hobby;
-            const isNameFiltered = filterData.search && !activity.name.includes(filterData.search);
+            const isDateFiltered = filter.date && activity.activityDate !== filter.date;
+            const isHobbyFiltered = filter.hobby && activity.hobbyId !== filter.hobby;
+            const isNameFiltered = filter.search && !activity.name.includes(filter.search);
 
             return !(isDateFiltered || isHobbyFiltered || isNameFiltered);
         });
 
         setFilteredActivityList(filteredData);
-    };
+    }, [activityList, filter]);
 
-    if (!Array.isArray(filteredActivityList)) {
-        return <div>Loading activities...</div>;
-    }
+    const handleFilterChange = (newFilter: FilterData) => {
+        setFilter(newFilter);
+    };
 
     return (
         <>

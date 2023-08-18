@@ -25,7 +25,6 @@ export default function AddForm(props: Props) {
         props.onAddHobby(data);
         setName("");
         setColor("");
-        navigate("/hobbies");
     }
 
     function handleColorChange(event: React.ChangeEvent<HTMLSelectElement>) {

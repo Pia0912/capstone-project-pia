@@ -22,7 +22,7 @@ export default function HobbyList(props: Props) {
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
 
     if (!Array.isArray(props.hobbies)) {
-        return <div>Loading hobbies...</div>;
+        return <div className="div-hobbyList">Loading hobbies...</div>;
     }
 
     return (

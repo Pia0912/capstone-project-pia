@@ -1,9 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import SearchIcon from '@mui/icons-material/Search';
-import Button from "@mui/material/Button";
-import styled from "@emotion/styled";
 
 type FilterProps = {
     onFilterChange: (filter: FilterData) => void;
@@ -30,6 +27,11 @@ export default function ActivityFilter({ onFilterChange }: FilterProps) {
         }));
     };
 
+    useEffect(() => {
+        // Call the onFilterChange callback with the updated filter
+        onFilterChange(filter);
+    }, [filter, onFilterChange]);
+
     return (
         <div className="div-filter">
             <div className="filter-group">
@@ -54,21 +56,9 @@ export default function ActivityFilter({ onFilterChange }: FilterProps) {
                     onChange={handleFilterChange}
                 />
             </div>
-            <StyledButton onClick={() => onFilterChange(filter)}><SearchIcon/></StyledButton>
         </div>
     );
 }
 
 
-const StyledButton = styled(Button)`
-  height: 50px;
-  width: 50px;
-  border-radius: 15px;
-  margin-top: 2.7rem;
-  background-color: black;
-  color: white;
-  font-size: 25px;
-  &:hover {
-    background-color: springgreen;
-  }
-`;
+

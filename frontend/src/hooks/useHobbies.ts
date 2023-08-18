@@ -32,8 +32,8 @@ export default function useHobbies() {
             .then((data) => {
                 setHobbies((prevHobbies) => [...prevHobbies, data]);
                 showSuccessMessage("Hobby added successfully!");
-                navigate('/hobbies');
             });
+        navigate('/hobbies');
     }
 
     function handleEditHobbyName(id: string, newName: string) {
