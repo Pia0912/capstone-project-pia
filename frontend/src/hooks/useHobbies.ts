@@ -9,7 +9,7 @@ const api = axios.create({
     baseURL: '/api'
 });
 
-export default function useHobbies() {
+export default function useHobbies(isLoggedIn: boolean) {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [hobby, setHobby] = useState<Hobby>();
 
@@ -24,7 +24,7 @@ export default function useHobbies() {
                 console.error("Error fetching Hobbies:", error);
             })
             .then((data) => setHobbies(data));
-    }, []);
+    }, [isLoggedIn]);
 
     function handleAddHobby(data: HobbyWithoutID) {
         api
@@ -37,8 +37,8 @@ export default function useHobbies() {
             .then((data) => {
                 setHobbies((prevHobbies) => [...prevHobbies, data]);
                 showSuccessMessage("Hobby added successfully!");
+                navigate('/hobbies');
             });
-        navigate('/hobbies');
     }
 
     function handleEditHobbyName(id: string, newName: string) {

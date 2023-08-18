@@ -25,16 +25,19 @@ import Button from "@mui/material/Button";
 import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
-import Activities from "./components/Activity/Activities.tsx";
+import Activities from "./components/Activity/ActivityList.tsx";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
 
-    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies();
+    const { user, userId, handleLogin, handleRegister, handleLogout} = useUser();
+
+    const anonymousUser = user !== null && user === "anonymousUser";
+
+    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies(anonymousUser);
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activity} = useActivities();
 
-    const { user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
 
     const handleProfileIconClick = () => {
@@ -71,7 +74,8 @@ export default function App() {
                                            +
                                        </StyledButtonAdd>
 
-                                       <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
+                                       <HobbyList hobbies={hobbies} colors={colors}
+                                                  onEditHobbyName={handleEditHobbyName}
                                                   onEditHobbyColor={handleEditHobbyColor}
                                                   onDeleteHobby={handleDeleteHobby}/>
                                    </>

@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import useActivities from "../../hooks/useActivities.ts";
 import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import ActivityList from "./ActivityList.tsx";
+import ActivitiesInHobby from "./ActivitiesInHobby.tsx";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 import {Hobby} from "../../models.ts";
 import {useErrorMessage} from "../../hooks/useErrorMessage.ts";
@@ -66,7 +66,7 @@ export default function HobbyDetail(props: Props) {
                 </StyledAlert>
             </Snackbar>
             <StyledGrid container spacing={2}>
-                <ActivityList
+                <ActivitiesInHobby
                     activities={activities}
                     hobby={data.hobby}
                     colors={props.colors}
