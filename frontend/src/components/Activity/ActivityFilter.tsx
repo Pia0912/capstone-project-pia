@@ -28,7 +28,6 @@ export default function ActivityFilter({ onFilterChange }: FilterProps) {
     };
 
     useEffect(() => {
-        // Call the onFilterChange callback with the updated filter
         onFilterChange(filter);
     }, [filter, onFilterChange]);
 
