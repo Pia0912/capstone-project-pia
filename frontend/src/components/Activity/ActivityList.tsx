@@ -1,45 +1,50 @@
-import { Grid } from "@mui/material";
-import {Hobby, Activity} from "../../models.ts";
-import ActivityItem from "./ActivityItem.tsx";
+import ActivityListItem from "./ActivityListItem.tsx";
+import { useEffect, useState } from "react";
+import useActivities from "../../hooks/useActivities.ts";
+import ActivityFilter, { FilterData } from "./ActivityFilter.tsx";
+import { Activity } from "../../models.ts";
 
-type Props = {
-    activities: Activity[] | undefined;
-    hobby: Hobby;
-    colors: string[];
-    onEditActivity: (hobbyId: string, activityId: string, newName: string, newDate: string, newRating: number, color: string) => void;
-    onDeleteActivity: (hobbyId: string, activityId: string) => void;
-};
+export default function ActivityList() {
+    const { activityList, getActivityList } = useActivities();
+    const [filteredActivityList, setFilteredActivityList] = useState<Activity[]>([]);
+    const [filter, setFilter] = useState<FilterData>({
+        date: "",
+        hobby: "",
+        search: "",
+    });
 
-export default function ActivityList(props: Props) {
-    if (!props.activities || props.activities.length === 0) {
-        return <p className="noActivities">No activities yet.</p>;
-    }
+    useEffect(() => {
+        getActivityList();
+    }, []);
 
-    const handleEditActivity = (
-        hobbyId: string,
-        activityId: string,
-        newName: string,
-        newDate: string,
-        newRating: number,
-        color: string,
+    useEffect(() => {
+        const filteredData = activityList.filter((activity) => {
+            const isDateFiltered = filter.date && activity.activityDate !== filter.date;
+            const isHobbyFiltered = filter.hobby && activity.hobbyId !== filter.hobby;
+            const isNameFiltered = filter.search && !activity.name.includes(filter.search);
 
-    ) => {
-        props.onEditActivity(hobbyId, activityId, newName, newDate, newRating, color);
+            return !(isDateFiltered || isHobbyFiltered || isNameFiltered);
+        });
+
+        setFilteredActivityList(filteredData);
+    }, [activityList, filter]);
+
+    const handleFilterChange = (newFilter: FilterData) => {
+        setFilter(newFilter);
     };
 
-
     return (
-        <Grid item xs={12} container>
-                {props.activities.map((activity) => (
-                    <ActivityItem
+        <>
+            <ActivityFilter onFilterChange={handleFilterChange} />
+
+            <div className="div-activityList">
+                {filteredActivityList.map((activity) => (
+                    <ActivityListItem
                         key={activity.activityId}
                         activity={activity}
-                        hobby={props.hobby}
-                        colors={props.colors}
-                        onEditActivity={handleEditActivity}
-                        onDeleteActivity={props.onDeleteActivity}
                     />
                 ))}
-        </Grid>
+            </div>
+        </>
     );
 }

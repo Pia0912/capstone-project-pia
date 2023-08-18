@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.bson.assertions.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -264,6 +265,7 @@ class IntegrationTest {
                         """)
                 .with(csrf()));
 
+        //WHEN & THEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/hobbies/hobby/{hobbyId}/activities", hobbyId).with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -281,6 +283,40 @@ class IntegrationTest {
                 .andExpect(jsonPath("$[1].color").value("green"));
     }
 
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "username", password = "Password123")
+    void expectActivities_whenGetActivities() throws Exception{
+        //GIVEN
+        Activity activity1 = new Activity("1", "Activity A", LocalDate.parse("2023-08-07"), "h1", 1, "green");
+        Activity activity2 = new Activity("2", "Activity B", LocalDate.parse("2023-07-09"), "h1", 5, "green");
+        Activity activity3 = new Activity("3", "Activity C", LocalDate.parse("2023-08-14"), "h2", 3, "blue");
+        hobby.setActivities(List.of(activity1, activity2));
+        hobbyRepo.save(hobby);
+        Hobby newHobby = new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "1");
+        hobbyRepo.save(newHobby);
+
+
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/activities").with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$[0].activityId").isNotEmpty())
+                .andExpect(jsonPath("$[0].name").value("Activity A"))
+                .andExpect(jsonPath("$[0].activityDate").value("2023-08-07"))
+                .andExpect(jsonPath("$[0].rating").value(1))
+                .andExpect(jsonPath("$[0].color").value("green"))
+                .andExpect(jsonPath("$[1].activityId").isNotEmpty())
+                .andExpect(jsonPath("$[1].name").value("Activity B"))
+                .andExpect(jsonPath("$[1].activityDate").value("2023-07-09"))
+                .andExpect(jsonPath("$[1].rating").value(5))
+                .andExpect(jsonPath("$[1].color").value("green"))
+                .andExpect(jsonPath("$[2].activityId").isNotEmpty())
+                .andExpect(jsonPath("$[2].name").value("Activity C"))
+                .andExpect(jsonPath("$[2].activityDate").value("2023-08-14"))
+                .andExpect(jsonPath("$[2].rating").value(3))
+                .andExpect(jsonPath("$[2].color").value("blue"));
+    }
 
 
     @Test

@@ -183,6 +183,7 @@ export default function useCalendar() {
         daysArray,
         activityNames,
         setSelectedDay,
+        selectedDay,
         selectedDayActivities,
         open,
         selectedIndex,

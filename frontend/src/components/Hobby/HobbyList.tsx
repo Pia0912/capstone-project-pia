@@ -5,6 +5,7 @@ import React from "react";
 import HobbyItem from "./HobbyItem.tsx";
 import styled from "@emotion/styled";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
+import {useErrorMessage} from "../../hooks/useErrorMessage.ts";
 
 type Props = {
     hobbies: Hobby[];
@@ -20,9 +21,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 
 export default function HobbyList(props: Props) {
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
+    const { errorMessage, clearErrorMessage } = useErrorMessage();
 
     if (!Array.isArray(props.hobbies)) {
-        return <div>Loading hobbies...</div>;
+        return <div className="div-hobbyList">Loading hobbies...</div>;
     }
 
     return (
@@ -30,6 +32,11 @@ export default function HobbyList(props: Props) {
         <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={clearSuccessMessage}>
             <StyledAlert onClose={clearSuccessMessage} severity="success">
                 {successMessage}
+            </StyledAlert>
+        </Snackbar>
+        <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={clearErrorMessage}>
+            <StyledAlert onClose={clearErrorMessage} severity="warning">
+                {errorMessage}
             </StyledAlert>
         </Snackbar>
         <div className="div-hobbyList">
@@ -49,5 +56,8 @@ export default function HobbyList(props: Props) {
 }
 
 const StyledAlert = styled(Alert)`
-  width: 360px;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: 350px;
+  align-self: center;
 `;

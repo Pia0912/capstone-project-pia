@@ -20,7 +20,7 @@ type Props = {
     selectedDayActivities: DayInfo[];
     open: boolean;
     selectedIndex: number;
-    popperRef:  React.RefObject<HTMLDivElement>;
+    popperRef: React.RefObject<HTMLDivElement>;
     handleToggle: (event: React.MouseEvent<HTMLElement>) => void;
     handleClose: (event: Event) => void;
     handleMenuItemClick: (index: number) => void;
@@ -50,8 +50,13 @@ export default function Day(props: Props) {
     }
 
     const handleAddActivity = () => {
-        const formattedDate = `${currentYear}-${currentMonth + 1}-${day}`;
-        navigate(`/calendar/add?date=${formattedDate}`);
+        if (props.dayInfo) {
+            const day = props.dayInfo.day.toString().padStart(2, "0");
+            const month = (props.currentDate.getMonth() + 1).toString().padStart(2, "0");
+            const year = props.currentDate.getFullYear().toString();
+            const formattedDate = `${day}.${month}.${year}`;
+            navigate(`/calendar/add/${formattedDate}`);
+        }
     };
 
 
@@ -60,9 +65,14 @@ export default function Day(props: Props) {
         <li
             key={`day-${props.dayInfo.day}`}
             className={`calendar-day ${isActive ? "active" : ""}`}
-            onClick={() => props.setSelectedDay(day)}
+            onClick={() => {
+                if (props.dayInfo) {
+                    props.setSelectedDay(props.dayInfo.day);
+                    handleAddActivity();
+                }
+            }}
         >
-            <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
+        <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
             <React.Fragment>
                 <ButtonGroup variant="contained" ref={props.popperRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
                     <Button

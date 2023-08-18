@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { ActivityWithoutID, Hobby } from '../../models';
 import { Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
@@ -23,6 +23,16 @@ export default function CalendarActivityAddForm(props: Props) {
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
     const { handleAddActivityToHobby } = useActivities();
+
+    const { dateFromUrl } = useParams<{ dateFromUrl: string }>();
+    const parsedUrlDate = dateFromUrl
+        ? new Date(Date.parse(dateFromUrl.split('.').reverse().join('-')))
+        : null;
+    const formattedDateForBackend = parsedUrlDate?.toISOString() || '';
+
+    if (formattedDateForBackend && !date) {
+        setDate(formattedDateForBackend);
+    }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -87,10 +97,10 @@ export default function CalendarActivityAddForm(props: Props) {
                     <label htmlFor="name">Activity date: </label>
                     <input
                         onChange={(event) => setDate(event.target.value)}
-                        value={date}
+                        value={dateFromUrl}
                         name="date"
                         id="date"
-                        type="date"
+                        type="text"
                         required
                         className="input-add"
                     />
@@ -151,4 +161,3 @@ const StyledMenuItem = styled(MenuItem)`
   background-color: black;
   color: white;
 `;
-

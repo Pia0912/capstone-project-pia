@@ -255,9 +255,9 @@ class ActivityServiceTest {
     @Test
     void testGetActivityDays() {
         // GIVEN
-        Activity activity1 = new Activity("1", "Activity A", LocalDate.parse("2023-08-07"), "111", 1, "green");
-        Activity activity2 = new Activity("2", "Activity B", LocalDate.parse("2023-07-09"), "222", 5, "green");
-        Activity activity3 = new Activity("3", "Activity A", LocalDate.parse("2023-08-14"), "333", 3, "blue");
+        Activity activity1 = new Activity("1", "Activity A", LocalDate.parse("2023-08-07"), "h1", 1, "green");
+        Activity activity2 = new Activity("2", "Activity B", LocalDate.parse("2023-07-09"), "h1", 5, "green");
+        Activity activity3 = new Activity("3", "Activity C", LocalDate.parse("2023-08-14"), "h2", 3, "blue");
         List<Hobby> hobbies = Arrays.asList(
                 new Hobby("h1", "Hobby 1", "green", Arrays.asList(activity1, activity2), "user1"),
                 new Hobby("h2", "Hobby 2", "blue", List.of(activity3), "user1")

@@ -38,3 +38,7 @@ export type ActivityWithColor = {
     hobbyId: string;
     activityId: string;
 };
+
+export type DayActivityCounts = {
+    [day: number]: number;
+};

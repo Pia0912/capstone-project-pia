@@ -4,9 +4,10 @@ import styled from "@emotion/styled";
 import useActivities from "../../hooks/useActivities.ts";
 import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import ActivityList from "./ActivityList.tsx";
+import ActivitiesInHobby from "./ActivitiesInHobby.tsx";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 import {Hobby} from "../../models.ts";
+import {useErrorMessage} from "../../hooks/useErrorMessage.ts";
 
 type Props = {
     colors: string[];
@@ -21,6 +22,7 @@ export default function HobbyDetail(props: Props) {
     const { hobbyId } = useParams();
     const { data, activities, handleEditActivity, handleDeleteActivity, fetchActivitiesData} = useActivities();
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
+    const { errorMessage, clearErrorMessage } = useErrorMessage();
 
     React.useEffect(() => {
         if (hobbyId) {
@@ -58,8 +60,13 @@ export default function HobbyDetail(props: Props) {
                     {successMessage}
                 </StyledAlert>
             </Snackbar>
+            <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={clearErrorMessage}>
+                <StyledAlert onClose={clearErrorMessage} severity="warning">
+                    {errorMessage}
+                </StyledAlert>
+            </Snackbar>
             <StyledGrid container spacing={2}>
-                <ActivityList
+                <ActivitiesInHobby
                     activities={activities}
                     hobby={data.hobby}
                     colors={props.colors}
@@ -91,7 +98,10 @@ const StyledButtonAdd = styled(Button)`
 `;
 
 const StyledAlert = styled(Alert)`
-  width: 360px;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: 350px;
+  align-self: center;
 `;
 
 const StyledGrid = styled(Grid)`

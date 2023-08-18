@@ -62,6 +62,12 @@ div {
     flex-direction: row;
 }
 
+.div-filter{
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom: -2rem;
+}
+
 .div-hobbyDetail-buttons {
     margin-right: 0.25rem;
     margin-bottom: -0.5rem;
@@ -90,6 +96,19 @@ div {
     gap: 0;
 }
 
+.div-activityList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.input-filter{
+    width: 120px;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+}
 
 
 select {

@@ -7,6 +7,7 @@ import useHobbies from "./hooks/useHobbies.ts";
 import styled from "@emotion/styled";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import { useState} from "react";
 import InfoTab from "./components/ProfilePage/InfoTab.tsx";
@@ -18,21 +19,23 @@ import RegisterForm from "./components/User/RegisterForm.tsx";
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
-import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
+import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import Calendar from "./components/Calendar/Calendar.tsx";
 import Button from "@mui/material/Button";
 import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
+import Activities from "./components/Activity/ActivityList.tsx";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
     const [value, setValue] = useState(0);
 
-    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies();
+    const { user, userId, handleLogin, handleRegister, handleLogout} = useUser();
+
+    const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies(userId);
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activity} = useActivities();
 
-    const { user, userId, handleLogin, handleRegister, handleLogout} = useUser();
 
 
     const handleProfileIconClick = () => {
@@ -41,6 +44,10 @@ export default function App() {
 
     const handleListIconClick = () => {
         navigate("/hobbies");
+    };
+
+    const handleSearchIconClick = () => {
+        navigate("/activities");
     };
 
 
@@ -65,7 +72,8 @@ export default function App() {
                                            +
                                        </StyledButtonAdd>
 
-                                       <HobbyList hobbies={hobbies} colors={colors} onEditHobbyName={handleEditHobbyName}
+                                       <HobbyList hobbies={hobbies} colors={colors}
+                                                  onEditHobbyName={handleEditHobbyName}
                                                   onEditHobbyColor={handleEditHobbyColor}
                                                   onDeleteHobby={handleDeleteHobby}/>
                                    </>
@@ -89,13 +97,16 @@ export default function App() {
                                    )
                                }/>
 
-                        <Route path={"profile/*"} element={<InfoTab />} />
-                        <Route path={"profile/info"} element={<InfoTab />} />
+                        <Route path={"profile/*"} element={<InfoTab hobbies={hobbies}/>} />
+                        <Route path={"profile/info"} element={<InfoTab hobbies={hobbies}/>} />
                         <Route path={"profile/stats"} element={<StatisticTab />} />
                         <Route path={"/profile/settings"} element={<SettingsTab user={user} userId={userId} onLogout={handleLogout}/>} />
 
                         <Route path={"/add"} element={<AddForm onAddHobby={handleAddHobby} colors={colors}/>}/>
-                        <Route path={"/calendar/add/"} element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies} hobby={hobby}/>} />
+                        <Route path={"/calendar/add/:dateFromUrl"} element={<CalendarActivityAddForm onAddActivity={handleAddActivityToHobby} hobbies={hobbies} hobby={hobby}/>} />
+
+                        <Route path={"/activities"} element={<Activities/>}/>
+
                     </Route>
 
                 </Routes>
@@ -109,7 +120,8 @@ export default function App() {
                             setValue(newValue);
                         }}
                     >
-                        <StyledBottomNavigationAction label="List" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
+                        <StyledBottomNavigationAction label="Hobbies" icon={<CalendarMonthIcon/>} onClick={handleListIconClick}/>
+                        <StyledBottomNavigationAction label="Activities" icon={<LocalActivityIcon/>} onClick={handleSearchIconClick}/>
                         <StyledBottomNavigationAction label="Profile" icon={<AccountCircleIcon/>} onClick={handleProfileIconClick}/>
                     </StyledBottomNavigation>
                 </StyledPaper>

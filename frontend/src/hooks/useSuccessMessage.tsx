@@ -1,5 +1,5 @@
 import {useContext} from "react";
-import { SuccessMessageContext } from '.././components/SuccessMessages';
+import { SuccessMessageContext } from '../components/Messages/SuccessMessages.tsx';
 
 export function useSuccessMessage() {
     const context = useContext(SuccessMessageContext);

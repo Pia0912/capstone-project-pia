@@ -7,12 +7,15 @@ import React from "react";
 import MuiAlert, {AlertProps} from "@mui/material/Alert";
 import {Snackbar} from "@mui/material";
 import {useSuccessMessage} from "../hooks/useSuccessMessage.tsx";
+import {useErrorMessage} from "../hooks/useErrorMessage.ts";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 export default function HomePage() {
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
+    const { errorMessage, clearErrorMessage } = useErrorMessage();
+
     const {user} = useUser();
 
     const navigate = useNavigate();
@@ -36,6 +39,11 @@ export default function HomePage() {
             <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
                 <StyledAlert onClose={clearSuccessMessage} severity="success">
                     {successMessage}
+                </StyledAlert>
+            </Snackbar>
+            <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={clearErrorMessage}>
+                <StyledAlert onClose={clearErrorMessage} severity="warning">
+                    {errorMessage}
                 </StyledAlert>
             </Snackbar>
         </>
@@ -105,5 +113,8 @@ const Register = styled(Button)`
 `;
 
 const StyledAlert = styled(Alert)`
-  width: 400px;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: 350px;
+  align-self: center;
 `;
