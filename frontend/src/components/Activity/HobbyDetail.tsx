@@ -7,6 +7,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import ActivityList from "./ActivityList.tsx";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
 import {Hobby} from "../../models.ts";
+import {useErrorMessage} from "../../hooks/useErrorMessage.ts";
 
 type Props = {
     colors: string[];
@@ -21,6 +22,7 @@ export default function HobbyDetail(props: Props) {
     const { hobbyId } = useParams();
     const { data, activities, handleEditActivity, handleDeleteActivity, fetchActivitiesData} = useActivities();
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
+    const { errorMessage, clearErrorMessage } = useErrorMessage();
 
     React.useEffect(() => {
         if (hobbyId) {
@@ -56,6 +58,11 @@ export default function HobbyDetail(props: Props) {
             <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
                 <StyledAlert onClose={clearSuccessMessage} severity="success">
                     {successMessage}
+                </StyledAlert>
+            </Snackbar>
+            <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={clearErrorMessage}>
+                <StyledAlert onClose={clearErrorMessage} severity="warning">
+                    {errorMessage}
                 </StyledAlert>
             </Snackbar>
             <StyledGrid container spacing={2}>

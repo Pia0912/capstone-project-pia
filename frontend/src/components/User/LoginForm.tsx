@@ -6,6 +6,7 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import styled from "@emotion/styled";
 import MuiAlert, {AlertProps} from "@mui/material/Alert";
 import {useSuccessMessage} from "../../hooks/useSuccessMessage.tsx";
+import {useErrorMessage} from "../../hooks/useErrorMessage.ts";
 
 
 type Props = {
@@ -23,7 +24,7 @@ export default function LoginForm(props: Props) {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const { successMessage, clearSuccessMessage } = useSuccessMessage();
-
+    const { errorMessage, clearErrorMessage } = useErrorMessage();
 
     const navigate = useNavigate()
 
@@ -96,6 +97,11 @@ export default function LoginForm(props: Props) {
             <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
                 <StyledAlert onClose={clearSuccessMessage} severity="success">
                     {successMessage}
+                </StyledAlert>
+            </Snackbar>
+            <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={clearErrorMessage}>
+                <StyledAlert onClose={clearErrorMessage} severity="warning">
+                    {errorMessage}
                 </StyledAlert>
             </Snackbar>
         </>

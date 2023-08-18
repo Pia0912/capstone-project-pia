@@ -19,7 +19,7 @@ import RegisterForm from "./components/User/RegisterForm.tsx";
 import SettingsTab from "./components/ProfilePage/SettingsTab.tsx";
 import HomePage from "./components/HomePage.tsx";
 import useUser from "./hooks/useUser.ts";
-import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
+import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import Calendar from "./components/Calendar/Calendar.tsx";
 import Button from "@mui/material/Button";
 import HobbyDetail from "./components/Activity/HobbyDetail.tsx";

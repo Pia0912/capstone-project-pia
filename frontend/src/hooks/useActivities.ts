@@ -3,6 +3,7 @@ import { Activity, ActivityWithoutID, Hobby } from "../models.ts";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {useSuccessMessage} from "./useSuccessMessage.tsx";
+import {useErrorMessage} from "./useErrorMessage.ts";
 
 type ActivitiesData = { hobby: Hobby; activities: Activity[] };
 const api = axios.create({
@@ -18,6 +19,7 @@ export default function useActivities(){
 
     const navigate = useNavigate();
     const { showSuccessMessage } = useSuccessMessage();
+    const { showErrorMessage } = useErrorMessage();
 
     const fetchActivitiesData = useCallback((hobbyId: string) => {
         setLoading(true);
@@ -33,12 +35,14 @@ export default function useActivities(){
                         setLoading(false);
                     })
                     .catch((error) => {
-                        console.error(error);
+                        console.error("Error fetching activities:", error);
+                        showErrorMessage("An error occurred, please reload page");
                         setLoading(false);
                     });
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error fetching activities:", error);
+                showErrorMessage("An error occurred, please reload page");
                 setData(null);
                 setLoading(false);
             });
@@ -58,7 +62,8 @@ export default function useActivities(){
                 showSuccessMessage("Activity added successfully!");
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error adding activity:", error);
+                showErrorMessage("An error occurred, please reload page");
             });
     }
 
@@ -83,7 +88,8 @@ export default function useActivities(){
                 showSuccessMessage("Activity edited successfully!");
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error editing activity:", error);
+                showErrorMessage("An error occurred, please reload page");
             });
     }
 
@@ -97,7 +103,8 @@ export default function useActivities(){
                 navigate(`/hobby/${hobbyId}/activities`);
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error deleting activity:", error);
+                showErrorMessage("An error occurred, please reload page");
             });
     }
 
@@ -107,7 +114,10 @@ export default function useActivities(){
                 const activityData = response.data;
                 setActivity(activityData);
             })
-            .catch(console.error);
+            .catch((error) => {
+                console.error("Error get activity by Id:", error);
+                showErrorMessage("An error occurred, please reload page");
+            });
     }
 
     function getActivityList() {
@@ -132,13 +142,15 @@ export default function useActivities(){
                         setLoading(false);
                     })
                     .catch((error) => {
-                        console.error(error);
+                        console.error("Error get activity List:", error);
+                        showErrorMessage("An error occurred, please reload page");
                         setActivityList([]);
                         setLoading(false);
                     });
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error get activity List:", error);
+                showErrorMessage("An error occurred, please reload page");
                 setActivityList([]);
                 setLoading(false);
             });

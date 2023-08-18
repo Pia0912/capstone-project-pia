@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useSuccessMessage} from "./useSuccessMessage.tsx";
+import {useErrorMessage} from "./useErrorMessage.ts";
 
 const api = axios.create({
     baseURL: '/api'
@@ -13,6 +14,7 @@ export default function useUser() {
     const [userId, setUserId] = useState<string | undefined>(undefined);
 
     const { showSuccessMessage } = useSuccessMessage();
+    const { showErrorMessage } = useErrorMessage();
 
     const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ export default function useUser() {
             .then(data => setUserName(data))
             .catch(error => {
                 console.error("Error fetching user data:", error);
+                showErrorMessage("An error occurred, please reload page");
             });
     }
 
@@ -33,6 +36,7 @@ export default function useUser() {
             .then(data => setUserId(data))
             .catch(error => {
                 console.error("Error fetching user ID:", error);
+                showErrorMessage("An error occurred, please reload page");
             });
     }
 
@@ -41,6 +45,7 @@ export default function useUser() {
             .then(response => response.data)
             .catch(error => {
                 console.error("Login error:", error);
+                showErrorMessage("An error occurred while logging in");
             })
             .then((data) => {
                 setUserName(data);
@@ -59,14 +64,19 @@ export default function useUser() {
                 showSuccessMessage("Logout was successful!");
                 navigate('/');
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Logout error:", error);
+                showErrorMessage("An error occurred while logging out");
             });
     }
 
     function handleRegister(username: string, password: string) {
         api.post("/user/register", { username: username, password: password })
-            .catch(console.error);
+            .catch((error) => {
+                console.error("Logout error:", error);
+                showErrorMessage("An error occurred while trying to register. Please try again with a different username");
+                navigate('/');
+            });
         showSuccessMessage("Account register was successful!");
         navigate('/login');
     }
