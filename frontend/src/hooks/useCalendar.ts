@@ -195,6 +195,6 @@ export default function useCalendar() {
         handleClose,
         handleMenuItemClick,
         dayActivityCounts,
-        handleGradient}
-
+        handleGradient
+    }
 }

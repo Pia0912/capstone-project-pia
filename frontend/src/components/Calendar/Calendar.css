@@ -12,7 +12,7 @@
 .month {
     margin-top: 1rem;
     padding: 10px 10px;
-    width: 330px;
+    width: 340px;
     background: black;
     border: 1px solid white;
     text-align: center;
@@ -59,7 +59,7 @@
     padding: 7px 0;
     background: black;
     color: white;
-    width: 350px;
+    width: 360px;
     list-style-type: none;
 }
 
@@ -71,9 +71,9 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    padding: 10px 0;
     border: 1px solid black;
-    margin: 0;
+    margin-top: -10px;
+    padding: 10px 5px 30px;
     width: 346px;
     list-style-type: none;
     box-shadow: 2px 2px black;
@@ -102,8 +102,8 @@
     justify-content: center;
     border-color: transparent;
     border-radius: 50%;
-    width: 2rem;
-    height: 0.5rem;
+    width: 2.3rem;
+    height: 0.4rem;
 }
 
 .calendar-day {

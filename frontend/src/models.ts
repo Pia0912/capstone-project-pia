@@ -42,3 +42,11 @@ export type ActivityWithColor = {
 export type DayActivityCounts = {
     [day: number]: number;
 };
+
+
+export type DayInfo = {
+    day: number;
+    color: string;
+    name: string;
+    activityId: string;
+};
