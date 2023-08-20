@@ -2,10 +2,8 @@ package de.neuefische.capstone.pia.backend.service;
 
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
-import de.neuefische.capstone.pia.backend.model.Activity;
-import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
-import de.neuefische.capstone.pia.backend.model.Hobby;
-import de.neuefische.capstone.pia.backend.model.UUIDService;
+import de.neuefische.capstone.pia.backend.exceptions.NoUserActivityException;
+import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +38,7 @@ class ActivityServiceTest {
         when(hobbyService.getHobbyById(hobbyId)).thenReturn(existingHobby);
 
         // WHEN
-        List<Activity> activities = activityService.getActivitiesByHobbyId(hobbyId);
+        List<Activity> activities = activityService.getActivitiesForHobby(hobbyId);
 
         // THEN
         verify(hobbyService).getHobbyById(hobbyId);
@@ -58,7 +56,7 @@ class ActivityServiceTest {
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
 
         // WHEN
-        Activity activity = activityService.getActivityByHobbyId(hobbyId, activityId);
+        Activity activity = activityService.getActivityForHobby(hobbyId, activityId);
 
         // THEN
         verify(hobbyRepo).findById(hobbyId);
@@ -66,7 +64,7 @@ class ActivityServiceTest {
     }
 
     @Test
-    void expectActivitiesList_whenGetActivityById() {
+    void expectActivitiesList_whenGetHobbyById() {
         // GIVEN
         String hobbyId = "existingHobbyId";
         String activityId1 = "existingActivityId1";
@@ -79,8 +77,8 @@ class ActivityServiceTest {
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
 
         // WHEN
-        Activity activity1 = activityService.getActivityByHobbyId(hobbyId, activityId1);
-        Activity activity2 = activityService.getActivityByHobbyId(hobbyId, activityId2);
+        Activity activity1 = activityService.getActivityForHobby(hobbyId, activityId1);
+        Activity activity2 = activityService.getActivityForHobby(hobbyId, activityId2);
 
         // THEN
         verify(hobbyRepo, times(2)).findById(hobbyId);
@@ -160,7 +158,7 @@ class ActivityServiceTest {
         // WHEN & THEN
         NoSuchActivityException exception = assertThrows(
                 NoSuchActivityException.class,
-                () -> activityService.getActivityByHobbyId(hobbyId, nonExistentActivityId)
+                () -> activityService.getActivityForHobby(hobbyId, nonExistentActivityId)
         );
         assertEquals("Activity not found for ID: " + nonExistentActivityId, exception.getMessage());
     }
@@ -250,6 +248,16 @@ class ActivityServiceTest {
 
         // THEN
         assertEquals("Activity A", result);
+    }
+
+    @Test
+    void testGetMostAddedActivityNameNoActivities() {
+        // GIVEN
+        List<Hobby> hobbies = Collections.emptyList();
+        when(hobbyService.getHobbies()).thenReturn(hobbies);
+
+        // WHEN & THEN
+        assertThrows(NoUserActivityException.class, () -> activityService.getMostAddedActivityName());
     }
 
     @Test

@@ -161,6 +161,6 @@ const StyledPaper = styled(Paper)`
 `;
 
 const StyledMenuItem = styled(MenuItem)`
-  padding-left: 10.5rem;
-  padding-right: 10.5rem;
+  padding-right: 19rem;
+
 `;

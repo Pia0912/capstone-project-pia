@@ -102,12 +102,13 @@
     justify-content: center;
     border-color: transparent;
     border-radius: 50%;
-    width: 2.3rem;
+    width: 2rem;
     height: 0.5rem;
 }
 
 .calendar-day {
     padding-top: 3rem;
+    margin: 0;
 
 }
 .days li.active .day-circle {

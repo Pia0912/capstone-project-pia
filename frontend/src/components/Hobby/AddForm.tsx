@@ -78,7 +78,7 @@ const StyledContainer = styled(Container)`
   align-items: center;
   padding-top: 3rem;
   background-color: cornflowerblue;
-  padding-bottom: 17rem;
+  padding-bottom: 21rem;
 `;
 
 const StyledButton = styled(Button)`

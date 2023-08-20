@@ -16,9 +16,11 @@ import java.util.Collections;
 public class MongoUserDetailsService implements UserDetailsService {
 
     private final MongoUserRepository mongoUserRepository;
+    private final UUIDService uuidService;
 
-    public MongoUserDetailsService(MongoUserRepository mongoUserRepository) {
+    public MongoUserDetailsService(MongoUserRepository mongoUserRepository, UUIDService uuidService) {
         this.mongoUserRepository = mongoUserRepository;
+        this.uuidService = uuidService;
     }
 
     @Override
@@ -30,16 +32,15 @@ public class MongoUserDetailsService implements UserDetailsService {
     }
 
     public void registerNewUser(UserWithoutId userWithoutId) throws UserNameAlreadyExistsException {
-        UUIDService uuIdService = new UUIDService();
         PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
         String encodedPassword = encoder.encode(userWithoutId.password());
         if (this.mongoUserRepository.findByUsername(userWithoutId.username()).isPresent())
             throw new UserNameAlreadyExistsException("User " + userWithoutId.username() + " already exists!");
-        MongoUser newUser = new MongoUser(uuIdService.getRandomId(), userWithoutId.username(), encodedPassword);
+        MongoUser newUser = new MongoUser(uuidService.getRandomId(), userWithoutId.username(), encodedPassword);
         this.mongoUserRepository.save(newUser);
     }
 
-    public UserWithoutPassword getUserWithoutPassword(String username) {
+    public UserWithoutPassword getUserName(String username) {
         MongoUser mongoUser = mongoUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
 
