@@ -24,13 +24,13 @@ public class MongoUserController {
                 .getName();
 
         if (!username.equals("anonymousUser")) {
-            return this.mongoUserDetailsService.getUserWithoutPassword(username).userId();
+            return this.mongoUserDetailsService.getUserName(username).userId();
         }
         return null;
     }
 
     @GetMapping("/me")
-    public String getUserInfo() {
+    public String getUserName() {
         return SecurityContextHolder
                 .getContext()
                 .getAuthentication()

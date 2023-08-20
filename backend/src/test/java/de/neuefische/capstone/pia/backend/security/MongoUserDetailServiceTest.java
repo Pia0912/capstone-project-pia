@@ -2,6 +2,7 @@ package de.neuefische.capstone.pia.backend.security;
 
 
 import de.neuefische.capstone.pia.backend.exceptions.UserNameAlreadyExistsException;
+import de.neuefische.capstone.pia.backend.model.UUIDService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,7 +14,8 @@ import static org.mockito.Mockito.*;
 class MongoUserDetailServiceTest {
 
     private final MongoUserRepository userRepository = mock(MongoUserRepository.class);
-    private final MongoUserDetailsService userDetailService = new MongoUserDetailsService(userRepository);
+    private final UUIDService uuidService = mock(UUIDService.class);
+    private final MongoUserDetailsService userDetailService = new MongoUserDetailsService(userRepository, uuidService);
 
     @Test
     void registerNewUser() {
@@ -48,7 +50,7 @@ class MongoUserDetailServiceTest {
         String username = "testUser";
         //WHEN
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(expected));
-        UserWithoutPassword actual = userDetailService.getUserWithoutPassword(username);
+        UserWithoutPassword actual = userDetailService.getUserName(username);
         //THEN
         assertEquals(expected.userId(), actual.userId());
         verify(userRepository).findByUsername(username);

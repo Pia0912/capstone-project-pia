@@ -1,6 +1,7 @@
 package de.neuefische.capstone.pia.backend.service;
 
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
+import de.neuefische.capstone.pia.backend.exceptions.UnauthorizedAccessException;
 import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import de.neuefische.capstone.pia.backend.security.MongoUser;
@@ -97,7 +98,7 @@ class HobbyServiceTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
 
-        when(uuidService.getRandomId()).thenReturn("123"); // Use the actual ID you expect
+        when(uuidService.getRandomId()).thenReturn("123");
         when(hobbyRepo.insert(any(Hobby.class))).thenReturn(expected);
         when(mongoUserService.findUserByUsername(username)).thenReturn(user);
 
@@ -112,7 +113,63 @@ class HobbyServiceTest {
     }
 
     @Test
-    void updateHobbyName_WhenPuttingHobby() {
+    void getHobbyWithUserPermission_ShouldReturnHobbyWhenUserHasPermission() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String username = "username";
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(authentication.getName()).thenReturn(username);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        MongoUser user = new MongoUser("user1", username, "Password123");
+        when(mongoUserService.findUserByUsername(username)).thenReturn(user);
+
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+
+        // WHEN
+        Hobby result = hobbyService.getHobbyWithUserPermission(hobbyId);
+
+        // THEN
+        assertEquals(existingHobby, result);
+        verify(authentication).getName();
+        verify(securityContext).getAuthentication();
+        verify(mongoUserService).findUserByUsername(username);
+        verify(hobbyRepo).findById(hobbyId);
+    }
+
+    @Test
+    void getHobbyWithUserPermission_ShouldThrowUnauthorizedAccessExceptionWhenUserDoesNotHavePermission() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        String username = "username";
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(authentication.getName()).thenReturn(username);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        MongoUser user = new MongoUser("user2", username, "Password123");
+        when(mongoUserService.findUserByUsername(username)).thenReturn(user);
+
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+
+        //WHEN & THEN
+        assertThrows(UnauthorizedAccessException.class, () -> hobbyService.getHobbyWithUserPermission(hobbyId));
+
+        verify(authentication).getName();
+        verify(securityContext).getAuthentication();
+        verify(mongoUserService).findUserByUsername(username);
+        verify(hobbyRepo).findById(hobbyId);
+    }
+
+    @Test
+    void updateHobby_ShouldUpdateHobbyNameAndReturnUpdatedHobby() {
         // GIVEN
         String hobbyId = "existingHobbyId";
         String newHobbyName = "Updated Gardening";
@@ -120,18 +177,31 @@ class HobbyServiceTest {
         HobbyAddModel updatedHobby = new HobbyAddModel(newHobbyName, "newColorValue");
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
 
+        //WHEN
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(authentication.getName()).thenReturn("username");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        MongoUser user = new MongoUser("user1", "username", "Password123");
+        when(mongoUserService.findUserByUsername("username")).thenReturn(user);
+
         // WHEN
-        Hobby result = hobbyService.updateHobby(hobbyId, updatedHobby, "newColorValue");
+        Hobby result = hobbyService.updateHobby(hobbyId, updatedHobby);
 
         // THEN
         assertEquals(newHobbyName, result.getName());
         assertEquals(existingHobby.getColor(), result.getColor());
         verify(hobbyRepo).findById(hobbyId);
         verify(hobbyRepo).save(existingHobby);
+        verify(mongoUserService).findUserByUsername("username");
     }
+
+
 
     @Test
     void updateHobbyColor_ShouldUpdateHobbyColorAndReturnUpdatedHobby() {
@@ -140,8 +210,17 @@ class HobbyServiceTest {
         String newColor = "blue";
         Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
 
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(authentication.getName()).thenReturn("username");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
         when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
         when(hobbyRepo.save(any(Hobby.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        MongoUser user = new MongoUser("user1", "username", "Password123");
+        when(mongoUserService.findUserByUsername("username")).thenReturn(user);
 
         // WHEN
         Hobby result = hobbyService.updateHobbyColor(hobbyId, newColor);
@@ -150,17 +229,39 @@ class HobbyServiceTest {
         assertEquals(newColor, result.getColor());
         verify(hobbyRepo).findById(hobbyId);
         verify(hobbyRepo).save(existingHobby);
+        verify(mongoUserService).findUserByUsername("username");
     }
 
+
+
     @Test
-    void expectDeleteMethodToBeCalled_whenDeletingHobby() {
-        //GIVEN
-        String id = "abc";
-        //WHEN
-        hobbyService.deleteHobby(id);
-        //THEN
-        verify(hobbyRepo).deleteById(id);
+    void deleteHobby_ShouldDeleteHobbyWhenUserHasPermission() {
+        // GIVEN
+        String hobbyId = "existingHobbyId";
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(), "user1");
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(authentication.getName()).thenReturn("username");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        MongoUser user = new MongoUser("user1", "username", "Password123");
+        when(mongoUserService.findUserByUsername("username")).thenReturn(user);
+
+        when(hobbyRepo.findById(hobbyId)).thenReturn(Optional.of(existingHobby));
+        doNothing().when(hobbyRepo).deleteById(hobbyId);
+
+        // WHEN
+        hobbyService.deleteHobby(hobbyId);
+
+        // THEN
+        verify(hobbyRepo).findById(hobbyId);
+        verify(hobbyRepo).deleteById(hobbyId);
+        verify(mongoUserService).findUserByUsername("username");
     }
+
+
 
     @Test
     void getDetails_ExistingHobby_ShouldReturnHobby() {

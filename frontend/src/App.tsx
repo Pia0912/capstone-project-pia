@@ -26,6 +26,7 @@ import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
 import Activities from "./components/Activity/ActivityList.tsx";
+import useCalendar from "./hooks/useCalendar.ts";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
@@ -36,6 +37,7 @@ export default function App() {
     const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies(userId);
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activity} = useActivities();
 
+    const { selectedDayActivities, selectedIndex } = useCalendar();
 
 
     const handleProfileIconClick = () => {
@@ -49,8 +51,6 @@ export default function App() {
     const handleSearchIconClick = () => {
         navigate("/activities");
     };
-
-
 
     return (
         <>
@@ -66,7 +66,7 @@ export default function App() {
                         <Route path={"/hobbies"}
                                element={(
                                    <>
-                                       <Calendar />
+                                       <Calendar selectedDayActivities={selectedDayActivities} selectedIndex={selectedIndex}/>
                                        <StyledH2>{user}s Hobby List</StyledH2>
                                        <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                            +
@@ -159,7 +159,7 @@ const StyledBottomNavigationAction = styled(BottomNavigationAction)`
   color: white;
 `;
 
-const StyledH2 = styled.h3`
+const StyledH2 = styled.h4`
   margin-top: 0;
   margin-right: 5rem;
   padding-top: 1rem;
@@ -169,7 +169,7 @@ const StyledH2 = styled.h3`
 `;
 
 const StyledButtonAdd = styled(Button)`
-  margin: -3rem 0.2rem -6rem 60%;
+  margin: -3rem 0.2rem -6rem 80%;
   background-color: black;
   font-size: 25px;
   &:hover {

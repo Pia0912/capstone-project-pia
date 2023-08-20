@@ -20,15 +20,15 @@ export default function StatisticTab() {
     const [activityDays, setActivityDays] = useState<ActivityDays>({});
 
     useEffect(() => {
-        axios.get<ActivityCounts>('/api/hobbies/statistics/activity-counts')
+        axios.get<ActivityCounts>('/api/activities/activity-counts')
             .then(response => setActivityCounts(response.data))
             .catch(error => console.error(error));
 
-        axios.get<string>('/api/hobbies/statistics/most-added-activity')
+        axios.get<string>('/api/activities/most-added-activity')
             .then(response => setMostAddedActivity({ name: response.data }))
             .catch(error => console.error(error));
 
-        axios.get<ActivityDays>('/api/hobbies/statistics/activity-days')
+        axios.get<ActivityDays>('/api/activities/activity-days')
             .then(response => setActivityDays(response.data))
             .catch(error => console.error(error));
     }, []);

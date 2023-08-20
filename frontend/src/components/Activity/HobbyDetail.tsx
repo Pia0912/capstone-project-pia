@@ -55,7 +55,7 @@ export default function HobbyDetail(props: Props) {
                     +
                 </StyledButtonAdd>
             </div>
-            <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
+            <Snackbar open={!!successMessage} autoHideDuration={2500} onClose={clearSuccessMessage}>
                 <StyledAlert onClose={clearSuccessMessage} severity="success">
                     {successMessage}
                 </StyledAlert>

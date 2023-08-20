@@ -119,12 +119,10 @@ export default function CalendarActivityAddForm(props: Props) {
 }
 
 const StyledContainer = styled(Container)`
-  background-color: coral;
   display: flex;
   justify-content: center;
   align-items: center;
   padding-top: 3rem;
-  padding-bottom: 8rem;
 `;
 
 const StyledSelect= styled(Select)`

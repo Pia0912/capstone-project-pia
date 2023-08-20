@@ -52,19 +52,16 @@ class CalendarServiceTest {
     @Test
     void testGetActivitiesByMonth_ReturnsActivitiesWithColor_WhenMatchingMonthAndYear() {
         // GIVEN
-        List<Hobby> hobbies = new ArrayList<>();
-        Hobby hobby = new Hobby();
-        hobby.setHobbyId("hobbyId");
-        hobby.setColor("red");
-        Activity activity = new Activity();
-        activity.setActivityId("activityId");
-        activity.setActivityDate(LocalDate.of(2023, 8, 15));
-        activity.setRating(5);
-        activity.setName("Example Activity");
-        hobby.setActivities(List.of(activity));
-        hobbies.add(hobby);
+        String hobbyId = "existingHobbyId";
+        String activityId = "existingActivityId";
+        Activity existingActivity = new Activity(activityId, "Existing Activity", LocalDate.parse("2023-08-15"), hobbyId, 5, "green");
 
-        //WHEN
+        Hobby existingHobby = new Hobby(hobbyId, "Gardening", "green", new ArrayList<>(List.of(existingActivity)), "user1");
+
+        List<Hobby> hobbies = new ArrayList<>();
+        hobbies.add(existingHobby);
+
+        // WHEN
         when(hobbyService.getHobbies()).thenReturn(hobbies);
 
         List<Activity> activities = calendarService.getActivitiesByMonth(LocalDate.of(2023, 8, 1));
@@ -72,12 +69,12 @@ class CalendarServiceTest {
         // THEN
         assertFalse(activities.isEmpty());
         assertEquals(1, activities.size());
-        assertEquals("activityId", activities.get(0).getActivityId());
+        assertEquals(activityId, activities.get(0).getActivityId());
         assertEquals(LocalDate.of(2023, 8, 15), activities.get(0).getActivityDate());
-        assertEquals("red", activities.get(0).getColor());
-        assertEquals("hobbyId", activities.get(0).getHobbyId());
+        assertEquals("green", activities.get(0).getColor());
+        assertEquals(hobbyId, activities.get(0).getHobbyId());
         assertEquals(5, activities.get(0).getRating());
-        assertEquals("Example Activity", activities.get(0).getName());
+        assertEquals("Existing Activity", activities.get(0).getName());
         verify(hobbyService, times(1)).getHobbies();
     }
 

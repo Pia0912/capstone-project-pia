@@ -82,8 +82,6 @@ export default function HobbyItem(props: Props) {
                     </>
                 ) : (
                     <>
-                        <div className="div-edit">
-                            <h3>{props.hobby.name}</h3>
                             <div className="div-icons">
                                 <StyledIconButton
                                     aria-label="edit hobby"
@@ -106,7 +104,10 @@ export default function HobbyItem(props: Props) {
                                     <InfoIcon fontSize="small" />
                                 </StyledIconButton>
                             </div>
+                        <div className="div-edit">
+                            <h3>{props.hobby.name}</h3>
                         </div>
+
                         <select value={color} onChange={handleColorChange}>
                             {props.colors.map((colors) => (
                                 <option key={colors} value={colors}>

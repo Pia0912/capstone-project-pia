@@ -61,11 +61,11 @@ export default function AddForm(props: Props) {
                         ))}
                     </select>
                 </fieldset>
-                <StyledButton type="submit" variant="outlined">
+                <StyledButton type="submit" variant="contained">
                     Submit
                 </StyledButton>
             </form>
-            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate('/hobbies')} >
+            <StyledButtonBack variant="outlined" disableElevation onClick={() => navigate('/hobbies')} >
                 Back to List
             </StyledButtonBack>
         </StyledContainer>
@@ -77,25 +77,24 @@ const StyledContainer = styled(Container)`
   justify-content: center;
   align-items: center;
   padding-top: 3rem;
-  background-color: cornflowerblue;
-  padding-bottom: 17rem;
 `;
 
 const StyledButton = styled(Button)`
   width: 9rem;
-  border-color: black;
-  color: black;
+  background-color: black;
+  color: white;
   &:hover {
-    border-color: limegreen;
+    background-color: limegreen;
   }
 `;
 
 const StyledButtonBack = styled(Button)`
   margin-top: 1rem;
   width: 9rem;
-  background-color: black;
+  color: black;
+  border-color: black;
   &:hover {
     border-color: darkred;
-    background-color: darkred;
+    color: darkred;
   }
 `;

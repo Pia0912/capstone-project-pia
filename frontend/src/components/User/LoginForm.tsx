@@ -94,12 +94,12 @@ export default function LoginForm(props: Props) {
                     </div>
                 </fieldset>
             </form>
-            <Snackbar open={!!successMessage} autoHideDuration={3000} onClose={clearSuccessMessage}>
+            <Snackbar open={!!successMessage} autoHideDuration={2500} onClose={clearSuccessMessage}>
                 <StyledAlert onClose={clearSuccessMessage} severity="success">
                     {successMessage}
                 </StyledAlert>
             </Snackbar>
-            <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={clearErrorMessage}>
+            <Snackbar open={!!errorMessage} autoHideDuration={2500} onClose={clearErrorMessage}>
                 <StyledAlert onClose={clearErrorMessage} severity="warning">
                     {errorMessage}
                 </StyledAlert>

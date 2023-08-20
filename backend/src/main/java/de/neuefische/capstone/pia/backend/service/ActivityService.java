@@ -2,10 +2,8 @@ package de.neuefische.capstone.pia.backend.service;
 
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchActivityException;
 import de.neuefische.capstone.pia.backend.exceptions.NoSuchHobbyException;
-import de.neuefische.capstone.pia.backend.model.Activity;
-import de.neuefische.capstone.pia.backend.model.ActivityWithoutID;
-import de.neuefische.capstone.pia.backend.model.Hobby;
-import de.neuefische.capstone.pia.backend.model.UUIDService;
+import de.neuefische.capstone.pia.backend.exceptions.NoUserActivityException;
+import de.neuefische.capstone.pia.backend.model.*;
 import de.neuefische.capstone.pia.backend.repo.HobbyRepo;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,7 @@ public class ActivityService {
         this.hobbyService = hobbyService;
     }
 
-    public List<Activity> getActivitiesByHobbyId(String hobbyId) {
+    public List<Activity> getActivitiesForHobby(String hobbyId) {
         Hobby hobby = hobbyService.getHobbyById(hobbyId);
         List<Activity> activities = hobby.getActivities();
 
@@ -45,7 +43,7 @@ public class ActivityService {
                 .toList();
     }
 
-    public Activity getActivityByHobbyId(String hobbyId, String activityId) {
+    public Activity getActivityForHobby(String hobbyId, String activityId) {
         Optional<Hobby> hobbyOptional = hobbyRepo.findById(hobbyId);
         Hobby hobby = hobbyOptional.orElseThrow(() -> new NoSuchHobbyException(hobbyId));
 
@@ -120,6 +118,10 @@ public class ActivityService {
                 .flatMap(hobby -> hobby.getActivities().stream())
                 .toList();
 
+        if (allActivities.isEmpty()) {
+            throw new NoUserActivityException();
+        }
+
         Map<String, Long> activityCounts = allActivities.stream()
                 .collect(Collectors.groupingBy(Activity::getName, Collectors.counting()));
 
@@ -128,6 +130,7 @@ public class ActivityService {
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
+
 
     public Map<String, Long> getActivityDays() {
         List<Hobby> userHobbies = hobbyService.getHobbies();

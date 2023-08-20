@@ -83,13 +83,13 @@ div {
 }
 
 .div-edit {
-    align-items: center;
+    margin-top: -2.9rem;
 }
 
 .div-icons {
     flex-direction: row;
     justify-content: center;
-    margin-top: 0;
+    margin-top: 2.8rem;
     margin-bottom: 0;
     margin-left: 15rem;
     padding: 0;
@@ -99,7 +99,9 @@ div {
 .div-activityList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    margin-top: -3rem;
+    column-gap: 0.3rem;
+    row-gap: 3rem;
     padding: 1rem;
 }
 

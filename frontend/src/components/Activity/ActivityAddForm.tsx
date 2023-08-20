@@ -70,11 +70,11 @@ export default function ActivityAddForm(props: Props) {
                     <label htmlFor="rating">Rating:</label>
                     <StarRating initialRating={rating} onChange={setRating} activityId="new-activity" />
                 </fieldset>
-                <StyledButton type="submit" variant="outlined">
+                <StyledButton type="submit" variant="contained">
                     Submit
                 </StyledButton>
             </form>
-            <StyledButtonBack variant="contained" disableElevation onClick={() => navigate(`/hobby/${hobbyId}/activities`)} >
+            <StyledButtonBack variant="outlined" disableElevation onClick={() => navigate(`/hobby/${hobbyId}/activities`)} >
                 Back to Activities
             </StyledButtonBack>
         </StyledContainer>
@@ -89,21 +89,21 @@ const StyledContainer = styled(Container)`
 `;
 
 const StyledButton = styled(Button)`
-  width: 9rem;
-  border-color: black;
-  color: black;
-  &:hover {
+width: 9rem;
+background-color: black;
+&:hover {
+    background-color: limegreen;
     border-color: limegreen;
-    color: lime;
-  }
+}
 `;
 
 const StyledButtonBack = styled(Button)`
-  margin-top: 1rem;
-  width: 9rem;
-  background-color: black;
-  &:hover {
+margin-top: 1rem;
+width: 9rem;
+border: 1px solid black;
+color: black;
+&:hover {
     border-color: darkred;
-    background-color: darkred;
-  }
+    color: darkred;
+}
 `;

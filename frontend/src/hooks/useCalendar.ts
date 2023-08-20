@@ -45,7 +45,7 @@ export default function useCalendar() {
         }
 
         api
-            .get<Array<ActivityWithColor>>(`/hobbies/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
+            .get<Array<ActivityWithColor>>(`/calendar?month=${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-01`)
             .then((response) => {
                 const activitiesWithColors = response.data.map((activity) => ({
                     ...activity,
@@ -195,6 +195,6 @@ export default function useCalendar() {
         handleClose,
         handleMenuItemClick,
         dayActivityCounts,
-        handleGradient}
-
+        handleGradient
+    }
 }

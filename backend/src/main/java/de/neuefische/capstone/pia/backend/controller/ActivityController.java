@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -22,5 +23,17 @@ public class ActivityController {
         return activityService.getAllActivities();
     }
 
+    @GetMapping("/activity-counts")
+    public Map<String, Long> getActivityCounts() {
+        return activityService.getActivityCounts();
+    }
 
+    @GetMapping("/most-added-activity")
+    public String getMostAddedActivity() {
+        return activityService.getMostAddedActivityName();
+    }
+    @GetMapping("/activity-days")
+    public Map<String, Long> getActivityDays() {
+        return activityService.getActivityDays();
+    }
 }
