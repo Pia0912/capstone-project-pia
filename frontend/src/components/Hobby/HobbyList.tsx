@@ -29,7 +29,7 @@ export default function HobbyList(props: Props) {
 
     return (
         <>
-        <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={clearSuccessMessage}>
+        <Snackbar open={!!successMessage} autoHideDuration={2400} onClose={clearSuccessMessage}>
             <StyledAlert onClose={clearSuccessMessage} severity="success">
                 {successMessage}
             </StyledAlert>

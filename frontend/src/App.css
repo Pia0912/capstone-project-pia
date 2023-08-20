@@ -99,7 +99,9 @@ div {
 .div-activityList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    margin-top: -3rem;
+    column-gap: 0.3rem;
+    row-gap: 3rem;
     padding: 1rem;
 }
 
