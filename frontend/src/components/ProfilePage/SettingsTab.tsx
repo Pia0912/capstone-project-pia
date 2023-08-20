@@ -59,6 +59,7 @@ const StyledIconButton = styled(IconButton)`
   background-color: orange;
   align-self: center;
   width: 10rem;
+  font-size: 18px;
   color: black;
   border: 2px solid orange;
   border-radius: 5px;
