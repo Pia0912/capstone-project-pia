@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {Activity, ActivityWithColor, Hobby} from "../models.ts";
 
@@ -14,12 +14,7 @@ export default function useCalendar() {
     const [selectedDay, setSelectedDay] = useState<number | null>(null);
     const [selectedDayActivities, setSelectedDayActivities] = useState<ActivityWithColor[]>([]);
 
-    const [open, setOpen] = React.useState(false);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
-
-    const anchorRef = React.useRef<HTMLDivElement>(null);
-
 
     useEffect(() => {
         function updateDaysArray(year: number, month: number, activitiesWithColors: Array<ActivityWithColor>) {
@@ -120,7 +115,6 @@ export default function useCalendar() {
         }
     });
 
-
     function getDaysInMonth(year: number, month: number): number {
         return new Date(year, month + 1, 0).getDate();
     }
@@ -135,8 +129,6 @@ export default function useCalendar() {
             const prevMonth = prevDate.getMonth() - 1;
             const prevYear = prevMonth < 0 ? prevDate.getFullYear() - 1 : prevDate.getFullYear();
             const newMonth = prevMonth < 0 ? 11 : prevMonth;
-
-
             return new Date(prevYear, newMonth, prevDate.getDate());
         });
     }
@@ -150,12 +142,7 @@ export default function useCalendar() {
         });
     }
 
-
-    const handleToggle = () => {
-            setOpen((prevOpen) => !prevOpen);
-    };
-
-    const handleGradient = () => {
+    function handleGradient(){
         if (activityColors.length > 1) {
             const gradientColors = activityColors.join(', ');
             return `linear-gradient(to bottom, ${gradientColors})`;
@@ -164,19 +151,7 @@ export default function useCalendar() {
         } else {
             return 'white';
         }
-    };
-
-
-    const handleClose = (event: Event) => {
-        if (!anchorRef.current?.contains(event.target as HTMLElement)) {
-            setOpen(false);
-        }
-    };
-
-    const handleMenuItemClick = (index: number) => {
-        setSelectedIndex(index);
-        setOpen(false);
-    };
+    }
 
     return {
         currentDate,
@@ -185,15 +160,9 @@ export default function useCalendar() {
         setSelectedDay,
         selectedDay,
         selectedDayActivities,
-        open,
-        selectedIndex,
         hobbies,
-        anchorRef,
         handlePrevMonth,
         handleNextMonth,
-        handleToggle,
-        handleClose,
-        handleMenuItemClick,
         dayActivityCounts,
         handleGradient
     }

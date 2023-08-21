@@ -12,16 +12,8 @@ export default function Calendar() {
         currentDate,
         daysArray,
         dayActivityCounts,
-        setSelectedDay,
-        selectedDayActivities,
-        selectedIndex,
-        open,
-        anchorRef,
         handlePrevMonth,
         handleNextMonth,
-        handleToggle,
-        handleClose,
-        handleMenuItemClick,
         handleGradient,
     } = useCalendar();
 
@@ -41,16 +33,8 @@ export default function Calendar() {
                             dayInfo={dayInfo}
                             currentDate={currentDate}
                             today={today}
-                            dayActivityCounts={dayActivityCounts}
-                            setSelectedDay={setSelectedDay}
-                            selectedDayActivities={selectedDayActivities}
-                            open={open}
-                            selectedIndex={selectedIndex}
-                            popperRef={anchorRef}
-                            handleToggle={handleToggle}
-                            handleClose={handleClose}
-                            handleMenuItemClick={handleMenuItemClick}
                             handleGradient={handleGradient}
+                            dayActivityCounts={dayActivityCounts}
                         />
                     ))}
                 </ul>

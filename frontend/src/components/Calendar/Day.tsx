@@ -3,24 +3,19 @@ import { ButtonGroup} from '@mui/material';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import {useNavigate} from "react-router-dom";
-import {DayInfo} from "../../models.ts";
+import {ActivityWithColor} from "../../models.ts";
 
 type Props = {
-    dayInfo: DayInfo | null;
+    dayInfo: ActivityWithColor | null;
     currentDate: Date;
     today: Date;
-    setSelectedDay: (day: number) => void;
-    selectedDayActivities: DayInfo[];
-    open: boolean;
-    selectedIndex: number;
-    popperRef: React.RefObject<HTMLDivElement>;
-    handleToggle: (event: React.MouseEvent<HTMLElement>) => void;
-    handleClose: (event: Event) => void;
-    handleMenuItemClick: (index: number) => void;
     handleGradient: () => string;
     dayActivityCounts: Record<number, number>;
 }
 export default function Day(props: Props) {
+    console.log(props.dayInfo)
+    console.log(props.dayInfo?.name)
+
     const navigate = useNavigate();
 
     if (!props.dayInfo) {
@@ -52,6 +47,7 @@ export default function Day(props: Props) {
         }
     };
 
+
     return (
         <li
             key={`day-${props.dayInfo.day}`}
@@ -61,21 +57,19 @@ export default function Day(props: Props) {
 
        
             <React.Fragment>
-                <ButtonGroup variant="contained" ref={props.popperRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
+                <ButtonGroup variant="contained"  aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
                     <Button
                         size="small"
                         style={{ backgroundColor: 'transparent', color: 'black', paddingTop: '3rem' }}
                         aria-controls='split-button-menu'
-                        aria-expanded={props.open ? 'true' : 'false'}
                         aria-label="select merge strategy"
                         aria-haspopup="menu"
-                        onClick={handleAddActivity}
+
                     >
-                        <AddIcon style={{ fontSize: '20px' }} />
+                        <AddIcon style={{ fontSize: '20px' }}  onClick={handleAddActivity} />
                     </Button>
                 </ButtonGroup>
-
         </React.Fragment>
-</li>
+        </li>
     );
 }
