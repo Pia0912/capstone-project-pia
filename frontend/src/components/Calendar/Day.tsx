@@ -159,9 +159,6 @@ const StyledButtonGroup = styled(ButtonGroup)`
   flex-direction: row;
 
   .MuiButtonGroup-grouped:not(:last-of-type) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: none;
-    border-color: #1565c0;
+    border: none;
   }
 `;
