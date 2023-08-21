@@ -170,4 +170,3 @@ const StyledButtonAdd = styled(Button)`
     background-color: darkorange;
   }
 `;
-

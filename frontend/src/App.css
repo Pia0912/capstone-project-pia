@@ -15,10 +15,10 @@ header {
     color: white;
 }
 
-
 .header-icon:hover {
     transform: scale(1.1);
 }
+
 main {
     width: 100vw;
     display: flex;
@@ -126,7 +126,6 @@ select {
 
 fieldset {
     border: 0;
-
 }
 
 legend {
@@ -159,7 +158,6 @@ input {
     width: 90%;
 }
 
-
 .flip-card {
     background-color: black;
     width: calc(100% / 2);
@@ -189,7 +187,6 @@ input {
     text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
-
 }
 
 .card-inner {
@@ -199,7 +196,6 @@ input {
     height: 100%;
     text-align: center;
 }
-
 
 .flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
@@ -271,7 +267,6 @@ input {
 .tab {
     width: 100px;
     padding-right: 1rem;
-
 }
 
 .tabContent {
