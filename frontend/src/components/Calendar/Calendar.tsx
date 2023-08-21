@@ -15,6 +15,8 @@ export default function Calendar() {
         handlePrevMonth,
         handleNextMonth,
         handleGradient,
+        selectedDayActivities,
+        setSelectedDay,
     } = useCalendar();
 
     return (
@@ -35,6 +37,8 @@ export default function Calendar() {
                             today={today}
                             handleGradient={handleGradient}
                             dayActivityCounts={dayActivityCounts}
+                            selectedDayActivities={selectedDayActivities}
+                            setSelectedDay={setSelectedDay}
                         />
                     ))}
                 </ul>

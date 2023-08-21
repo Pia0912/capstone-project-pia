@@ -75,7 +75,7 @@ export default function HobbyItem(props: Props) {
                             <StyledButtonBack variant="outlined" onClick={handleEditBack}>
                                 Back
                             </StyledButtonBack>
-                            <StyledButton variant="outlined" onClick={handleSaveClick}>
+                            <StyledButton variant="contained" onClick={handleSaveClick}>
                                 Save
                             </StyledButton>
                         </DivContainer>
@@ -152,17 +152,25 @@ const DivContainer = styled(Container)`
 `;
 
 const StyledButton = styled(Button)`
-  border-color: black;
-  color: black;
   margin: 3px;
   width: 5rem;
+  background-color: black;
+  &:hover {
+    background-color: limegreen;
+    border-color: limegreen;
+  }
+
 `;
 
 const StyledButtonBack = styled(Button)`
   margin: 3px;
   width: 5rem;
-  background-color: black;
-  color: white;
+  border-color: black;
+  color: black;
+  &:hover {
+    border-color: darkred;
+    color: darkred;
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`

@@ -35,7 +35,7 @@ export default function StatisticTab() {
 
     const formatData = (data: Record<string, number>) => {
         return Object.keys(data)
-            .map(key => `${key}: ${data[key]}`)
+            .map(key => `${key}: ${data[key]}x`)
             .join('\n');
     };
 
@@ -45,17 +45,11 @@ export default function StatisticTab() {
             <div id="stats" className="tabContent">
                 <h2 className="tabTitle">Account Statistic</h2>
                 <table className="statistic-table">
-                    <thead>
-                    <tr>
-                        <th>Statistics</th>
-                        <th>Data</th>
-                    </tr>
-                    </thead>
                     <tbody>
                     <tr>
-                        <td className="statistic-subheader">Days you added activities</td>
-                        <td>
-                            <pre className="statistic-pre">{formatData(activityDays)}</pre>
+                        <td className="statistic-subheader2">Days you added activities</td>
+                        <td >
+                            <pre className="statistic-pre2">{formatData(activityDays)}</pre>
                         </td>
                     </tr>
                     <tr>
@@ -65,9 +59,9 @@ export default function StatisticTab() {
                         </td>
                     </tr>
                     <tr>
-                        <td className="statistic-subheader">Activity Counts</td>
+                        <td className="statistic-subheader3">Activity Counts</td>
                         <td>
-                            <pre className="statistic-pre">{formatData(activityCounts)}</pre>
+                            <pre className="statistic-pre3">{formatData(activityCounts)}</pre>
                         </td>
                     </tr>
                     </tbody>
