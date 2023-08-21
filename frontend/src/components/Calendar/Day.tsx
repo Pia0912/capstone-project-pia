@@ -76,19 +76,9 @@ export default function Day(props: Props) {
             </div>
 
             <React.Fragment>
-                <ButtonGroup
+                <StyledButtonGroup
                     variant="contained"
                     aria-label="split button"
-                    style={{
-                        backgroundColor: "transparent",
-                        marginTop: "-4rem",
-                        padding: 0,
-                        width: "3rem",
-                        height: "4.5rem",
-                        flexDirection: "row",
-                        borderColor: "transparent"
-
-                    }}
                 >
                     <StyledButtonAdd
                         size="small"
@@ -105,7 +95,7 @@ export default function Day(props: Props) {
                     >
                         <ArrowDropDownIcon style={{ fontSize: "20px" }} />
                     </StyledButtonList>
-                </ButtonGroup>
+                </StyledButtonGroup>
                 <Menu
                     id="demo-positioned-menu"
                     anchorEl={anchorEl}
@@ -158,5 +148,20 @@ const StyledButtonList = styled(Button)`
     background-color: transparent;
     color: red;
     border: none;
+  }
+`;
+
+const StyledButtonGroup = styled(ButtonGroup)`
+  margin-top: -4rem;
+  padding: 0;
+  width: 3rem;
+  height: 4.5rem;
+  flex-direction: row;
+
+  .MuiButtonGroup-grouped:not(:last-of-type) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    border-color: #1565c0;
   }
 `;
