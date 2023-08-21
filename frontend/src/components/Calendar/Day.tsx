@@ -28,9 +28,9 @@ export default function Day(props: Props) {
     }
 
     const { day, color } = props.dayInfo;
-    const currentDay = props.currentDate.getDate();
-    const currentMonth = props.currentDate.getMonth();
-    const currentYear = props.currentDate.getFullYear();
+    const currentDay = props.today.getDate();
+    const currentMonth = props.today.getMonth();
+    const currentYear = props.today.getFullYear();
     const isActive =
         currentDay === day && currentMonth === props.currentDate.getMonth() && currentYear === props.currentDate.getFullYear();
 

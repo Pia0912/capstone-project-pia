@@ -26,7 +26,6 @@ import HobbyDetail from "./components/Activity/HobbyDetail.tsx";
 import ActivityAddForm from "./components/Activity/ActivityAddForm.tsx";
 import ActivityItem from "./components/Activity/ActivityItem.tsx";
 import Activities from "./components/Activity/ActivityList.tsx";
-import useCalendar from "./hooks/useCalendar.ts";
 export default function App() {
     const navigate = useNavigate();
     const colors = ['coral', 'lightblue', 'cornflowerblue', 'lightgreen', 'seagreen', 'pink', 'mediumpurple', 'orange', 'tomato', 'peachpuff'];
@@ -36,10 +35,6 @@ export default function App() {
 
     const {hobbies, hobby, handleAddHobby, handleEditHobbyName, handleEditHobbyColor, handleDeleteHobby, } = useHobbies(userId);
     const { handleAddActivityToHobby, handleEditActivity, handleDeleteActivity, activity} = useActivities();
-
-    const { selectedDayActivities, selectedIndex } = useCalendar();
-
-
     const handleProfileIconClick = () => {
         navigate("/profile/info");
     };
@@ -66,7 +61,7 @@ export default function App() {
                         <Route path={"/hobbies"}
                                element={(
                                    <>
-                                       <Calendar selectedDayActivities={selectedDayActivities} selectedIndex={selectedIndex}/>
+                                       <Calendar />
                                        <StyledH2>{user}s Hobby List</StyledH2>
                                        <StyledButtonAdd variant="contained" disableElevation onClick={() => navigate('/add')}>
                                            +
@@ -114,7 +109,6 @@ export default function App() {
             {location.pathname !== "/" && location.pathname !== "/login" && location.pathname !== "/register" && (
                 <StyledPaper elevation={10}>
                     <StyledBottomNavigation
-                        showLabels
                         value={value}
                         onChange={(_, newValue) => {
                             setValue(newValue);

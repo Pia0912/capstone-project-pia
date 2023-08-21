@@ -93,10 +93,10 @@
     font-size: 12px;
     cursor: pointer;
     position: relative;
-    z-index: 1;
 }
 
 .days li .day-circle {
+    margin-top: 0;
     display: flex;
     align-items: center;
     justify-content: center;

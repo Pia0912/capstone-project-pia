@@ -3,13 +3,8 @@ import MonthHeader from './MonthHeader';
 import Weekdays from './Weekdays';
 import Day from './Day';
 import useCalendar from "../../hooks/useCalendar.ts";
-import {DayInfo} from "../../models.ts";
 
-type Props = {
-    selectedDayActivities: DayInfo[];
-    selectedIndex: number;
-}
-export default function Calendar(props: Props) {
+export default function Calendar() {
     const today = new Date();
 
 
@@ -18,6 +13,8 @@ export default function Calendar(props: Props) {
         daysArray,
         dayActivityCounts,
         setSelectedDay,
+        selectedDayActivities,
+        selectedIndex,
         open,
         anchorRef,
         handlePrevMonth,
@@ -46,9 +43,9 @@ export default function Calendar(props: Props) {
                             today={today}
                             dayActivityCounts={dayActivityCounts}
                             setSelectedDay={setSelectedDay}
-                            selectedDayActivities={props.selectedDayActivities}
+                            selectedDayActivities={selectedDayActivities}
                             open={open}
-                            selectedIndex={props.selectedIndex}
+                            selectedIndex={selectedIndex}
                             popperRef={anchorRef}
                             handleToggle={handleToggle}
                             handleClose={handleClose}
