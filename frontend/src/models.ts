@@ -29,24 +29,11 @@ export type ActivityWithoutID = {
     color: string;
 }
 
-
 export type ActivityWithColor = {
     activityDate: string;
     name: string;
     color: string;
     day: number;
     hobbyId: string;
-    activityId: string;
-};
-
-export type DayActivityCounts = {
-    [day: number]: number;
-};
-
-
-export type DayInfo = {
-    day: number;
-    color: string;
-    name: string;
     activityId: string;
 };

@@ -151,12 +151,12 @@ export default function ActivityItem(props: Props) {
                 </div>
             ) : (
                 <div style={{ margin: "1rem" }}>
+                    <StyledButton variant="contained" onClick={handleSaveClick}>
+                        Save
+                    </StyledButton>
                     <StyledButtonBack variant="outlined" onClick={handleEditBack}>
                         Back
                     </StyledButtonBack>
-                    <StyledButton variant="outlined" onClick={handleSaveClick}>
-                        Save
-                    </StyledButton>
                 </div>
             )}
             <StyledDialog
@@ -188,23 +188,21 @@ export default function ActivityItem(props: Props) {
 }
 
 const StyledButton = styled(Button)`
-  border-color: black;
-  color: black;
+  background-color: black;
   margin: 3px;
   width: 5rem;
   &:hover {
-    border-color: limegreen;
-    color: limegreen;
+    background-color: limegreen;
   }
 `;
 
 const StyledButtonBack = styled(Button)`
   margin: 3px;
   width: 5rem;
-  background-color: black;
-  color: white;
+  color: black;
+  border-color: black;
   &:hover {
-    background-color: darkred;
+    color: darkred;
     border-color: darkred;
   }
 `;

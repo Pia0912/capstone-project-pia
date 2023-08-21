@@ -15,10 +15,10 @@ header {
     color: white;
 }
 
-
 .header-icon:hover {
     transform: scale(1.1);
 }
+
 main {
     width: 100vw;
     display: flex;
@@ -126,7 +126,6 @@ select {
 
 fieldset {
     border: 0;
-
 }
 
 legend {
@@ -159,7 +158,6 @@ input {
     width: 90%;
 }
 
-
 .flip-card {
     background-color: black;
     width: calc(100% / 2);
@@ -189,7 +187,6 @@ input {
     text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
-
 }
 
 .card-inner {
@@ -199,7 +196,6 @@ input {
     height: 100%;
     text-align: center;
 }
-
 
 .flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
@@ -271,12 +267,6 @@ input {
 .tab {
     width: 100px;
     padding-right: 1rem;
-
-}
-
-.app-purchase {
-    padding: 4rem 3rem 15rem;
-    background-color: coral;
 }
 
 .tabContent {
@@ -299,21 +289,6 @@ input {
     background-color: lightgreen;
 }
 
-.div-goalsTab {
-    padding: 3rem 5rem 21rem;
-    background-color: mediumpurple;
-}
-
-.div-friendsTab {
-    padding: 3rem 5rem 14rem;
-    background-color: pink;
-}
-
-.div-badgesTab {
-    padding: 3rem 5rem 14rem;
-    background-color: lightblue;
-}
-
 .tabTitle {
     background-color: inherit;
 }
@@ -322,8 +297,7 @@ input {
     margin-top: 2rem;
 }
 
-.statistic-table th, .statistic-table td {
-    border: 2px solid #ccc;
+.statistic-table td{
     padding: 2px;
     text-align: left;
     font-size: 12px;
@@ -335,6 +309,7 @@ input {
     margin-left: 1.6rem;
     margin-top: 20px;
     border-radius: 20px;
+    padding: 1rem;
     box-shadow: 5px 5px black;
 }
 
@@ -348,9 +323,42 @@ input {
 
 .statistic-pre {
     white-space: pre-wrap;
-    padding: 4px;
+    padding: 2rem 0 2rem 10px;
     font-size: 12px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 20px;
+    outline: 2px solid black;
+}
+
+.statistic-pre2 {
+    white-space: pre-wrap;
+    font-size: 12px;
+    padding: 1rem 0 1rem 10px;
+    outline: 2px solid black;
+    border-radius: 0 10px 0 0;
+}
+
+.statistic-pre3 {
+    white-space: pre-wrap;
+    font-size: 12px;
+    padding: 1rem 0 1rem 10px;
+    outline: 2px solid black;
+    border-radius: 0 0 10px 0;
+}
+
+.statistic-subheader{
+    background-color: black;
+    color: white;
+    width: 90px;
+}
+.statistic-subheader2{
+    background-color: black;
+    color: white;
+    width: 90px;
+    border-radius: 10px 0 0 0;
+}
+
+.statistic-subheader3{
+    background-color: black;
+    color: white;
+    width: 90px;
+    border-radius:  0  0  0 10px;
 }

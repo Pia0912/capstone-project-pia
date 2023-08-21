@@ -1,26 +1,33 @@
-import React from "react";
-import { ButtonGroup} from '@mui/material';
+import React, {useState} from "react";
+import {ButtonGroup, Menu, MenuItem} from '@mui/material';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import {useNavigate} from "react-router-dom";
-import {DayInfo} from "../../models.ts";
+import {ActivityWithColor} from "../../models.ts";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import styled from "@emotion/styled";
 
 type Props = {
-    dayInfo: DayInfo | null;
+    dayInfo: ActivityWithColor | null;
     currentDate: Date;
     today: Date;
-    setSelectedDay: (day: number) => void;
-    selectedDayActivities: DayInfo[];
-    open: boolean;
-    selectedIndex: number;
-    popperRef: React.RefObject<HTMLDivElement>;
-    handleToggle: (event: React.MouseEvent<HTMLElement>) => void;
-    handleClose: (event: Event) => void;
-    handleMenuItemClick: (index: number) => void;
     handleGradient: () => string;
     dayActivityCounts: Record<number, number>;
+    selectedDayActivities: ActivityWithColor[];
+    setSelectedDay: (day: number | null) => void;
 }
 export default function Day(props: Props) {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        props.setSelectedDay(props.dayInfo?.day ?? null);
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const navigate = useNavigate();
 
     if (!props.dayInfo) {
@@ -28,9 +35,9 @@ export default function Day(props: Props) {
     }
 
     const { day, color } = props.dayInfo;
-    const currentDay = props.currentDate.getDate();
-    const currentMonth = props.currentDate.getMonth();
-    const currentYear = props.currentDate.getFullYear();
+    const currentDay = props.today.getDate();
+    const currentMonth = props.today.getMonth();
+    const currentYear = props.today.getFullYear();
     const isActive =
         currentDay === day && currentMonth === props.currentDate.getMonth() && currentYear === props.currentDate.getFullYear();
 
@@ -52,30 +59,106 @@ export default function Day(props: Props) {
         }
     };
 
+    console.log(props.selectedDayActivities)
+
+
     return (
         <li
             key={`day-${props.dayInfo.day}`}
             className={`calendar-day ${isActive ? "active" : ""}`}
         >
-            <div className="day-circle" style={{ background: backgroundColor }}>{day}</div>
+            <div
+                className="day-circle"
+                style={{ background: backgroundColor }}
+                onClick={handleClick}
+            >
+                {day}
+            </div>
 
-       
             <React.Fragment>
-                <ButtonGroup variant="contained" ref={props.popperRef} aria-label="split button" style={{ backgroundColor: 'transparent', color: 'black', marginTop: '-4rem', padding: 0, width: '3rem', height: '4.5rem' }}>
-                    <Button
+                <StyledButtonGroup
+                    variant="contained"
+                    aria-label="split button"
+                >
+                    <StyledButtonAdd
                         size="small"
-                        style={{ backgroundColor: 'transparent', color: 'black', paddingTop: '3rem' }}
-                        aria-controls='split-button-menu'
-                        aria-expanded={props.open ? 'true' : 'false'}
-                        aria-label="select merge strategy"
-                        aria-haspopup="menu"
                         onClick={handleAddActivity}
                     >
-                        <AddIcon style={{ fontSize: '20px' }} />
-                    </Button>
-                </ButtonGroup>
-
-        </React.Fragment>
-</li>
+                        <AddIcon style={{ fontSize: "20px" }} />
+                    </StyledButtonAdd>
+                    <StyledButtonList
+                        id="demo-positioned-button"
+                        aria-controls={open ? "demo-positioned-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={handleClick}
+                    >
+                        <ArrowDropDownIcon style={{ fontSize: "20px" }} />
+                    </StyledButtonList>
+                </StyledButtonGroup>
+                <Menu
+                    id="demo-positioned-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                    }}
+                >
+                    {props.selectedDayActivities.map(
+                        (activity) => (<MenuItem
+                                onClick={handleClose}
+                                key={activity.activityId}
+                                value={activity.activityId}
+                                sx={{ backgroundColor: activity.color}}
+                            >
+                                {activity.name}
+                            </MenuItem>
+                        ))
+                   }
+                </Menu>
+            </React.Fragment>
+        </li>
     );
 }
+
+const StyledButtonAdd = styled(Button)`
+  background-color: transparent;
+  color: black;
+  padding-top: 3rem;
+  margin-left: -0.4rem;
+  &:hover {
+    background-color: transparent;
+    color: red;
+    border: none;
+  }
+`;
+
+const StyledButtonList = styled(Button)`
+  background-color: transparent;
+  color: black;
+  padding-top: 3rem;
+  margin-left: -1rem;
+  &:hover {
+    background-color: transparent;
+    color: red;
+    border: none;
+  }
+`;
+
+const StyledButtonGroup = styled(ButtonGroup)`
+  margin-top: -4rem;
+  padding: 0;
+  width: 3rem;
+  height: 4.5rem;
+  flex-direction: row;
+
+  .MuiButtonGroup-grouped:not(:last-of-type) {
+    border: none;
+  }
+`;
